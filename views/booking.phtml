@@ -1,0 +1,83 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+    <div class="hero-unit">
+        <h1><?= $artist->name ?></h1>
+        <p><?= $artist->shortInfo ?></p>
+		<? if (isset($artist->longInfo)): ?>
+			<p><?= $artist->longInfo ?></p>
+		<? endif ?>
+    </div>
+</div>
+<div class="container">
+	<h2>Booking request</h2>
+	<div class="backgrounded">
+		<? if ($finished == true): ?>
+			<div class="alert alert-success">Thank you for your request, we will contact you as soon as possible!</div>
+		<? else: ?>
+			<? if (count($errors)): ?>
+				<div class="alert alert-error">Oops, please check your input!</div>
+			<? endif ?>
+			<form method="POST" class="form-horizontal">
+				<div class="control-group<?= isset($errors['firstname']) ? ' error' : '' ?>">
+					<label class="control-label" for="firstname">Firstname:</label>
+					<div class="controls">
+						<input id="firstname" type="text" name="firstname" placeholder="your firstname"<?= isset($values['firstname']) ? ' value="'. $values['firstname'] .'"' : '' ?> />
+						<? if (isset($errors['firstname'])): ?>
+							<span class="help-inline"><?= $errors['firstname'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
+				<div class="control-group<?= isset($errors['lastname']) ? ' error' : '' ?>">
+					<label class="control-label" for="lastname">Lastname:</label>
+					<div class="controls">
+						<input id="lastname" type="text" name="lastname" placeholder="your lastname"<?= isset($values['lastname']) ? ' value="'. $values['lastname'] .'"' : '' ?> />
+						<? if (isset($errors['lastname'])): ?>
+							<span class="help-inline"><?= $errors['lastname'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
+				<div class="control-group<?= isset($errors['email']) ? ' error' : '' ?>">
+					<label class="control-label" for="email">E-Mail:</label>
+					<div class="controls">
+						<input id="email" type="text" name="email" placeholder="your email address"<?= isset($values['email']) ? ' value="'. $values['email'] .'"' : '' ?> />
+						<? if (isset($errors['email'])): ?>
+							<span class="help-inline"><?= $errors['email'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
+				<div class="control-group<?= isset($errors['location']) ? ' error' : '' ?>">
+					<label class="control-label" for="location">City:</label>
+					<div class="controls">
+						<input id="location" type="text" name="location" placeholder="desired city"<?= isset($values['location']) ? ' value="'. $values['location'] .'"' : '' ?> />
+						<? if (isset($errors['location'])): ?>
+							<span class="help-inline"><?= $errors['location'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
+				<div class="control-group<?= isset($errors['date']) ? ' error' : '' ?>">
+					<label class="control-label" for="date">Date:</label>
+					<div class="controls">
+						<input id="date" type="date" name="date" placeholder="desired date"<?= isset($values['date']) ? ' value="'. $values['date'] .'"' : '' ?> />
+						<? if (isset($errors['date'])): ?>
+							<span class="help-inline"><?= $errors['date'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
+				<div class="control-group<?= isset($errors['message']) ? ' error' : '' ?>">
+					<label class="control-label" for="message">Info:</label>
+					<div class="controls">
+						<textarea id="message" type="text" name="message" placeholder="your message to <?= $artist->name ?>"><?= isset($values['message']) ? $values['message'] : '' ?></textarea>
+						<? if (isset($errors['message'])): ?>
+							<span class="help-inline"><?= $errors['message'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<input class="btn btn-primary" type="submit" value="Send booking request" />
+					</div>
+				</div>
+			</form>
+		<? endif ?>
+	</div>
+</div>

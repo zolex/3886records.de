@@ -1,0 +1,17 @@
+<ul class="breadcrumb">
+	<? $lastItem = count($items) - 1 ?>
+	<? foreach ($items as $index => $item): ?>
+		<li<?= isset($item->active) && true === $item->active ? ' class="active"' : '' ?>>
+			<? if (isset($item->url)): ?>
+				<a data-method="async" href="<?= $item->url ?>">
+			<? endif ?>
+			<?= $item->title ?>
+			<? if (isset($item->url)): ?>
+				</a>
+			<? endif ?>
+		</li>
+		<? if ($index != $lastItem): ?>
+			<span class="divider">/</span>
+		<? endif ?>
+	<? endforeach ?>
+</ul>

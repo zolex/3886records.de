@@ -1,0 +1,30 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+    <div class="hero-unit">
+        <h1><?= $artist->name ?></h1>
+        <p><?= $artist->shortInfo ?></p>
+		<? if (isset($artist->longInfo)): ?>
+			<p><?= $artist->longInfo ?></p>
+		<? endif ?>
+    </div>
+</div>
+<? if (isset($artist->youtube) && is_array($artist->youtube)): ?>
+	<div class="container videos">
+		<h2>Videos</h2>
+		<ul class="thumbnails with-border">
+			<? foreach ($artist->youtube as $video): ?>
+				<li class="span6">
+					<div class="thumbnail">
+						<?= $video ?>
+					</div>
+				</li>
+			<? endforeach ?>
+		</ul>
+	</div>
+<? endif ?>
+<? if (isset($artist->soundcloud)): ?>
+	<div class="container">
+		<h2>Tracks</h2>
+		<?= $artist->soundcloud ?>
+	</div>
+<? endif ?>
