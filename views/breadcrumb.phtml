@@ -1,17 +1,20 @@
-<ul class="breadcrumb">
-	<? $lastItem = count($items) - 1 ?>
-	<? foreach ($items as $index => $item): ?>
-		<li<?= isset($item->active) && true === $item->active ? ' class="active"' : '' ?>>
-			<? if (isset($item->url)): ?>
-				<a data-method="async" href="<?= $item->url ?>">
+<div class="breadcrumb-container">
+	<ul class="breadcrumb">
+		<? $lastItem = count($items) - 1 ?>
+		<? foreach ($items as $index => $item): ?>
+			<li<?= isset($item->active) && true === $item->active ? ' class="active"' : '' ?>>
+				<? if (isset($item->url)): ?>
+					<a data-method="async" href="<?= $item->url ?>">
+				<? endif ?>
+				<?= $item->title ?>
+				<? if (isset($item->url)): ?>
+					</a>
+				<? endif ?>
+			</li>
+			<? if ($index != $lastItem): ?>
+				<span class="divider">/</span>
 			<? endif ?>
-			<?= $item->title ?>
-			<? if (isset($item->url)): ?>
-				</a>
-			<? endif ?>
-		</li>
-		<? if ($index != $lastItem): ?>
-			<span class="divider">/</span>
-		<? endif ?>
-	<? endforeach ?>
-</ul>
+		<? endforeach ?>
+	</ul>
+	<div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-colorscheme="dark"></div>
+</div>

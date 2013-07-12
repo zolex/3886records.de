@@ -1,0 +1,58 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+    <div class="hero-unit">
+        <h1><?= $title ?></h1>
+    </div>
+</div>
+<div class="container">
+	<ul class="thumbnails">
+		<? if (count($releases)): ?>
+			<? foreach ($releases as $release): ?>
+			<li class="span12">
+				<div class="thumbnail release-box">
+					<img src="/img/releases/<?= $release->cover ?>" alt="<?= $release->artist ?> - <?= $release->title ?>" />
+					<div class="desc">
+						<h3><?= $release->artist ?> - <?= $release->title ?></h3>
+						<p>
+							<strong>Genre:</strong> <?= $release->genre ?><br/>
+							<strong>Date:</strong> <?= $release->date ?><br/>
+							<strong>Type:</strong> <?= $release->type ?><br/>
+							<strong>Format:</strong> <?= $release->format ?><br/>
+							<? if (isset($release->tracks)): ?>
+								<strong>Tracks:</strong>
+								<?= implode(', ', $release->tracks) ?>
+							<? endif ?>
+							<? if (isset($release->links)): ?>
+								<strong>Buy now:</strong> 
+								<? foreach ($release->links as $name => $link): ?>
+									<a target="_blank" href="<?= $link ?>"><?= $name ?></a><br/>
+								<? endforeach ?>
+							<? endif ?>
+						</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</li>
+			<? endforeach ?>
+		<? else: ?>
+			<li class="span12">
+				<h3>None yet...</h3>
+			</li>
+		<? endif ?>
+	</ul>
+</div>
+<div class="container">
+	<div class="spanfull first backgrounded">
+		<ul class="stores-horizontal">
+			<li><img src="/img/stores/amazonmp3.jpg" alt="Amazon mp3" title="Amazon mp3" /></li>
+			<li><img src="/img/stores/beatport.jpg" alt="Beatport" title="Beatport" /></li>
+			<li><img src="/img/stores/itunes.jpg" alt="iTunes" title="iTunes" /></li>
+			<li><img src="/img/stores/trackitdown.jpg" alt="trackitdown" title="trackitdown" /></li>
+			<li><img src="/img/stores/musicload.jpg" alt="Musicload" title="Musicload" /></li>
+			<li><img src="/img/stores/spotify.jpg" alt="Spotify" title="Spotify" /></li>
+			<li><img src="/img/stores/rdio.jpg" alt="rdio" title="rdio" /></li>
+			<li><img src="/img/stores/deezer.jpg" alt="Deezer" title="Deezer" /></li>
+			<li><img src="/img/stores/googleplay.jpg" alt="Google Play" title="Google Play" /></li>
+		</ul>
+	</div>
+</div>

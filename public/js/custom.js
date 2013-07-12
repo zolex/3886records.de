@@ -32,8 +32,8 @@ jQuery(function($){
 	    thumb_links				:	0,			// Individual thumb links for each slide
 	    thumbnail_navigation    :   0,			// Thumbnail navigation
 	    slides 					:  	[			// Slideshow Images
-										    {image : '/img/slides/slide1.jpg', title : '<h1><span class="raleway">3886</span>records</h1>', thumb : 'img/slides/slide1_thumb.jpg'},
-										    {image : '/img/slides/slide2.jpg', title : '<h1>finest electronic music</h1>', thumb : 'img/slides/slide2_thumb.jpg'}],		
+										    {image : '/img/slides/slide1.jpg', title : '<h1>finest electronic music</h1>', thumb : 'img/slides/slide1_thumb.jpg'},
+										    {image : '/img/slides/slide2.jpg', title : '<h1><span class="raleway">3886</span>records</h1>', thumb : 'img/slides/slide2_thumb.jpg'}],		
 								
 	    // Theme Options			   
 	    progress_bar			:	0,			// Timer for each slide							
@@ -112,6 +112,10 @@ var gotoPage = function(target, pushState) {
 			    
 		        $('head title').text('3886records - independent electronic music label');
 		    }
+			
+			$("body, html").animate({
+				scrollTop : 0
+			}, 500);
 		},
 		error: function(response) {
 			if (response.responseText) {
@@ -133,6 +137,10 @@ var gotoPage = function(target, pushState) {
 			    
 			        $('head title').text('3886records - independent electronic music label');
 			    }
+				
+				$("body, html").animate({
+					scrollTop : 0
+				}, 500);
 			}
 		}
 	});

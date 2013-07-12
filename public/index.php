@@ -6,6 +6,10 @@ $config = require 'config.php';
 $request = new Request();
 $router = new Router($config['routes']);
 list($template,$params) = $router->route($request);
+if (!is_array($params)) {
+	$params = array();
+}
+
 
 try {
     $content = ViewLoader::load($template, $params);
@@ -24,8 +28,13 @@ if ($request->isXmlHttpRequest()) {
     exit;
 }
 
+$dataProvider = DataProvider::getInstance();
+
 $navigation = ViewLoader::load('navigation', array(
     'request' => $request,
+	'artists' => $dataProvider->getArtists(),
+	'genres' => $dataProvider->getGenres(),
+	'labels' => $dataProvider->getLabels(),
 ));
 
 echo ViewLoader::load('layout', array_merge($params, array(

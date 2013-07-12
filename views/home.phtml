@@ -7,6 +7,64 @@
         <p><strong>thirtyeight eightysix records</strong> is an independent electronic music label with headquarters in Bonn, Germany.</p>
     </div>
 </div>
+<div class="container blocks">
+	<div class="span4 first backgrounded">
+		<h4>Upcomming releases</h4>
+		<ul class="light">
+			<? foreach ($releases as $release): ?>
+				<li class="icon-signal"><span><?= $release->artist ?> - <?= $release->title ?></span> <span class="small">(<?= $release->type ?>, <?= $release->date ?>)</span></li>
+			<? endforeach ?>
+		</ul>
+		<a data-method="async" class="bottom" href="/releases/upcomming">more info</a>
+	</div>
+	<div class="span3 backgrounded">
+		<h4>Upcomming Events</h4>
+		<ul class="light">
+			<? foreach ($events as $event): ?>
+				<li class="icon-star"><span><?= $event->name ?></span> <span class="small">(<?= $event->date ?>)</span></li>
+			<? endforeach ?>
+		</ul>
+		<a data-method="async" class="bottom" href="/events">all events</a>
+	</div>
+	<?/*
+	<div class="span3 backgrounded">
+		<h4>New Artists</h4>
+		<ul class="light">
+			<li class="icon-star"><span>Aldrich</span></li>
+			<li class="icon-star"><span>Cosmic Chuen</span></li>
+			<li class="icon-star"><span>No Publicity</span></li>
+			<li class="icon-star"><span>Take</span></li>
+		</ul>
+		<a data-method="async" class="bottom" href="/artists">all artists</a>
+	</div>
+	*/?>
+	<div class="span4 backgrounded">
+		<h4>Send your Demo!</h4>
+		<p>
+			We're looking for talented artists in the genres Trance, Goa, House and Chillout. We are listening to every submitted sound!
+		</p>
+		<a target="_blank" href='http://soundcloud.com/3886records/dropbox' class='soundcloud-dropbox'>Send us your track!</a>
+	</div>
+</div>
 <div class="container">
-	<iframe width="100%" height="470" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F4623566%3Fsecret_token%3Ds-EkFxj&amp;color=007aff&amp;auto_play=true&amp;show_artwork=false"></iframe>
+	<div class="span7 first">
+		<iframe width="100%" height="785" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F4623566%3Fsecret_token%3Ds-EkFxj&amp;color=007aff&amp;auto_play=true&amp;show_artwork=false"></iframe>
+	</div>
+	<div class="span2 backgrounded">
+		<ul class="stores">
+			<li><a target="_blank" href="http://www.amazon.com/s/?url=search-alias%3Ddigital-music&field-keywords=3886records"><img src="/img/stores/amazonmp3.jpg" alt="Amazon mp3" title="Amazon mp3" /></a></li>
+			<li><a target="_blank" href="http://www.beatport.com/label/3886records/32906"><img src="/img/stores/beatport.jpg" alt="Beatport" title="Beatport" /></a></li>
+			<li><a target="_blank" href="http://www.itunes.com/"><img src="/img/stores/itunes.jpg" alt="iTunes" title="iTunes" /></a></li>
+			<li><a target="_blank" href="https://www.trackitdown.net/recordlabel/139950/3886records.html#tracks"><img src="/img/stores/trackitdown.jpg" alt="trackitdown" title="trackitdown" /></li>
+			<li><a target="_blank" href="http://www.musicload.de/"><img src="/img/stores/musicload.jpg" alt="Musicload" title="Musicload" /></a></li>
+			<li><a target="_blank" href="https://play.spotify.com"><img src="/img/stores/spotify.jpg" alt="Spotify" title="Spotify" /></a></li>
+			<li><a target="_blank" href="http://www.rdio.com/"><img src="/img/stores/rdio.jpg" alt="rdio" title="rdio" /></a></li>
+			<li><a target="_blank" href="http://www.deezer.com"><img src="/img/stores/deezer.jpg" alt="Deezer" title="Deezer" /></a></li>
+			<li><a target="_blank" href="https://play.google.com/music"><img src="/img/stores/googleplay.jpg" alt="Google Play" title="Google Play" /></a></li>
+		</ul>
+	</div>
+	<div class="span3">
+		<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+		<a class="twitter-timeline"  href="https://twitter.com/3886records" height="785" data-widget-id="336446706327625729">Tweets by @3886records</a>
+	</div>
 </div>

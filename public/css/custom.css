@@ -1,13 +1,3 @@
-/*
-
-	Pixopolus Creative Agency and Photographer
-	Version : 1.0
-	Site	: www.pixelcoder.eu
-	
-	Author	: Lutz Heidbrink
-	Company : PixelCoder (http://www.pixelcoder.eu);
-	
-*/
 body {
 	color: #ffffff;
 	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
@@ -15,15 +5,16 @@ body {
 	-webkit-font-smoothing: antialiased;
 	text-shadow: none;
 	font-weight: 300;
+/*	overflow-x: hidden;
+	overflow-y: auto;*/
 }
 h1, h2, h3, h4, h5, h6 {
 	color: #ffffff;
 	letter-spacing: 2px;
 }
 header nav {
-    height: 78px;
 	position: relative;
-    z-index: 1042;
+    z-index: 1200;
 }
 /*Basic Colors right on top of the Stylesheet, so you can simply search and replace them*/
 span.pink {
@@ -37,6 +28,80 @@ span.hover_pink {
 }
 .dark {
 	color: #000;
+}
+ul.stores, ul.stores-horizontal {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+ul.stores li {
+	text-align: center;
+	display: block;
+	margin-bottom: 5px;
+}
+ul.stores-horizontal li {
+	text-align: center;
+	display: inline-block;
+	width: 122px;
+}
+ul.social {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+ul.social li {
+	margin-bottom: 3px;
+}
+ul.social a {
+	opacity: 0.5;
+}
+ul.social a:hover {
+	opacity: 1;
+	transition: all 0.3s linear;
+}
+.events .thumbnail {
+	height: 320px;
+}
+.eventsfull .thumbnail {
+	height: 390px !important;
+}
+.events .date, .events .location {
+	font-weight: bold;
+	color: #000;
+}
+.events .acts {
+	color: #000 !important;
+	font-weight: bold;
+	font-size: 12px;
+	margin-top: 5px;
+}
+.events img {
+	margin-top: 10px;
+}
+a.soundcloud-dropbox {
+	position: absolute;
+	bottom: 0px;
+	display: block;
+	margin: 10px auto; background: transparent url(http://a1.sndcdn.com/images/dropbox_small_white.png?6422697) top left no-repeat;
+	color: #888888;
+	font-size: 10px;
+	height: 30px;
+	padding: 26px 60px 0 12px;
+	width: 127px;
+	text-decoration: none;
+	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+	line-height: 1.3em
+}
+a.soundcloud-dropbox:hover {
+	color: #1896D1 !important; background-color: transparent !important;
+}
+a.inline-dropbox {
+	position: relative;
+	margin-left: 0;
+}
+*html a.soundcloud-dropbox {
+	background-image: none !important;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='(http://a1.sndcdn.com/images/dropbox_small_white.png?6422697)', sizingMethod='crop') !important;
 }
 /*
 [class*="span"] {
@@ -57,18 +122,28 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: 'OstrichSansBlack', Helvetica, sans-serif;
 	text-transform: uppercase;
 }
-.breadcrumb {
-	z-index: 999;
+.fb-like {
+	float: right;
+	margin: 7px 5px 0 0;
+}
+.fb_edge_widget_with_comment {
+    position: relative;
+    top: -55px;
+}
+.breadcrumb-container {
+	z-index: 1100;
 	position: fixed;
-	top: 76px;
-	width: 100%;
+	top: 82px;
+	height: 30px;
 	opacity: 0.8;
+	background-color: #F5F5F5;
+	width: 100%;
 }
 #content {
 	padding-bottom: 15px;
 }
 #content .container {
-	margin-top: 50px;
+	margin-top: 30px
 }
 .backgrounded {
 	color: #000;
@@ -91,6 +166,20 @@ h1, h2, h3, h4, h5, h6 {
 	border-top: 2px solid #0099FF;
 	border-left: 2px solid #0099FF;
 }
+.release-box {
+	text-align: left;
+}
+.release-box  .desc {
+	float: left;
+}
+.release-box img {
+	float: left;
+	margin-right: 20px;
+}
+.release-box p {
+	color: #000;
+}
+
 h1,
 .hero-unit {
     margin-top: 15px;
@@ -120,14 +209,14 @@ h3 {
     font-size: 45px;
     line-height: 40px;
     padding: 3px 0 4px 0;
-    text-shadow: 0px 0px 3px #222;
+    text-shadow: 0px 0px 3px #111;
     letter-spacing: 1px;
 }
 h4 {
-    font-size: 35px;
-    line-height: 20px;
+    font-size: 30px;
+    line-height: 26px;
     padding: 2px 0 2px 0;
-    text-shadow: 0px 0px 2px #222;
+    text-shadow: 0px 0px 3px #111;
     letter-spacing: 1px;
 }
 span.raleway {
@@ -135,10 +224,46 @@ span.raleway {
 	font-weight: 200;
 }
 span.head {
-    font-size: 42px;
-    line-height: 72px;
+    font-size: 48px;
+    line-height: 76px;
     font-family: 'OstrichSansBlack', Helvetica, sans-serif;
 	color: #fff;
+}
+.first {
+	margin-left: 0 !important;
+}
+ul.light {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+ul.light li {
+	color: #000;
+	display: list-item;
+}
+ul.light li a,
+ul.light li span {
+	font-family: 'Open Sans', Arial, sans-serif;
+	padding-left: 5px;
+}
+ul.light li span {
+	color: #000;
+	font-weight: bold;
+}
+ul.light li span.small {
+	font-weight: normal;
+	font-size: 11px;
+}
+.blocks .backgrounded {
+	height: 175px;
+	position: relative;
+}
+.blocks .backgrounded .bottom {
+
+	font-size: 11px;
+	font-weight: bold;
+	position: absolute;
+	bottom: 10px;
 }
 a {
 	color: #0099FF;

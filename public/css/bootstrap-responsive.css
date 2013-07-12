@@ -109,7 +109,7 @@
   [class*="span"] {
     float: left;
     min-height: 1px;
-    margin-left: 30px;
+    margin-left: 20px;
   }
   .container,
   .navbar-static-top .container,
@@ -148,7 +148,7 @@
     width: 270px;
   }
   .span2 {
-    width: 170px;
+    width: 150px;
   }
   .span1 {
     width: 70px;
@@ -491,10 +491,10 @@
     width: 290px;
   }
   .span4 {
-    width: 228px;
+    width: 204px;
   }
   .span3 {
-    width: 166px;
+    width: 155px;
   }
   .span2 {
     width: 104px;
@@ -941,6 +941,9 @@
 @media (max-width: 767px) {
   body {
     padding-top: 0;
+  }
+  .breadcrumb-container {
+	position: static;
   }
   .navbar-fixed-top,
   .navbar-fixed-bottom {

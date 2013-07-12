@@ -1,0 +1,57 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+
+<? if (isset($events->upcomming) && is_array($events->upcomming)): ?>
+	<div class="container events eventsfull">
+		<h2>Upcomming Events</h2>
+		<ul class="thumbnails">
+			<? foreach ($events->upcomming as $event): ?>
+				<li class="span4">
+					<div class="thumbnail">
+						<h4><?= $event->name ?></h4>
+						<span class="location"><?= $event->location ?></span><br/>
+						<span class="date"><?= $event->date ?> <?= $event->time ?></span>
+						<img src="/img/events/<?= $event->image ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
+						<? if (isset($event->acts) && is_array($event->acts)): ?>
+							<div class="acts">
+							<? foreach ($event->acts as $act): ?>
+								<a href="/artist/<?= $act->artist->key ?>"><?= $act->artist->name ?></a>: <?= $act->info ?><br/>
+							<? endforeach ?>
+							</div>
+						<? endif ?>
+						<? if (isset($event->facebook)): ?>
+							<br/><a href="<?= $event->facebook ?>" target="_blank">Event on Facebook</a>
+						<? endif ?>
+					</div>
+				</li>
+			<? endforeach ?>
+		</ul>
+	</div>
+<? endif ?>
+
+<? if (isset($events->past) && is_array($events->past)): ?>
+	<div class="container events eventsfull">
+		<h2>Past Events</h2>
+		<ul class="thumbnails">
+			<? foreach ($events->past as $event): ?>
+				<li class="span4">
+					<div class="thumbnail">
+						<h4><?= $event->name ?></h4>
+						<span class="location"><?= $event->location ?></span><br/>
+						<span class="date"><?= $event->date ?> <?= $event->time ?></span>
+						<img src="/img/events/<?= $event->image ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
+						<? if (isset($event->acts) && is_array($event->acts)): ?>
+							<div class="acts">
+							<? foreach ($event->acts as $act): ?>
+								<a href="/artist/<?= $act->artist->key ?>"><?= $act->artist->name ?></a>: <?= $act->info ?><br/>
+							<? endforeach ?>
+							</div>
+						<? endif ?>
+						<? if (isset($event->facebook)): ?>
+							<br/><a href="<?= $event->facebook ?>" target="_blank">Event on Facebook</a>
+						<? endif ?>
+					</div>
+				</li>
+			<? endforeach ?>
+		</ul>
+	</div>
+<? endif ?>

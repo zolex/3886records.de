@@ -2,12 +2,51 @@
 <div class="container">
     <div class="hero-unit">
         <h1><?= $artist->name ?></h1>
-        <p><?= $artist->shortInfo ?></p>
+        <p style="font-weight: bold; margin-bottom: 20px;"><?= $artist->shortInfo ?></p>
+		<div class="span3">
+			<ul class="thumbnails">
+				<li>
+					<div class="thumbnail">
+						<img src="/img/artists/<?= $artist->key ?>.jpg" alt="<?= $artist->name ?>" />
+					</div>
+				</li>
+			</ul>
+		</div>
 		<? if (isset($artist->longInfo)): ?>
-			<p><?= $artist->longInfo ?></p>
+			<div class="span7">
+				<p><?= $artist->longInfo ?></p>
+			</div>
 		<? endif ?>
+		<? if (isset($artist->links)): ?>
+			<ul class="social">
+			<? foreach ($artist->links as $type => $link): ?>
+				<li><a target="_blank" href="<?= $link ?>"><img alt="<?= ucfirst($type) ?>" title="<?= ucfirst($type) ?>" src="/img/social/<?= $type ?>.png" border="0" /></a></li>
+			<? endforeach ?>
+			</ul>
+		<? endif ?>
+		<div class="clear"></div>
     </div>
 </div>
+<? if (isset($artist->events) && is_array($artist->events) && count($artist->events)): ?>
+	<div class="container events">
+		<h2>Upcomming Events with <?= $artist->name ?></h2>
+		<ul class="thumbnails">
+			<? foreach ($artist->events as $event): ?>
+				<li class="span4">
+					<div class="thumbnail">
+						<h4><?= $event->name ?></h4>
+						<span class="location"><?= $event->location ?></span><br/>
+						<span class="date"><?= $event->date ?> <?= $event->time ?></span>
+						<img src="/img/events/<?= $event->image ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>"
+						<? if (isset($event->facebook)): ?>
+							<br/><strong><a href="<?= $event->facebook ?>" target="_blank">Event on Facebook</a></strong>
+						<? endif ?>
+					</div>
+				</li>
+			<? endforeach ?>
+		</ul>
+	</div>
+<? endif ?>
 <? if (isset($artist->youtube) && is_array($artist->youtube)): ?>
 	<div class="container videos">
 		<h2>Videos</h2>
@@ -15,7 +54,7 @@
 			<? foreach ($artist->youtube as $video): ?>
 				<li class="span6">
 					<div class="thumbnail">
-						<?= $video ?>
+						<iframe style="margin-left: auto; margin-right: auto;" width="100%" height="360" src="<?= $video ?>" frameborder="0" allowfullscreen></iframe>
 					</div>
 				</li>
 			<? endforeach ?>
@@ -25,6 +64,6 @@
 <? if (isset($artist->soundcloud)): ?>
 	<div class="container">
 		<h2>Tracks</h2>
-		<?= $artist->soundcloud ?>
+		<iframe width="100%" height="450" scrolling="no" frameborder="no" src="<?= $artist->soundcloud ?><?= DataProvider::getInstance()->getSoundcloudParams() ?>"></iframe>
 	</div>
 <? endif ?>

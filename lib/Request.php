@@ -4,6 +4,11 @@ class Request
 {
     protected $params = array();
 
+	public function __construct() {
+	
+		$this->params = $_GET;
+	}
+	
     public function isXmlHttpRequest() {
     
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
@@ -33,7 +38,14 @@ class Request
     
     public function getRoute() {
     
-        return strtolower($_SERVER['REQUEST_URI']);
+		if (preg_match('@^(/[^\?]*)@', $_SERVER['REQUEST_URI'], $matches)) {
+		
+			return strtolower($matches[1]);
+			
+		} else {
+		
+			return false;
+		}
     }
     
     public function setParam($key, $value) {
@@ -50,4 +62,9 @@ class Request
         
         return $this->params[$key];
     }
+	
+	public function getParams() {
+
+		return $this->params;
+	}
 }

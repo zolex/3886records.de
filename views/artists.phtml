@@ -5,85 +5,15 @@
     </div>
 	<div style="height:20px;"></div>
 	<ul class="thumbnails">
+		<? foreach ($artists as $artist): ?>
 	    <li class="span4">
 			<div class="thumbnail">
-				<a href="/artist/spekta" data-method="async">
-					<h3>Spekta</h3>
-					<img src="/img/artists/spekta.jpg" alt="Spekta">
+				<a href="/artist/<?= $artist->key ?>" data-method="async">
+					<h3><?= $artist->name ?></h3>
+					<img style="width: 200px; height: 200px;" src="/img/artists/<?= $artist->key ?>.jpg" alt="<?= $artist->name ?>">
 				</a>
 			</div>
 		</li>
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/cosmicchuen" data-method="async">
-					<h3>Cosmic Chuen</h3>
-					<img src="/img/artists/cosmicchuen.jpg" alt="Cosmic Chuen">
-				</a>
-			</div>
-		</li>
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/darwinxp" data-method="async">
-					<h3>Darwin Experience</h3>
-					<img src="/img/artists/darwinxp.jpg" alt="Darwin Experience">
-				</a>
-			</div>
-		</li>
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/euphoristix" data-method="async">
-					<h3>Euphoristix</h3>
-					<img src="/img/artists/euphoristix.jpg" alt="Euphoristix">
-				</a>
-			</div>
-		</li>
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/shinson" data-method="async">
-					<h3>Shinson</h3>
-					<img src="/img/artists/shinson.jpg" alt="Shinson">
-				</a>
-			</div>
-		</li>
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/take" data-method="async">
-					<h3>Take</h3>
-					<img src="/img/artists/take.jpg" alt="Take">
-				</a>
-			</div>
-		</li>
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/nopublicity" data-method="async">
-					<h3>No Publicity</h3>
-					<img src="/img/artists/nopublicity.jpg" alt="No Publicity">
-				</a>
-			</div>
-		</li>
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/aljoshakonstanty" data-method="async">
-					<h3>Aljosha Konstanty</h3>
-					<img src="/img/artists/aljoshakonstanty.jpg" alt="Aljosha Konstanty">
-				</a>
-			</div>
-		</li>	
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/stormanimal" data-method="async">
-					<h3>StormAnimal</h3>
-					<img src="/img/artists/stormanimal.jpg" alt="StormAnimal">
-				</a>
-			</div>
-		</li>
-		<li class="span4">
-			<div class="thumbnail">
-				<a href="/artist/sherwee" data-method="async">
-					<h3>Sherwee</h3>
-					<img src="/img/artists/sherwee.jpg" alt="Sherwee">
-				</a>
-			</div>
-		</li>
+		<? endforeach ?>
 	</ul>
 </div>

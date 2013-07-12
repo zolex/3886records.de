@@ -1,22 +1,37 @@
 <ul class="nav pull-right">
-  <li>
-    <a data-method="async" href="/home"><span class="current"><i class="icon-home"></i></span> Home</a>
+  <li class="divider-vertical"></li>
+  <li><a href="/events" data-method="async"><span class="current"><i class="icon-calendar"></i></span> Events</a></li>
+  <li class="divider-vertical"></li>
+  <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-signal"></i></span> Releases <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+		<li><a data-method="async" href="/releases/upcomming">Upcomming Releases</a></li>
+		<li><a data-method="async" href="/releases/latest">Latest Releases</a></li>
+    </ul>
   </li>
   <li class="divider-vertical"></li>
-  <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-music"></i> Artists <b class="caret"></b></a>
+  <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-music"></i></span> Genres <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+	  <? foreach ($genres as $genre): ?>
+		<li><a data-method="async" href="/genre/<?= $genre->key ?>"><?= $genre->name ?></a></li>
+	  <? endforeach ?>
+    </ul>
+  </li>
+  <li class="divider-vertical"></li>
+  <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-star"></i></span> Artists <b class="caret"></b></a>
     <ul class="dropdown-menu">
       <li><a data-method="async" href="/artists">Artist overview</a></li>
       <li class="divider"></li>
-      <li><a data-method="async" href="/artist/aljoshakonstanty">Aljosha Konstanty</a></li>
-      <li><a data-method="async" href="/artist/cosmicchuen">Cosmic Chuen</a></li>
-      <li><a data-method="async" href="/artist/darwinxp">Darwin Experience</a></li>
-      <li><a data-method="async" href="/artist/euphoristix">Euphoristix</a></li>
-      <li><a data-method="async" href="/artist/nopublicity">No Publicity</a></li>
-      <li><a data-method="async" href="/artist/sherwee">Sherwee</a></li>
-      <li><a data-method="async" href="/artist/shinson">Shinson</a></li>
-      <li><a data-method="async" href="/artist/spekta">Spekta</a></li>
-      <li><a data-method="async" href="/artist/stormanimal">StormAnimal</a></li>
-      <li><a data-method="async" href="/artist/take">Take</a></li>
+	  <? foreach ($artists as $artist): ?>
+		<li><a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a></li>
+	  <? endforeach ?>
+    </ul>
+  </li>
+  <li class="divider-vertical"></li>
+  <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-headphones"></i></span> Labels <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+	  <? foreach ($labels as $label): ?>
+		<li><a data-method="async" href="/label/<?= $label->key ?>"><?= $label->name ?></a></li>
+	  <? endforeach ?>
     </ul>
   </li>
 </ul>
