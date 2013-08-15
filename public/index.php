@@ -3,13 +3,16 @@
 chdir(dirname(dirname(__FILE__)));
 $config = require 'config.php';
 
-$request = new Request();
-$router = new Router($config['routes']);
-list($template,$params) = $router->route($request);
+$request = new Request($config);
+
+$dbh = new PDO('mysql:host='. $config['db']['host'] .';port='. $config['db']['port'] .';dbname='. $config['db']['name'], $config['db']['user'], $config['db']['password']);
+DataProvider::getInstance()->setDbh($dbh);
+
+$router = new Router();
+list($template, $params) = $router->route($request);
 if (!is_array($params)) {
 	$params = array();
 }
-
 
 try {
     $content = ViewLoader::load($template, $params);

@@ -3,12 +3,30 @@
 class Request
 {
     protected $params = array();
+    protected $config = array();
 
-	public function __construct() {
+	public function __construct($config = array()) {
 	
+        $this->config = $config;
 		$this->params = $_GET;
 	}
 	
+    public function getConfig($index = null) {
+
+        if (null === $index) {
+        
+            return $this->config;
+
+        } else if (array_key_exists($index, $this->config)) {
+
+            return $this->config[$index];
+        
+        } else {
+
+            return null;
+        }
+    }
+
     public function isXmlHttpRequest() {
     
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&

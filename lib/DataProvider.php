@@ -2,6 +2,7 @@
 
 class DataProvider
 {
+	protected $dbh;
 	protected $data = array();
 	protected static $__instance;
 	
@@ -26,6 +27,11 @@ class DataProvider
 		return $params;
 	}
 	
+	public function setDbh(\PDO $dbh) {
+
+		$this->dbh = $dbh;
+	}
+
 	public function __construct() {
 	
 		$this->data['artists'] = array(
@@ -39,7 +45,7 @@ class DataProvider
 					'http://www.youtube.com/embed/vLgCYUcGJsk?wmode=opaque&autoplay=1',
 					'http://www.youtube.com/embed/bgCdjNyeQ2M?wmode=opaque',
 				),
-				'longInfo' => 'Spekta started making music at the age of six years by playing the piano. After about ten years he continued his career with german Rap and HipHop DJing. During 2012 he discovered the world of electronic beats and began to perform live-mixes with royalty free samples. Later he began to produce his own samples and tracks and started to colaborate with yet rather unknown artists. In the end of 2012 he founded the electronic music label "3886records" and brought a few talented artists together.',
+				'longInfo' => 'Spekta started making music at the age of six years by playing the piano. After about ten years he continued his career with german Rap and HipHop DJing. During 2012 he discovered the world of electronic beats and began to perform live-mixes with royalty free samples. Later he started to produce his own samples and tracks and colaborated with yet rather unknown artists. In the end of 2012 he founded the electronic music label "3886records".',
 				'firstname' => 'Andreas',
 				'lastname' => 'Linden',
 				'location' => 'Bonn, Germany',
@@ -80,10 +86,24 @@ class DataProvider
 				'key' => 'cannabliss',
 				'name' => 'CannaBliss',
 				'shortInfo' => 'Progressive and Psychedelic Trance Producer',
-				'longInfo' => '',
+				'longInfo' => 'Started in 2012, with a lot experimentation, He eventually developed his style and started producing Progressive Psy/ Goa psy and different styles of Psychedelic music.',
 				'soundcloud' => 'https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F7449786%3Fsecret_token%3Ds-lMi0a&auto_play=true',
 				'links' => array(
+					'facebook' => 'https://www.facebook.com/Cannabliss.Psybaba',
 					'soundcloud' => 'http://soundcloud.com/cannabliss-3'
+				),
+			),
+			///////////////////////////////////////////////////////////////
+			'psybuddy' => (object)array(
+				'key' => 'psybuddy',
+				'name' => 'PsyBuddy',
+				'shortInfo' => 'Progressive Psytrance Producer',
+				'longInfo' => 'Miro Moric was involved in the psytrance scene since the mid of the 90\'s. Spending nearly two decades with doing artwork for parties, clubs, festivals and musicians, he finally decided to transform all the great experiences, he had with psytrance music over the time, by starting a solo project and producing by his own. PsyBuddy\'s progressive psytrance is combining all the influences of the so called goa genre into an individual style and interpretation.',
+				'soundcloud' => 'https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F8364715%3Fsecret_token%3Ds-EbXLc&auto_play=true',
+				'links' => array(
+					'facebook' => 'http://www.facebook.com/PsyBuddy?ref=hl',
+					'soundcloud' => 'https://soundcloud.com/psybuddy',
+					'youtube' => 'http://www.youtube.com/user/sketchinc'
 				),
 			),
 			///////////////////////////////////////////////////////////////
@@ -182,13 +202,13 @@ class DataProvider
 			),
 			*/
 			///////////////////////////////////////////////////////////////
-			'sherwee' => (object)array(
-				'key' => 'sherwee',
-				'name' => 'Sherwee',
+			'alfredkwak' => (object)array(
+				'key' => 'alfredkwak',
+				'name' => 'Alfred Kwak',
 				'shortInfo' => 'Electro / Tech / Progressive House Producer',
-				'soundcloud' => 'https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F5692717%3Fsecret_token%3Ds-EnYHR&auto_play=true',
+				'soundcloud' => 'https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F9005527%3Fsecret_token%3Ds-oucbz&auto_play=true',
 				'links' => array(
-					'soundcloud' => 'https://soundcloud.com/sherwee',
+					'soundcloud' => 'https://soundcloud.com/alfred-kwak',
 				),
 			),
 			///////////////////////////////////////////////////////////////
@@ -337,8 +357,6 @@ class DataProvider
 					'format' => 'Digital',
 					'type' => 'Single',
 				),
-			),
-			'upcomming' => array(
 				(object)array(
 					'artist' => 'Spekta',
 					'title' => 'Cobitis Taenia',
@@ -348,6 +366,8 @@ class DataProvider
 					'format' => 'Digital',
 					'type' => 'Single',
 				),
+			),
+			'upcomming' => array(
 				(object)array(
 					'artist' => 'Shinson',
 					'title' => 'In my mind',
@@ -358,13 +378,49 @@ class DataProvider
 					'type' => 'Single',
 				),
 				(object)array(
-					'artist' => 'Spirtualzune',
-					'title' => 'Psychedelic Spirit EP',
-					'genre' => 'Profressive Psytrance',
+					'artist' => 'Shinson',
+					'title' => 'Arctic Warrior',
+					'genre' => 'Trance',
 					'cover' => 'default.jpg',
 					'date' => 'tba',
 					'format' => 'Digital',
+					'type' => 'Single',
+				),
+				(object)array(
+					'artist' => 'Mind Lab',
+					'title' => 'Antarctic Dreams',
+					'genre' => 'Trance',
+					'cover' => 'antarcticdreams.jpg',
+					'date' =>  '2013-08-14',
+					'format' => 'Digital',
+					'type' => 'Single',
+				),
+				(object)array(
+					'artist' => 'Spirtualzune',
+					'title' => 'Psychedelic Spirit EP',
+					'genre' => 'Profressive Psytrance',
+					'cover' => 'Spirtualzune - Psychedelic Spirit EP (200x200).jpg',
+					'date' => '2013-08-20',
+					'format' => 'Digital',
 					'type' => 'EP',
+				),
+				(object)array(
+					'artist' => 'CannaBliss',
+					'title' => 'Spykedelic EP',
+					'genre' => 'Profressive Psytrance',
+					'cover' => 'CannaBliss - Spykedelic EP (200x200).jpg',
+					'date' => '2013-09-06',
+					'format' => 'Digital',
+					'type' => 'EP',
+				),
+				(object)array(
+					'artist' => 'CommonSen5e',
+					'title' => 'Until the end of time',
+					'genre' => 'Chillout',
+					'cover' => 'CommonSen5e - Until The End Of time - Small.jpg',
+					'date' => '2013-09-14',
+					'format' => 'Digital',
+					'type' => 'Album',
 				),
 				/*
 				(object)array(
@@ -382,6 +438,28 @@ class DataProvider
 
 		$this->data['events'] = array(
 			(object)array(
+				'name' => 'Organic Jungle',
+				'date' => '2013-09-27',
+				'time' => '21:00',
+				'location' => 'Theatherfabrik München',
+				'image' => 'jungle.jpg',
+				'artists' => array(
+					'psybuddy' => 'Progressive Psytrance Live Act',
+				),
+				'facebook' => 'http://www.facebook.com/events/100631313461835/',
+			),
+			(object)array(
+				'name' => 'Goa4All',
+				'date' => '2013-10-11',
+				'time' => '23:00',
+				'location' => 'Barbarossaplatz Köln',
+				'image' => 'default.jpg',
+				'artists' => array(
+					'spekta' => 'Progressive Psytrance DJ Set',
+				),
+				#'facebook' => '',
+			),
+			(object)array(
 				'name' => '3 Tage Wach',
 				'date' => '2013-05-24',
 				'time' => '22:00',
@@ -396,7 +474,7 @@ class DataProvider
 				'name' => 'SunSplash',
 				'date' => '2013-06-15',
 				'time' => '23:00',
-				'location' => 'Kunstpark Cologne',
+				'location' => 'Kunstpark Köln',
 				'image' => 'sunsplash.jpg',
 				'artists' => array(
 					'spekta' => 'Trance Live-Performance',
@@ -451,12 +529,23 @@ class DataProvider
 				'name' => 'Goa Goa Bunga Bunga',
 				'date' => '2013-07-27',
 				'time' => '22:00',
-				'location' => '******* Bonn',
+				'location' => 'N8Lounge Bonn',
 				'image' => 'bunga.jpg',
 				'artists' => array(
 					'spekta' => 'Progressive Psytrance DJ-Set',
 				),
 				'facebook' => 'https://www.facebook.com/events/331263030310549/',
+			),
+			(object)array(
+				'name' => 'Psychedelic TanzTraum',
+				'date' => '2013-08-16',
+				'time' => '18:00',
+				'location' => 'Cologne Outdoor',
+				'image' => 'tanztraum.jpg',
+				'artists' => array(
+					'spekta' => 'Progressive Psytrance DJ-Set',
+				),
+				'facebook' => 'https://www.facebook.com/events/428339923947583/',
 			),
 			(object)array(
 				'name' => 'Psytrance meets Trash',
@@ -502,6 +591,18 @@ class DataProvider
 				),
 				'facebook' => 'https://www.facebook.com/events/247899552015321',
 			),
+			(object)array(
+				'name' => 'CHILL GOA',
+				'date' => '2013-07-21',
+				'time' => '08:00',
+				'location' => 'Oberkassel Beach',
+				'image' => 'oberkassel.jpg',
+				'artists' => array(
+					'spekta' => 'Progressive Psytrance DJ-Set',
+					'zwielicht' => 'Progressive Psytrance DJ-Set',
+				),
+				'facebook' => 'https://www.facebook.com/events/247899552015321',
+			),
 		);
 	}
 	
@@ -517,7 +618,7 @@ class DataProvider
 		} else {
 
 			$events = array();
-			$today = time();
+			$today = strtotime(date("Y-m-d 00:00:00"));
 			foreach ($this->data['events'] as $event) {
 
 				if ($which === 1 && $today > strtotime($event->date)) {
@@ -525,7 +626,7 @@ class DataProvider
 					continue;
 				}
 
-				if ($which === 2 && $today < strtotime($event->date)) {
+				if ($which === 2 && $today <= strtotime($event->date)) {
 
 					continue;
 				}

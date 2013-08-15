@@ -2,18 +2,11 @@
 
 class Router
 {
-    protected $routes;
-
-    public function __construct($routes = array()) {
-    
-        $this->routes = $routes;
-    }
-    
     public function route(Request $request) {
     
         $result = array();
         $currentRoute = $request->getRoute();
-        foreach ($this->routes as $route => $config) {
+        foreach ($request->getConfig('routes') as $route => $config) {
         
             $template = $config['template'];
             if (preg_match('#'. $route .'#i', $currentRoute, $matches)) {

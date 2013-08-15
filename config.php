@@ -18,6 +18,7 @@ date_default_timezone_set('Europe/Berlin');
 
 return array(
 
+    'db' => (@include 'shared/database.php'),
     'routes' => array(
         '^/$' => array(
             'template' => 'home',
@@ -58,6 +59,10 @@ return array(
 		'^/label/(?P<label>[^/]+)/?$' => array(
             'template' => 'label',
             'controller' => array('Controller\Labels', 'index')
+        ),
+        '^/admin/?$' => array(
+            'template' => 'admin_index',
+            'controller' => array('Controller\Admin', 'index')
         ),
     ),
 );
