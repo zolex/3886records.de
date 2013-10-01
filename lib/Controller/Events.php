@@ -10,8 +10,8 @@ class Events extends ControllerAction
 	
 		return array(
 			'events' => (object)array(
-				'upcomming' => $this->getDataProvider()->getEvents(1, null, true),
-				'past' => $this->getDataProvider()->getEvents(2, null, true),
+				'upcomming' => $this->getDataProvider()->getEvents(\Models\Event::UPCOMMING, true),
+				'past' => $this->getDataProvider()->getEvents(\Models\Event::PAST, true),
 			),
 			'breadcrumb' => array(
 				(object)array(

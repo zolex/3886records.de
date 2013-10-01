@@ -25,11 +25,11 @@ class Releases extends ControllerAction
 		);
 	}
 	
-	public function upcomming($request) {
+	public function upcoming($request) {
             
 		return array(
-			'metaTitle' => 'Upcomming Releases',
-			'title' => 'Upcomming Releases',
+			'metaTitle' => 'Upcoming Releases',
+			'title' => 'Upcoming Releases',
 			'releases' => DataProvider::getInstance()->getReleases('upcomming'),
 			'breadcrumb' => array(
 				(object)array(

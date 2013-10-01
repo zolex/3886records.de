@@ -8,18 +8,21 @@
 				<li class="span4">
 					<div class="thumbnail">
 						<h4><?= $event->name ?></h4>
-						<span class="location"><?= $event->location ?></span><br/>
-						<span class="date"><?= $event->date ?> <?= $event->time ?></span>
-						<img src="/img/events/<?= $event->image ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
-						<? if (isset($event->acts) && is_array($event->acts)): ?>
+						<span class="location"><?= $event->shortInfo ?></span><br/>
+						<span class="date"><?= $event->fromTime ?></span>
+						<? if (isset($event->facebook)): ?>
+							<br/><a title="Event on Facebook" href="<?= $event->facebook ?>" target="_blank">
+						<? endif ?>
+						<img border="0" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
+						<? if (isset($event->facebook)): ?>
+							</a>
+						<? endif ?>
+						<? if (isset($event->artists) && is_array($event->artists)): ?>
 							<div class="acts">
-							<? foreach ($event->acts as $act): ?>
-								<a href="/artist/<?= $act->artist->key ?>"><?= $act->artist->name ?></a>: <?= $act->info ?><br/>
+							<? foreach ($event->artists as $artist): ?>
+								<a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a>: <?= $artist->shortInfo ?><br/>
 							<? endforeach ?>
 							</div>
-						<? endif ?>
-						<? if (isset($event->facebook)): ?>
-							<br/><a href="<?= $event->facebook ?>" target="_blank">Event on Facebook</a>
 						<? endif ?>
 					</div>
 				</li>
@@ -36,18 +39,21 @@
 				<li class="span4">
 					<div class="thumbnail">
 						<h4><?= $event->name ?></h4>
-						<span class="location"><?= $event->location ?></span><br/>
-						<span class="date"><?= $event->date ?> <?= $event->time ?></span>
-						<img src="/img/events/<?= $event->image ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
-						<? if (isset($event->acts) && is_array($event->acts)): ?>
+						<span class="location"><?= $event->shortInfo ?></span><br/>
+						<span class="date"><?= $event->fromTime ?></span>
+						<? if (isset($event->facebook)): ?>
+							<br/><a title="Event on Facebook" href="<?= $event->facebook ?>" target="_blank">
+						<? endif ?>
+						<img border="0" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
+						<? if (isset($event->facebook)): ?>
+							</a>
+						<? endif ?>
+						<? if (isset($event->artists) && is_array($event->artists)): ?>
 							<div class="acts">
-							<? foreach ($event->acts as $act): ?>
-								<a href="/artist/<?= $act->artist->key ?>"><?= $act->artist->name ?></a>: <?= $act->info ?><br/>
+							<? foreach ($event->artists as $artist): ?>
+								<a href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a>: <?= $artist->shortInfo ?><br/>
 							<? endforeach ?>
 							</div>
-						<? endif ?>
-						<? if (isset($event->facebook)): ?>
-							<br/><a href="<?= $event->facebook ?>" target="_blank">Event on Facebook</a>
 						<? endif ?>
 					</div>
 				</li>

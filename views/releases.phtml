@@ -10,11 +10,11 @@
 			<? foreach ($releases as $release): ?>
 			<li class="span12">
 				<div class="thumbnail release-box">
-					<img src="/img/releases/<?= $release->cover ?>" alt="<?= $release->artist ?> - <?= $release->title ?>" />
+					<img src="/img/releases/<?= $release->cover ?>" width="200" height="200" alt="<?= $release->artist->name ?> - <?= $release->title ?>" />
 					<div class="desc">
-						<h3><?= $release->artist ?> - <?= $release->title ?></h3>
+						<h3><?= $release->artist->name ?> - <?= $release->title ?></h3>
 						<p>
-							<strong>Genre:</strong> <?= $release->genre ?><br/>
+							<strong>Genre:</strong> <?= $release->genre->name ?><br/>
 							<strong>Date:</strong> <?= $release->date ?><br/>
 							<strong>Type:</strong> <?= $release->type ?><br/>
 							<strong>Format:</strong> <?= $release->format ?><br/>
@@ -22,10 +22,13 @@
 								<strong>Tracks:</strong>
 								<?= implode(', ', $release->tracks) ?>
 							<? endif ?>
-							<? if (isset($release->links)): ?>
+							<? $numLinks = count($release->links); $index = 0 ?>
+							<? if (0 < $numLinks): ?>
 								<strong>Buy now:</strong> 
-								<? foreach ($release->links as $name => $link): ?>
-									<a target="_blank" href="<?= $link ?>"><?= $name ?></a><br/>
+								<? foreach ($release->links as $link): ?>
+									<? $index++ ?>
+									<a target="_blank" href="<?= $link->link ?>"><?= $link->shopName ?></a>
+									<? if ($index < $numLinks): ?>, <? endif ?>
 								<? endforeach ?>
 							<? endif ?>
 						</p>

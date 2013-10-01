@@ -21,7 +21,7 @@ return array(
     'db' => (@include 'shared/database.php'),
     'routes' => array(
         '^/$' => array(
-            'template' => 'home',
+            'template' => 'home_new',
 			'controller' => array('Controller\Home', 'index')
         ),
         '^/home/?$' => array(
@@ -52,15 +52,39 @@ return array(
             'template' => 'releases',
             'controller' => array('Controller\Releases', 'latest')
         ),
-		'^/releases/upcomming/?$' => array(
+		'^/releases/upcoming/?$' => array(
             'template' => 'releases',
-            'controller' => array('Controller\Releases', 'upcomming')
+            'controller' => array('Controller\Releases', 'upcoming')
         ),
 		'^/label/(?P<label>[^/]+)/?$' => array(
             'template' => 'label',
             'controller' => array('Controller\Labels', 'index')
         ),
-        '^/admin/?$' => array(
+        '^/contest/?$' => array(
+            'template' => 'contest',
+            'controller' => array('Controller\Contest', 'index')
+        ),
+		'^/subscriptions/?$' => array(
+            'template' => 'subscriptions',
+            'controller' => array('Controller\Subscription', 'index')
+        ),
+		'^/subscriptions/subscribe?$' => array(
+            'template' => 'subscriptions',
+            'controller' => array('Controller\Subscription', 'subscribe')
+        ),
+		'^/subscriptions/confirm/(?P<email>[^/]+)/?$' => array(
+            'template' => 'subscriptions',
+            'controller' => array('Controller\Subscription', 'subscribe')
+        ),
+		'^/subscriptions/activate/(?P<token>[^/]+)/?$' => array(
+            'template' => 'subscriptions',
+            'controller' => array('Controller\Subscription', 'activate')
+        ),
+		'^/subscriptions/(?P<done>done)/?$' => array(
+            'template' => 'subscriptions',
+            'controller' => array('Controller\Subscription', 'activate')
+        ),
+		'^/admin/?$' => array(
             'template' => 'admin_index',
             'controller' => array('Controller\Admin', 'index')
         ),

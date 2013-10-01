@@ -9,19 +9,19 @@
 </div>
 <div class="container blocks">
 	<div class="span4 first backgrounded">
-		<h4>Upcomming releases</h4>
+		<h4>Upcoming releases</h4>
 		<ul class="light">
 			<? foreach ($releases as $release): ?>
-				<li class="icon-signal"><span><?= $release->artist ?> - <?= $release->title ?></span> <span class="small">(<?= $release->type ?>, <?= $release->date ?>)</span></li>
+				<li class="icon-signal"><span><?= $release->artist->name ?> - <?= $release->title ?></span> <span class="small">(<?= $release->type ?>, <?= null === $release->date ? 'tba.' : $release->date ?>)</span></li>
 			<? endforeach ?>
 		</ul>
-		<a data-method="async" class="bottom" href="/releases/upcomming">more info</a>
+		<a data-method="async" class="bottom" href="/releases/upcoming">more info</a>
 	</div>
 	<div class="span3 backgrounded">
-		<h4>Upcomming Events</h4>
+		<h4>Upcoming Events</h4>
 		<ul class="light">
 			<? foreach ($events as $event): ?>
-				<li class="icon-star"><span><?= $event->name ?></span> <span class="small">(<?= $event->date ?>)</span></li>
+				<li class="icon-star"><span><?= $event->name ?></span> <span class="small">(<?= date("Y-m-d", strtotime($event->fromTime)) ?>)</span></li>
 			<? endforeach ?>
 		</ul>
 		<a data-method="async" class="bottom" href="/events">all events</a>

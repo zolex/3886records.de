@@ -8,9 +8,12 @@ class Home extends ControllerAction
 {
 	public function index($request) {
             
+		$dp = DataProvider::getInstance();
+
 		return array(
-			'releases' => array_slice(DataProvider::getInstance()->getReleases('upcomming'), 0, 5),
-			'events' => array_slice(DataProvider::getInstance()->getEvents(), 0, 5),
+			'releases' => array_slice($dp->getReleases('upcomming'), 0, 5),
+			'latestReleases' => array_slice($dp->getReleases('all'), 0, 10),
+			'events' => array_slice($dp->getEvents(), 0, 5),
 		);
 	}
 }

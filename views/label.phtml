@@ -19,8 +19,8 @@
 		<? endif ?>
 		<? if (isset($label->links)): ?>
 			<ul class="social">
-			<? foreach ($label->links as $type => $link): ?>
-				<li><a target="_blank" href="<?= $link ?>"><img alt="<?= ucfirst($type) ?>" title="<?= ucfirst($type) ?>" src="/img/social/<?= $type ?>.png" border="0" /></a></li>
+			<? foreach ($label->links as $link): ?>
+				<li><a target="_blank" href="<?= $link->link ?>"><img alt="<?= ucfirst($link->type) ?>" title="<?= ucfirst($link->type) ?>" src="/img/social/<?= $link->type ?>.png" border="0" /></a></li>
 			<? endforeach ?>
 			</ul>
 		<? endif ?>

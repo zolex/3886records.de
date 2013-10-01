@@ -29,8 +29,6 @@ class Artist extends ControllerAction
 		
 			return false;
 		}
-			
-		$artist->events = $this->getDataProvider()->getEvents(1, $artist->key);
 
 		return array(
 			'metaTitle' => $artist->name,

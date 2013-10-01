@@ -91,8 +91,13 @@ window.onpopstate = function(e) {
 
 var gotoPage = function(target, pushState) {
 
+	if (target.match(/\?/))
+		cacheKiller = '&async';
+	else
+		cacheKiller = '?async';
+
 	$.ajax({
-		url: target,
+		url: target + cacheKiller,
 		method: 'GET',
 		dataType: 'json',
 		success: function(json) {
@@ -119,28 +124,7 @@ var gotoPage = function(target, pushState) {
 		},
 		error: function(response) {
 			if (response.responseText) {
-				if (pushState) {
-					window.history.pushState(null, null, target);
-				}
-				eval("var json = "+ response.responseText);
-				$('#content').html(json.content);
-				$('#content a[data-method=async]').click(function(e) {
-					$(this).loadPage();
-					return false;
-				});
-				
-				if (typeof json.params.metaTitle != 'undefined') {
-			
-			        $('head title').text(json.params.metaTitle + ' - 3886records');
-			        
-			    } else {
-			    
-			        $('head title').text('3886records - independent electronic music label');
-			    }
-				
-				$("body, html").animate({
-					scrollTop : 0
-				}, 500);
+				alert('Something went wrong: '+ response.responseText);
 			}
 		}
 	});

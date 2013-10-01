@@ -53,12 +53,28 @@ class Request
             return $default;
         }
     }
+	
+	public function get($key = null, $default = null) {
+    
+        if (null === $key) {
+        
+            return $_GET;
+            
+        } else if (isset($_GET[$key])) {
+        
+            return $_GET[$key];
+            
+        } else {
+        
+            return $default;
+        }
+    }
     
     public function getRoute() {
     
 		if (preg_match('@^(/[^\?]*)@', $_SERVER['REQUEST_URI'], $matches)) {
 		
-			return strtolower($matches[1]);
+			return $matches[1];
 			
 		} else {
 		

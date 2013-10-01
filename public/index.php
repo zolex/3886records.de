@@ -3,9 +3,10 @@
 chdir(dirname(dirname(__FILE__)));
 $config = require 'config.php';
 
+$debug = true;
 $request = new Request($config);
 
-$dbh = new PDO('mysql:host='. $config['db']['host'] .';port='. $config['db']['port'] .';dbname='. $config['db']['name'], $config['db']['user'], $config['db']['password']);
+$dbh = new PDO('mysql:host='. $config['db']['host'] .';port='. $config['db']['port'] .';dbname='. $config['db']['name'] .';charset=utf8', $config['db']['user'], $config['db']['password']);
 DataProvider::getInstance()->setDbh($dbh);
 
 $router = new Router();
@@ -15,10 +16,20 @@ if (!is_array($params)) {
 }
 
 try {
+
     $content = ViewLoader::load($template, $params);
+	
 } catch (Exception $e) {
-    header("HTTP/1.0 404 Not Found");
-    $content = ViewLoader::load('404', array('route' => $request->getRoute()));
+
+	if (false === $debug) {
+
+		header("HTTP/1.0 404 Not Found");
+		$content = ViewLoader::load('404', array('route' => $request->getRoute()));
+		
+	} else {
+	
+		throw $e;
+	}
 }
 
 if ($request->isXmlHttpRequest()) {

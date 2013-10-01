@@ -1,0 +1,21 @@
+<?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Home')))) ?>
+<div class="container">
+    <div class="hero-unit">
+        <div>
+            <h1>Subscriptions</h1>
+        </div>
+        <p><strong><?= $message ?></strong></p>
+		<p><?= $info ?></p>
+		
+		<? if ($showForm): ?>
+			<h4>Subscribe to newsletter</h4>
+			<p>
+				<strong>Don't miss any release and get limited promotional offers!</strong>
+				<form method="post" action="/subscriptions/subscribe">
+					<input name="email" type="email" placeholder="E-Mail Address" /><br/>
+					<input type="submit" class="btn" value="Subscribe now">
+				</form>
+			</p>
+		<? endif ?>
+    </div>
+</div>
