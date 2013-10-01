@@ -7,7 +7,7 @@ define('DS', DIRECTORY_SEPARATOR);
 
 function __autoload($className) {
 
-	$filename = 'lib' . DS . implode(DS, explode('\\', $className)) . '.php';
+	$filename = 'src' . DS . implode(DS, explode('\\', $className)) . '.php';
 	if (is_file($filename)) {
 	
 		include($filename);

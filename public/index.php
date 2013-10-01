@@ -1,7 +1,8 @@
 <?php
 
 chdir(dirname(dirname(__FILE__)));
-$config = require 'config.php';
+$config = (require 'config.php');
+require 'vendor/autoload.php';
 
 $debug = true;
 $request = new Request($config);

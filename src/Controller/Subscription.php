@@ -142,7 +142,6 @@ class Subscription extends ControllerAction
 	
 	protected function sendActivationEmail($subscription) {
 	
-		
 	}
 /*
 	public function index($request) {

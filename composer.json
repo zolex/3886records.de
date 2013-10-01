@@ -1,0 +1,11 @@
+{
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "swiftmailer/swiftmailer" : "v5.0.2"
+    }
+}
