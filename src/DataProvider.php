@@ -239,6 +239,11 @@ class DataProvider
 		return $this->fetchOne('\Models\Genre', "SELECT * FROM genres where `key` = :key", array('key' => $name));
 	}
 	
+	public function getGenreById($id) {
+	
+		return $this->fetchOne('\Models\Genre', "SELECT * FROM genres where id = :id", array('id' => $id));
+	}
+	
 	public function getGenres() {
 	
 		return $this->fetchAll('\Models\Genre', "SELECT * FROM genres");
@@ -386,7 +391,24 @@ class DataProvider
 		}
 	}
 	
+	public function generateSubscriptionHash(&$subscription) {
+	
+		$hash = null;
+		$stmt = $this->dbh->prepare("SELECT COUNT(*) FROM subscriptions WHERE hash = :hash");
+		do {
+		
+			$hash = md5(uniqid($subscription->email . microtime()));
+			$stmt->bindValue('hash', $hash);
+			$stmt->execute();
+		
+		} while(0 < (integer)$stmt->fetchColumn());
+		
+		$subscription->hash = $hash;
+	}
+	
 	public function insertSubscription(&$subscription) {
+
+		$this->generateSubscriptionHash($subscription);
 	
 		$stmt = $this->dbh->prepare("INSERT INTO subscriptions (email, firstname, lastname, alias, newsletter, promotions, active, hash) VALUES(:email, :firstname, :lastname, :alias, :newsletter, :promotions, :active, :hash);"); 
 		$stmt->bindValue('email', $subscription->email);
@@ -396,17 +418,7 @@ class DataProvider
 		$stmt->bindValue('newsletter', $subscription->newsletter);
 		$stmt->bindValue('promotions', $subscription->promotions);
 		$stmt->bindValue('active', $subscription->active);
-		
-		$stmt2 = $this->dbh->prepare("SELECT COUNT(*) FROM subscriptions WHERE hash = :hash");
-		do {
-		
-			$hash = md5(uniqid($subscription->email . microtime()));
-			$stmt2->bindValue('hash', $hash);
-			$stmt2->execute();
-		
-		} while(0 < (integer)$stmt2->fetchColumn());
-		
-		$stmt->bindValue('hash', $hash);
+		$stmt->bindValue('hash', $subscription->hash);
 		
 		try { 
 		

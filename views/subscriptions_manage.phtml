@@ -1,0 +1,65 @@
+<?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Home')))) ?>
+<div class="container">
+    <div class="hero-unit">
+        <div>
+            <h1>Subscriptions</h1>
+        </div>
+		<p><strong>Manage your mailinglist subscription</strong></p>
+		<p>
+		<form method="post" action="/subscriptions/manage/<?= $subscription->hash ?>" class="form-horizontal">
+			<div class="control-group">
+				<label class="control-label dark" for="inputEmail">Email address</label>
+				<div class="controls">
+					<input disabled="disabled" readonly="readonly" id="inputEmail" name="email" type="email" value="<?= $subscription->email ?>"  placeholder="E-Mail address" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label dark" for="inputFirstname">Firstname</label>
+				<div class="controls">
+					<input id="inputFirstname" name="firstname" value="<?= $subscription->firstname ?>" type="text" placeholder="Firstname" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label dark" for="inputLastname">Lastname</label>
+				<div class="controls">
+					<input id="inputLastname" name="lastname" value="<?= $subscription->lastname ?>" type="text" placeholder="Lastname" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label dark" for="inputAlias">DJ/Nickname</label>
+				<div class="controls">
+					<input id="inputAlias" name="alias" value="<?= $subscription->alias ?>" type="text" placeholder="DJ/Nickname" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label dark" for="inputNewsletter">Newsletter</label>
+				<div class="controls">
+					<input <?= $subscription->newsletter == 1 ? 'checked="checked" ' : '' ?>id="inputNewsletter" name="newsletter" value="1" type="checkbox" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label dark">Promotions</label>
+				<div class="controls">
+				  <? foreach ($genres as $genre): ?>
+				  <label class="checkbox dark">
+					<? $selected = false ?>
+					<? foreach ($subscription->genres as $sGenre): ?>
+						<? if ($genre->id == $sGenre->id): ?>
+							<? $selected = true ?>
+						<? endif ?>
+					<? endforeach ?>
+					<input <?= $selected ? 'checked="checked" ' : '' ?>id="genre_<?= $genre->id ?>" name="genres[]" type="checkbox" value="<?= $genre->id ?>" /> <?= $genre->name ?>
+				  </label>
+				  <? endforeach ?>
+				</div>
+			</div>
+			  
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn">Update subscription</button>
+				</div>
+			</div>
+		</form>
+		</p>
+    </div>
+</div>

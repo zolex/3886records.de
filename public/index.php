@@ -18,7 +18,7 @@ if (!is_array($params)) {
 
 try {
 
-    $content = ViewLoader::load($template, $params);
+	$content = ViewLoader::load($template, $params);
 	
 } catch (Exception $e) {
 

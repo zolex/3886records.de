@@ -19,6 +19,7 @@ date_default_timezone_set('Europe/Berlin');
 return array(
 
     'db' => (@include 'shared/database.php'),
+	'smtp' => (@include 'shared/smtp.php'),
     'routes' => array(
         '^/$' => array(
             'template' => 'home_new',
@@ -66,10 +67,6 @@ return array(
         ),
 		'^/subscriptions/?$' => array(
             'template' => 'subscriptions',
-            'controller' => array('Controller\Subscription', 'index')
-        ),
-		'^/subscriptions/subscribe?$' => array(
-            'template' => 'subscriptions',
             'controller' => array('Controller\Subscription', 'subscribe')
         ),
 		'^/subscriptions/confirm/(?P<email>[^/]+)/?$' => array(
@@ -83,6 +80,10 @@ return array(
 		'^/subscriptions/(?P<done>done)/?$' => array(
             'template' => 'subscriptions',
             'controller' => array('Controller\Subscription', 'activate')
+        ),
+		'^/subscriptions/manage/(?P<token>[^/]+)/?$' => array(
+            'template' => 'subscriptions_manage',
+            'controller' => array('Controller\Subscription', 'manage')
         ),
 		'^/admin/?$' => array(
             'template' => 'admin_index',

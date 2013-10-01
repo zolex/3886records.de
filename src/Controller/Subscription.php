@@ -47,7 +47,7 @@ class Subscription extends ControllerAction
 				}
 				
 				$dp->saveSubscription($subscription);
-				$this->sendActivationEmail($subscription);
+				$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
 				
 				header('Location: /subscriptions/confirm/'. urlencode(base64_encode($subscription->email)));
 				exit;
@@ -61,7 +61,7 @@ class Subscription extends ControllerAction
 					
 				} else {
 				
-					$this->sendActivationEmail($subscription);
+					$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
 					header('Location: /subscriptions/confirm/'. urlencode(base64_encode($subscription->email)));
 					exit;
 				}
@@ -107,15 +107,17 @@ class Subscription extends ControllerAction
 			if ($subscription = $dp->getSubscription(array('hash' => $token))) {
 
 				$subscription->active = 1;
-				$subscription->hash = null;
+				$dp->generateSubscriptionHash($subscription);
 				$dp->saveSubscription($subscription);
+				
+				$this->sendWelcomeEmail($subscription, $request->getConfig('smtp'));
 				
 				header('Location: /subscriptions/done');
 				exit;
 				
 			} else {
 			
-				header('Location: /subscriptions/subscribe');
+				header('Location: /subscriptions');
 				exit;
 			}
 		}
@@ -140,9 +142,108 @@ class Subscription extends ControllerAction
 		);
 	}
 	
-	protected function sendActivationEmail($subscription) {
+	public function manage($request) {
 	
+		$dp = $this->getDataProvider();
+		$message = null;
+		
+		if ($token = $request->getParam('token', false)) {
+		
+			if ($subscription = $dp->getSubscription(array('hash' => $token))) {
+
+				if ($request->isPost()) {
+				
+					$genreIds = $request->getPost('genres');
+					$genres = array();
+					foreach ($genreIds as $genreId) {
+					
+						$genres[] = $dp->getGenreById($genreId);
+					}
+					
+					//$subscription->email = $request->getPost('email');
+					$subscription->firstname = $request->getPost('firstname');
+					$subscription->lastname = $request->getPost('lastname');
+					$subscription->alias = $request->getPost('alias');
+					$subscription->newsletter = $request->getPost('newsletter');
+					$subscription->promotions = 0 == count($genreIds) ? 0 : 1;
+					$subscription->genres = $genres;
+				
+					$dp->saveSubscription($subscription);
+				
+					header('Location: /subscriptions/done');
+					exit;
+				}
+				
+			} else {
+			
+				header('Location: /subscriptions');
+				exit;
+			}
+			
+		} else {
+			
+			header('Location: /subscriptions');
+			exit;
+		}
+
+		return array(
+			'metaTitle' => 'Subscriptions',
+			'genres' => $dp->getGenres(),
+			'subscription' => $subscription,
+			'breadcrumb' => array(
+				(object)array(
+					'url' => '/',
+					'title' => 'Home',
+				),
+				(object)array(
+					'active' => true,
+					'url' => '/subscriptions',
+					'title' => 'Subscriptions',
+				),
+			),
+		);
 	}
+	
+	protected function sendActivationEmail($subscription, $config) {
+	
+		$transport = \Swift_SmtpTransport::newInstance($config['host'], $config['port'])
+		  ->setUsername($config['user'])
+		  ->setPassword($config['password']);
+
+		$mailer = \Swift_Mailer::newInstance($transport);
+		$message = \Swift_Message::newInstance();
+		$body = \ViewLoader::load('email/subscription_confirm', array(
+			'subscription' => $subscription,
+		));
+
+		$message->setSubject('Confirm 3886records subscription')
+		  ->setFrom(array('noreply@3886records.de' => '3886records'))
+		  ->setTo(array($subscription->email))
+		  ->setBody($body, 'text/html');
+
+		$mailer->send($message);
+	}
+	
+	protected function sendWelcomeEmail($subscription, $config) {
+	
+		$transport = \Swift_SmtpTransport::newInstance($config['host'], $config['port'])
+		  ->setUsername($config['user'])
+		  ->setPassword($config['password']);
+
+		$mailer = \Swift_Mailer::newInstance($transport);
+		$message = \Swift_Message::newInstance();
+		$body = \ViewLoader::load('email/subscription_manage', array(
+			'subscription' => $subscription,
+		));
+
+		$message->setSubject('Welcome to 3886records')
+		  ->setFrom(array('noreply@3886records.de' => '3886records'))
+		  ->setTo(array($subscription->email))
+		  ->setBody($body, 'text/html');
+
+		$mailer->send($message);
+	}
+	
 /*
 	public function index($request) {
         

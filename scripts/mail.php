@@ -7,14 +7,13 @@ require 'vendor/autoload.php';
 //$dbh = new PDO('mysql:host='. $config['db']['host'] .';port='. $config['db']['port'] .';dbname='. $config['db']['name'] .';charset=utf8', $config['db']['user'], $config['db']['password']);
 //DataProvider::getInstance()->setDbh($dbh);
 
-$transport = Swift_SmtpTransport::newInstance('smtp.3886records.de', 25)
-  ->setUsername('noreply@3886records.de')
-  ->setPassword('deluxe85*!');
+$transport = Swift_SmtpTransport::newInstance($config['smtp']['host'], $config['smtp']['port'])
+  ->setUsername($config['smtp']['user'])
+  ->setPassword($config['smtp']['password']);
 
 $mailer = Swift_Mailer::newInstance($transport);
 $message = Swift_Message::newInstance();
-ViewLoader::setDir('views/email');
-$body = ViewLoader::load('newsletter', array(
+$body = ViewLoader::load('email/newsletter', array(
 	'images' => (object)array(
 		'logo' => $message->embed(Swift_Image::fromPath('views/email/images/3886logo.jpg')),
 		'like' => $message->embed(Swift_Image::fromPath('views/email/images/like-glyph.png')),
