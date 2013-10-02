@@ -98,6 +98,7 @@
 
         try {
 
+          console.log(imageSrc);
           oncomplete(applyMask().toDataURL('image/png'));
 
         } catch(e) {
@@ -688,9 +689,6 @@
 
       if (soundManager.ok()) {
 
-        console.log("HEREHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHE");
-        console.log(tapes[i].getAttribute('data-url'));
-
         var tUi = new TapeUI({
           node: tapes[i],
           sound: soundManager.createSound({
@@ -726,7 +724,7 @@
   }
 
   soundManager.setup({
-    url: '/swf/',
+    url: '/sm2/',
     flashVersion: 9,
     useHighPerformance: true,
     preferFlash: false,
