@@ -32,6 +32,7 @@ class Artist extends ControllerAction
 
 		return array(
 			'metaTitle' => $artist->name,
+			'facebookImage' => 'http://www.3886records.de/img/artists/'. $artist->key . '.jpg',
 			'artist' => $artist,
 			'breadcrumb' => array(
 				(object)array(

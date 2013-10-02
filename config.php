@@ -85,6 +85,10 @@ return array(
             'template' => 'subscriptions_manage',
             'controller' => array('Controller\Subscription', 'manage')
         ),
+        '^/promotion/(?P<key>[^/]+)/(?P<token>[^/]+)/?$' => array(
+            'template' => 'promotion',
+            'controller' => array('Controller\Promotion', 'view')
+        ),
 		'^/admin/?$' => array(
             'template' => 'admin_index',
             'controller' => array('Controller\Admin', 'index')
