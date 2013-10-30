@@ -28,19 +28,16 @@
     </div>
 </div>
 <? if (count($artist->events)): ?>
-	<div class="container events">
+	<div class="container events-small">
 		<h2>Upcomming Events with <?= $artist->name ?></h2>
 		<ul class="thumbnails">
 			<? foreach ($artist->events as $event): ?>
-				<li class="span4">
+				<li class="span2">
 					<div class="thumbnail">
-						<h4><?= $event->name ?></h4>
-						<span class="location"><?= $event->shortInfo ?></span><br/>
-						<span class="date"><?= $event->fromTime ?></span>
 						<? if (!empty($event->facebook)): ?>
 							<br/><a target="_blank" title="Event on Facebook" href="<?= $event->facebook ?>">
 						<? endif ?>
-						<img src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>"
+						<img width="100" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>"
 						<? if (!empty($event->facebook)): ?>
 							</a>
 						<? endif ?>
@@ -66,7 +63,17 @@
 <? endif ?>
 <? if (!empty($artist->soundcloud)): ?>
 	<div class="container">
-		<h2>Tracks</h2>
+		<? if ($artist->type == \Models\Artist::TYPE_DJ): ?>
+			<h2>DJ-Sets</h2>
+		<? else: ?>
+			<h2>Tracks</h2>
+		<? endif ?>
 		<iframe width="100%" height="450" scrolling="no" frameborder="no" src="<?= $artist->soundcloud ?><?= DataProvider::getInstance()->getSoundcloudParams() ?>"></iframe>
+	</div>
+<? endif ?>
+<? if (!empty($artist->mixcloud)): ?>
+	<div class="container">
+		<h2>DJ-Sets</h2>
+		<?= $artist->mixcloud ?>
 	</div>
 <? endif ?>

@@ -1,2 +1,8 @@
 /shared
 /vendor
+/public/promotions
+/public/img/events
+/public/img/releases
+/public/img/email
+/public/img/artists
+/views/email/images

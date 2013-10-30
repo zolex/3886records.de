@@ -192,7 +192,6 @@ class DataProvider
 			LEFT JOIN event_artists ea ON ea.artist_id = a.id
 			LEFT JOIN events e ON e.id = ea.event_id
 			WHERE a.`key` = :key
-			  AND (e.toTime >= NOW() OR e.id IS NULL)
 			ORDER BY l.position, v.position, e.fromTime";
 		$stmt = $this->getDbh()->prepare($query);
 		$stmt->bindValue('key', $name);
@@ -222,7 +221,10 @@ class DataProvider
 
 			if (null !== $row->event_id && !array_key_exists($row->event_id, $artist->events)) {
 
-				$artist->events[$row->event_id] = (new \Models\Event)->fromObject($row, 'event_');
+				if (strtotime($row->event_toTime) >= time() || $row->event_toTime === null) {
+				
+					$artist->events[$row->event_id] = (new \Models\Event)->fromObject($row, 'event_');
+				}
 			}
 		}
 
@@ -263,10 +265,11 @@ class DataProvider
 				l.shopName AS link_shopName,
 				l.link AS link_link
 			FROM releases r
-			LEFT JOIN artists a ON a.id = r.artist_id
-			LEFT JOIN genres g ON g.id = r.genre_id
+			INNER JOIN artists a ON a.id = r.artist_id
+			INNER JOIN genres g ON g.id = r.genre_id
 			LEFT JOIN release_links l ON l.release_id = r.id
 			WHERE r.date < CURRENT_DATE()
+			  AND r.visible = 1
 			ORDER BY r.date DESC";
 
 		} else if ($type == 'upcomming') {
@@ -281,10 +284,11 @@ class DataProvider
 				l.shopName AS link_shopName,
 				l.link AS link_link
 			FROM releases r
-			LEFT JOIN artists a ON a.id = r.artist_id
-			LEFT JOIN genres g ON g.id = r.genre_id
+			INNER JOIN artists a ON a.id = r.artist_id
+			INNER JOIN genres g ON g.id = r.genre_id
 			LEFT JOIN release_links l ON l.release_id = r.id
-			WHERE r.date >= CURRENT_DATE() OR r.date IS NULL
+			WHERE (r.date >= CURRENT_DATE() OR r.date IS NULL)
+			  AND r.visible = 1
 			ORDER BY IF(r.date IS NULL, 1, 0) ASC, r.date ASC";
 		}
 
@@ -480,5 +484,176 @@ class DataProvider
 			$this->dbh->rollback(); 
 			throw $e;
 		} 
+	}
+	
+	public function getPromotionByKey($key) {
+	
+		$stmt = $this->dbh->prepare("SELECT
+				p.*,
+				r.id AS release_id,
+				r.title AS release_title,
+				r.cover AS release_cover,
+				r.date AS release_date,
+				r.format AS release_format,
+				r.type AS release_type,
+				rl.id AS releaselink_id,
+				rl.shopName AS releaselink_shopName,
+				rl.link AS releaselink_link,
+				a.id AS artist_id,
+				a.`key` AS artist_key,
+				a.name AS artist_name,
+				g.id AS genre_id,
+				g.`key` AS genre_key,
+				g.name AS genre_name,
+				rs.id AS releases_id,
+				rs.title AS releases_title,
+				rs.cover AS releases_cover,
+				rs.date AS releases_date,
+				rs.format AS releases_format,
+				rs.type AS releases_type,
+				rsl.id AS releaseslink_id,
+				rsl.shopName AS releaseslink_shopName,
+				rsl.link AS releaseslink_link,
+				t.id AS track_id,
+				t.title AS track_title,
+				t.link AS track_link
+			FROM promotions p
+			LEFT JOIN promotion_tracks t ON (t.promotion_id = p.id)
+			INNER JOIN releases r ON r.id = p.release_id
+			LEFT JOIN release_links rl ON rl.release_id = r.id
+			INNER JOIN artists a ON a.id = r.artist_id
+			INNER JOIN genres g ON g.id = r.genre_id
+			LEFT JOIN releases rs ON (rs.artist_id = a.id AND rs.id != r.id)
+			LEFT JOIN release_links rsl ON (rsl.release_id = rs.id)
+			WHERE p.`key` = :key"); 
+			
+		$stmt->bindValue('key', $key);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$promotion = null;
+		while ($row = $stmt->fetchObject()) {
+
+			if (null === $promotion) {
+
+				$promotion = (new \Models\Promotion)->fromObject($row);
+			}
+
+			if (null !== $row->genre_id && null === $promotion->genre) {
+
+				$promotion->genre = (new \Models\Genre)->fromObject($row, 'genre_');
+			}
+			
+			if (null !== $row->release_id && null === $promotion->release) {
+
+				$promotion->release = (new \Models\Release)->fromObject($row, 'release_');
+			}
+			
+			if (null !== $row->releaselink_id && null !== $promotion->release && !array_key_exists($row->releaselink_id, $promotion->release->links)) {
+
+				$promotion->release->links[$row->releaselink_id] = (new \Models\ReleaseLink)->fromObject($row, 'releaselink_');
+			}
+			
+			if (null !== $row->artist_id && null !== $promotion->release && null === $promotion->release->artist) {
+
+				$promotion->release->artist = (new \Models\Artist)->fromObject($row, 'artist_');
+			}
+			
+			if (null !== $row->releases_id && null !== $promotion->release->artist && !array_key_exists($row->releases_id, $promotion->release->artist->releases)) {
+
+				 $promotion->release->artist->releases[$row->releases_id] = (new \Models\Release)->fromObject($row, 'releases_');
+				 $promotion->release->artist->releases[$row->releases_id]->artist = $promotion->release->artist;
+			}
+			
+			if (null !== $row->releaseslink_id && !array_key_exists($row->releaseslink_id, $promotion->release->artist->releases[$row->releases_id]->links)) {
+
+				$promotion->release->artist->releases[$row->releases_id]->links[$row->releaseslink_id] = (new \Models\ReleaseLink)->fromObject($row, 'releaseslink_');
+			}
+
+			if (null !== $row->track_id && !array_key_exists($row->track_id, $promotion->tracks)) {
+
+				$promotion->tracks[$row->track_id] = (new \Models\PromotionTrack)->fromObject($row, 'track_');
+			}
+		}
+
+		return $promotion;
+	}
+
+	public function getPromotionFeedback($promotion, $subscription) {
+
+		$stmt = $this->dbh->prepare("SELECT *
+			FROM promotion_feedback
+			WHERE promotion_id = :promotion_id
+			  AND subscription_id = :subscription_id");
+
+		$stmt->bindValue('promotion_id', $promotion->id);
+		$stmt->bindValue('subscription_id', $subscription->id);
+
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+
+		$feedback = new \Models\PromotionFeedback;
+		if ($row = $stmt->fetchObject()) {
+	
+			$feedback->fromObject($row);
+		}
+
+		if (!$feedback) {
+
+			$feedback->promotion_id = $promotion->id;
+			$feedback->subscription_id = $subscription->id;
+		}
+
+		$feedback->promotion = $promotion;
+		$feedback->subscription = $subscription;
+
+		return $feedback;
+	}
+
+	public function savePromotionFeedback($feedback) {
+
+		if ($feedback->id) {
+
+			$stmt = $this->dbh->prepare("UPDATE promotion_feedback SET promotion_id = :promotion_id, subscription_id = :subscription_id, viewed = :viewed, support = :support, rating = :rating, review = :review, best_track_id = :best_track_id WHERE id = :id LIMIT 1;");
+			$stmt->bindValue('id', (integer)$feedback->id);
+			$stmt->bindValue('promotion_id', $feedback->promotion->id);
+			$stmt->bindValue('subscription_id', $feedback->subscription->id);
+			$stmt->bindValue('support', $feedback->support);
+			$stmt->bindValue('viewed', (integer)$feedback->viewed);
+			$stmt->bindValue('rating', $feedback->rating);
+			$stmt->bindValue('review', $feedback->review);
+			$stmt->bindValue('best_track_id', $feedback->best_track_id);
+
+			if (!$stmt->execute()) {
+		
+				$errorInfo = $stmt->errorInfo();
+				throw new \Exception($errorInfo[2], $errorInfo[1]);
+			}
+
+		} else {
+
+			$stmt = $this->dbh->prepare("INSERT INTO promotion_feedback (promotion_id, subscription_id, viewed, support, rating, review, best_track_id) VALUES(:promotion_id, :subscription_id, :viewed, :support, :rating, :review, :best_track_id)");
+			$stmt->bindValue('promotion_id', $feedback->promotion->id);
+			$stmt->bindValue('subscription_id', $feedback->subscription->id);
+			$stmt->bindValue('support', $feedback->support);
+			$stmt->bindValue('viewed', (integer)$feedback->viewed);
+			$stmt->bindValue('rating', $feedback->rating);
+			$stmt->bindValue('review', $feedback->review);
+			$stmt->bindValue('best_track_id', $feedback->best_track_id);
+
+			if (!$stmt->execute()) {
+		
+				$errorInfo = $stmt->errorInfo();
+				throw new \Exception($errorInfo[2], $errorInfo[1]);
+			}
+
+			$feedback->id = $this->dbh->lastInsertId(); 
+		}
 	}
 }

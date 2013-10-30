@@ -43,6 +43,12 @@ if ($request->isXmlHttpRequest()) {
     exit;
 }
 
+if (isset($params['noLayout']) && true === $params['noLayout']) {
+
+	echo $content;
+	exit;
+}
+
 $dataProvider = DataProvider::getInstance();
 
 $navigation = ViewLoader::load('navigation', array(

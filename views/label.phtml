@@ -34,23 +34,3 @@
 		<iframe width="100%" height="450" scrolling="no" frameborder="no" src="<?= $label->soundcloud ?><?= DataProvider::getInstance()->getSoundcloudParams(true) ?>"></iframe>
 	</div>
 <? endif ?>
-
-<? if (isset($label->address) || isset($label->phone) || isset($label->email)): ?>
-<div class="container">
-	<h2>Contact</h2>
-	<div class="span12 first backgrounded">
-		<? if (isset($label->email)): ?>
-			<p><strong>E-Mail:</strong> <?= $label->email ?></p>
-		<? endif ?>
-		<? if (isset($label->phone)): ?>
-			<p><strong>Phone:</strong> <?= $label->phone ?></p>
-		<? endif ?>
-		<? if (isset($label->address)): ?>
-			<p>
-				<strong>Address:</strong><br/>
-				<?= $label->address ?>
-			</p>
-		<? endif ?>
-	</div>
-</div>
-<? endif ?>

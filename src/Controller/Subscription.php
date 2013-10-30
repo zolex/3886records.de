@@ -13,6 +13,7 @@ class Subscription extends ControllerAction
 		$success = false;
 		$info = null;
 		
+		// get-request, email encoded in route
 		if ($email = $request->getParam('email', false)) {
 
 			$email = urldecode($email);
@@ -20,9 +21,18 @@ class Subscription extends ControllerAction
 			
 			if ($subscription = $dp->getSubscription($email)) {
 			
-				$success = true;
-				$message = 'Please activate your subscription.';
-				$info = 'We\'ve sent a confirmation email to "'. $subscription->email .'". Please click the activation link to confirm your email address.';
+				if ($subscription->active) {
+				
+					$message = 'You are already subscribed to our mailinglist.';
+					$info = 'You can <a href="/subscriptions/manage/'. $subscription->hash .'">update or cancel your subscription</a> easily.';
+					$success = true;
+					
+				} else {
+
+					$message = 'Please activate your subscription.';
+					$info = 'We\'ve sent a confirmation email to "'. $subscription->email .'". Please click the activation link to confirm your email address.';
+					$success = true;
+				}
 			}
 		
 		} else if (!$request->isPost()) {
@@ -32,40 +42,34 @@ class Subscription extends ControllerAction
 		} else if (!$email = $request->getPost('email')) {
 		
 			$message = 'No email address provided';
-			
+		
 		} else {
 		
-			if (!$subscription = $dp->getSubscription($email)) {
+			if ($subscription = $dp->getSubscription($email)) {
+
+				if ($subscription->active == 0) {
+				
+					$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
+				}
+			
+			} else {
 			
 				$subscription = new \Models\Subscription;
 				$subscription->email = $email;
 				
-				$genres = $dp->getGenres();
-				foreach ($genres AS $genre) {
-				
-					$subscription->genres[] = $genre;
-				}
-				
-				$dp->saveSubscription($subscription);
 				$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
-				
-				header('Location: /subscriptions/confirm/'. urlencode(base64_encode($subscription->email)));
-				exit;
-				
-			} else {
-			
-				if ($subscription->active) {
-				
-					$message = 'You are already subscribed to our mailinglist.';
-					$success = true;
-					
-				} else {
-				
-					$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
-					header('Location: /subscriptions/confirm/'. urlencode(base64_encode($subscription->email)));
-					exit;
-				}
 			}
+			
+			$genres = $dp->getGenres();
+			foreach ($genres AS $genre) {
+			
+				$subscription->genres[] = $genre;
+			}
+			
+			$dp->saveSubscription($subscription);
+			
+			header('Location: /subscriptions/confirm/'. urlencode(base64_encode($subscription->email)));
+			exit;
 		}
 		
 		return array(
@@ -100,7 +104,15 @@ class Subscription extends ControllerAction
 		if ($request->getParam('done', false)) {
 
 			$success = true;
-			$message = 'Thank your for subscribing to our newsletter and promotional mailing list.';
+			
+			if (1 == $request->getParam('state')) {
+			
+				$message = 'Thank your for subscribing to our newsletter and promotional mailing list.';
+			
+			} else {
+			
+				$message = 'You are now unsubscribed from our mailing list.';
+			}
 		
 		} else if ($token = $request->getParam('token', false)) {
 		
@@ -112,7 +124,7 @@ class Subscription extends ControllerAction
 				
 				$this->sendWelcomeEmail($subscription, $request->getConfig('smtp'));
 				
-				header('Location: /subscriptions/done');
+				header('Location: /subscriptions/done/1');
 				exit;
 				
 			} else {
@@ -168,9 +180,18 @@ class Subscription extends ControllerAction
 					$subscription->promotions = 0 == count($genreIds) ? 0 : 1;
 					$subscription->genres = $genres;
 				
+					if (null !== $request->getPost('update')) {
+					
+						$subscription->active = 1;
+					
+					} else if (null !== $request->getPost('cancel')) {
+					
+						$subscription->active = 0;
+					}
+				
 					$dp->saveSubscription($subscription);
 				
-					header('Location: /subscriptions/done');
+					header('Location: /subscriptions/done/'. $subscription->active);
 					exit;
 				}
 				

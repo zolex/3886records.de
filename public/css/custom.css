@@ -16,6 +16,15 @@ header nav {
 	position: relative;
     z-index: 1200;
 }
+footer nav {
+	margin-top: 9px;
+	float: right;
+}
+footer nav a {
+	color: #fff;
+	font-size: 11px;
+}
+
 /*Basic Colors right on top of the Stylesheet, so you can simply search and replace them*/
 span.pink {
 	color: #0099FF;
@@ -23,8 +32,13 @@ span.pink {
 span.hover_pink {
 	color: #70C6FF;
 }
-.form-horizontal .control-label {
-    padding-top: 10px;
+form.feedback select {
+	width: 100%;
+	height: 45px;
+	margin-top: -7px;
+}
+form.feedback textarea, form.feedback input[type="text"], form.feedback input[type="email"] {
+	width: 100%;
 }
 .dark {
 	color: #000;
@@ -61,6 +75,9 @@ ul.social a:hover {
 }
 .events .thumbnail {
 	height: 320px;
+}
+.events-small .thumbnail {
+	height: 138px;
 }
 .eventsfull .thumbnail {
 	height: 440px !important;
@@ -149,6 +166,10 @@ h1, h2, h3, h4, h5, h6 {
 	color: #000;
 	background: url("../img/overlays/light-solid.png") repeat scroll 0 0 transparent;
 	padding: 20px;
+}
+.bg {
+	color: #000;
+	background: url("../img/overlays/light-solid.png") repeat scroll 0 0 transparent;
 }
 .block {
 	float: left;

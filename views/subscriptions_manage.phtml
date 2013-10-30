@@ -56,7 +56,10 @@
 			  
 			<div class="control-group">
 				<div class="controls">
-					<button type="submit" class="btn">Update subscription</button>
+					<button type="submit" name="update" value="1" class="btn"><?= $subscription->active == 1 ? 'Update' : 'Activate' ?> subscription</button>
+					<? if ($subscription->active): ?>
+						<button onclick="return confirm('Do you really want to cancel your subscription?');" type="submit" name="cancel" value="1" class="btn">Cancel subscription</button>
+					<? endif ?>
 				</div>
 			</div>
 		</form>

@@ -182,9 +182,9 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                             <tbody><tr>
                                 <td class="w580" width="580">
                                     <? $name = $subscription->getName() ?>
-									<p align="left" class="article-title"><singleline label="Title">Hi<?= !empty($name) ? ' '. $name : '' ?>,</singleline></p>
+									<p align="left" class="article-title"><singleline label="Title">Hello<?= !empty($name) ? ' '. $name : '' ?>,</singleline></p>
                                     <div align="left" class="article-content">
-                                        <multiline label="Description"><?= $promotion->text1 ?></multiline>
+                                        <multiline label="Description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat felis felis, quis suscipit tellus posuere nec. Nullam augue eros, malesuada sit amet mollis vitae, dictum quis elit. Ut tempor convallis sapien quis facilisis. Mauris dui augue, tincidunt vitae nunc at, hendrerit placerat libero. Proin at arcu lobortis, molestie diam eget, scelerisque diam. Suspendisse id enim est. Nam sed lacus quam. Donec dolor nunc, consectetur vitae hendrerit hendrerit, volutpat quis dolor. Praesent volutpat, est et suscipit pharetra, libero ligula euismod quam, quis placerat mi metus nec turpis. Sed dignissim nec diam et blandit.</multiline>
                                     </div>
                                 </td>
                             </tr>
@@ -196,17 +196,17 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                         <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
                             <tbody><tr>
                                 <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title"><?= $promotion->head2 ?></singleline></p>
+                                    <p align="left" class="article-title"><singleline label="Title"><?= $promotion->release->artist->name ?> - <?= $promotion->release->title ?></singleline></p>
                                     <table cellpadding="0" cellspacing="0" border="0" align="right">
                                         <tbody><tr>
                                             <td class="w30" width="15"></td>
-                                            <td><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/"><img src="<?= $images->image2 ?>" src="asd" editable="true" label="Image" class="w300" width="300" border="0"></a></td>
+                                            <td><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/"><img src="<?= $images->pic1 ?>" src="asd" editable="true" label="Image" class="w300" width="300" border="0"></a></td>
                                         </tr>
                                         <tr><td class="w30" width="15" height="5"></td><td></td></tr>
                                     </tbody></table>
                                     <div align="left" class="article-content">
-                                        <multiline label="Description"><?= $promotion->text2 ?></multiline>
-										<p><singleline><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/">Get your promotional copy now!</a></singleline></p>
+                                        <multiline label="Description">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent faucibus ut dolor vel congue. Integer rutrum enim lectus, et faucibus libero vehicula quis. Integer adipiscing et erat quis molestie. Sed bibendum dui mi, at faucibus magna rutrum non. Nulla ut eros orci. Ut sed tellus pellentesque, ornare mi quis, aliquam ligula. Vestibulum suscipit massa mi, et fermentum erat pulvinar ut. Curabitur feugiat diam nec nisl eleifend, vitae hendrerit augue sodales. Sed ac tristique velit, vitae luctus neque. Duis porttitor nec elit vitae blandit. Integer nec libero ac sapien facilisis consectetur. Aliquam erat volutpat.</multiline>
+										<p><singleline><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/">Get your exclusive copy now!</a></singleline></p>
                                     </div>
                                 </td>
                             </tr>
@@ -219,16 +219,16 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                         <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
                             <tbody><tr>
                                 <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title"><?= $promotion->head3 ?></singleline></p>
+                                    <p align="left" class="article-title"><singleline label="Title">Thirtyeight Eightysix Records</singleline></p>
                                     <table cellpadding="0" cellspacing="0" border="0" align="left">
                                         <tbody><tr>
-                                            <td><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/"><img src="<?= $images->image3 ?>" editable="true" label="Image" class="w200" width="200" border="0"></a></td>
+                                            <td><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/"><img src="<?= $images->logo ?>" editable="true" label="Image" class="w200" width="200" border="0"></a></td>
                                             <td class="w30" width="15"></td>
                                         </tr>
                                         <tr><td></td><td class="w30" width="15" height="5"></td></tr>
                                     </tbody></table>
                                     <div align="left" class="article-content">
-                                        <multiline label="Description"><?= $promotion->text3 ?></multiline>
+                                        <multiline label="Description">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas in nibh ut dolor fermentum viverra. Pellentesque luctus nisi vel urna lacinia, a tempor nunc tincidunt. Vivamus convallis felis dolor, at dapibus tellus pretium et. Donec hendrerit et libero at accumsan. </multiline>
                                     </div>
                                 </td>
                             </tr>
@@ -301,17 +301,16 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                 <tr>
                 <td class="w640" width="640">
     <table id="footer" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000">
-        <tbody><tr><td class="w30" width="30"></td><td class="w580 h0" width="370" height="30"></td>
-		<td class="w0" width="60"></td><td class="w0" width="160"></td><td class="w30" width="30"></td></tr>
+        <tbody><tr><td class="w30" width="30"></td><td class="w580 h0" width="360" height="30"></td><td class="w0" width="60"></td><td class="w0" width="160"></td><td class="w30" width="30"></td></tr>
         <tr>
             <td class="w30" width="30"></td>
-            <td class="w580" width="370" valign="top">
-            <span class="hide"><p id="permission-reminder" align="left" class="footer-content-left"><span>You received this because you are subscribed to our mailing list.</span></p></span>
+            <td class="w580" width="360" valign="top">
+            <span class="hide"><p id="permission-reminder" align="left" class="footer-content-left"><span>You received this mail because you are subscribed to our mailing list.</span></p></span>
             <p align="left" class="footer-content-left"><preferences lang="en"><a href="http://www.3886records.de/subscriptions/manage/<?= $subscription->hash ?>">Change settings</a></preferences> | <unsubscribe><a href="http://www.3886records.de/subscriptions/manage/<?= $subscription->hash ?>">Unsubscribe</a></unsubscribe></p>
             </td>
             <td class="hide w0" width="60"></td>
             <td class="hide w0" width="160" valign="top">
-            <p id="street-address" align="right" class="footer-content-right"><span><a href="http://www.3886records.de">3886records.de</a></span></p>
+            <p id="street-address" align="right" class="footer-content-right"><span>3886records.de</span></p>
             </td>
             <td class="w30" width="30"></td>
         </tr>

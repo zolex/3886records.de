@@ -22,10 +22,14 @@ return array(
 	'smtp' => (@include 'shared/smtp.php'),
     'routes' => array(
         '^/$' => array(
-            'template' => 'home_new',
+            'template' =>  'home',
 			'controller' => array('Controller\Home', 'index')
         ),
-        '^/home/?$' => array(
+        '^/disclaimer/?$' => array(
+            'template' => 'disclaimer',
+			'controller' => array('Controller\Home', 'disclaimer')
+        ),
+		'^/home/?$' => array(
             'template' => 'home',
 			'controller' => array('Controller\Home', 'index')
         ),
@@ -77,7 +81,7 @@ return array(
             'template' => 'subscriptions',
             'controller' => array('Controller\Subscription', 'activate')
         ),
-		'^/subscriptions/(?P<done>done)/?$' => array(
+		'^/subscriptions/(?P<done>done)/(?P<state>\d)/?$' => array(
             'template' => 'subscriptions',
             'controller' => array('Controller\Subscription', 'activate')
         ),
@@ -88,6 +92,10 @@ return array(
         '^/promotion/(?P<key>[^/]+)/(?P<token>[^/]+)/?$' => array(
             'template' => 'promotion',
             'controller' => array('Controller\Promotion', 'view')
+        ),
+		'^/promotion/(?P<key>[^/]+)/(?P<token>[^/]+)/alt?$' => array(
+            'template' => 'webview',
+            'controller' => array('Controller\Promotion', 'webview')
         ),
 		'^/admin/?$' => array(
             'template' => 'admin_index',
