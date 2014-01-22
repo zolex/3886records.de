@@ -54,7 +54,11 @@ class Subscription extends ControllerAction
 			if ($subscription = $dp->getSubscription($email)) {
 
 				if ($subscription->active == 0) {
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 					$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
 				}
 			
@@ -62,11 +66,26 @@ class Subscription extends ControllerAction
 			
 				$subscription = new \Models\Subscription;
 				$subscription->email = $email;
+<<<<<<< HEAD
 				$dp->saveSubscription($subscription);
 
 				$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
 			}
 			
+=======
+				
+				$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
+			}
+			
+			$genres = $dp->getGenres();
+			foreach ($genres AS $genre) {
+			
+				$subscription->genres[] = $genre;
+			}
+			
+			$dp->saveSubscription($subscription);
+			
+>>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 			header('Location: /subscriptions/confirm/'. urlencode(base64_encode($subscription->email)));
 			exit;
 		}
