@@ -1,4 +1,4 @@
-﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=320, target-densitydpi=device-dpi">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title><?= $promotion->title ?></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=320, target-densitydpi=device-dpi">
 <style type="text/css">
 /* Mobile-specific Styles */
 @media only screen and (max-width: 660px) { 
@@ -72,7 +72,7 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
 .header-content a { font-weight: bold; color: #eeeeee; text-decoration: none; }
 #headline p { color: #eeeeee; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; font-size: 36px; text-align: center; margin-top:0px; margin-bottom:30px; }
 #headline p a { color: #eeeeee; text-decoration: none; }
-.article-title { font-size: 18px; line-height:24px; color: #b0b0b0; font-weight:bold; margin-top:0px; margin-bottom:18px; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; }
+.article-title { font-size: 18px; line-height:24px; color: #666; font-weight:bold; margin-top:0px; margin-bottom:18px; font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; }
 .article-title a { color: #b0b0b0; text-decoration: none; }
 .article-title.with-meta {margin-bottom: 0;}
 .article-meta { font-size: 13px; line-height: 20px; color: #ccc; font-weight: bold; margin-top: 0;}
@@ -115,7 +115,7 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
             <table class="w325" width="350" cellpadding="0" cellspacing="0" border="0">
                 <tbody><tr><td class="w325" width="350" height="8"></td></tr>
             </tbody></table>
-            <div class="header-content"><webversion><a href="http://www.3886records.de/">Web Version</a></webversion></div>
+            <div class="header-content"><webversion><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/alt">View web version</a></webversion></div>
             <table class="w325" width="350" cellpadding="0" cellspacing="0" border="0">
                 <tbody><tr><td class="w325" width="350" height="8"></td></tr>
             </tbody></table>
@@ -128,21 +128,15 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
             <table cellpadding="0" cellspacing="0" border="0">
     <tbody><tr>
         
-        <td valign="middle"><fblike likeurl="http://www.3886records.de"><img src="<?= $images->like ?>" border="0" width="8" height="14" alt="Facebook icon"=""></fblike></td>
+        <td valign="middle"><fblike likeurl="http://www.3886records.de"><a href="http://www.facebook.com/3886records" target="_blank"><img src="<?= $images->like ?>" border="0" width="8" height="14" alt="Facebook icon"=""></a></fblike></td>
         <td width="3"></td>
-        <td valign="middle"><div class="header-content"><fblike likeurl="http://www.3886records.de">Like</fblike></div></td>
+        <td valign="middle"><div class="header-content"><fblike likeurl="http://www.3886records.de"><a href="http://www.facebook.com/3886records" target="_blank">facebook</a></fblike></div></td>
         
         
         <td class="w10" width="10"></td>
-        <td valign="middle"><tweet><img src="<?= $images->tweet ?>" border="0" width="17" height="13" alt="Twitter icon"=""></tweet></td>
+        <td valign="middle"><tweet><a href="http://www.twitter.com/3886records" target="_blank"><img src="<?= $images->tweet ?>" border="0" width="17" height="13" alt="Twitter icon"=""></a></tweet></td>
         <td width="3"></td>
-        <td valign="middle"><div class="header-content"><tweet>Tweet</tweet></div></td>
-        
-        
-        <td class="w10" width="10"></td>
-        <td valign="middle"><forwardtoafriend lang="en"><img src="<?= $images->forward ?>" border="0" width="19" height="14" alt="Forward icon"=""></forwardtoafriend></td>
-        <td width="3"></td>
-        <td valign="middle"><div class="header-content"><forwardtoafriend lang="en">Forward</forwardtoafriend></div></td>
+        <td valign="middle"><div class="header-content"><tweet><a href="http://www.twitter.com/3886records" target="_blank">twitter</a></tweet></div></td>
         
     </tr>
 </tbody></table>
@@ -160,8 +154,8 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                 <td id="header" class="w640" width="640" align="center" bgcolor="#ffffff">
     
     <div align="center" style="text-align: center">
-        <a href="http://www.3886records.de">
-        <img id="customHeaderImage" label="Header Image" editable="true" width="200" src="<?= $images->logo ?>" class="w640" border="0" align="top" style="display: inline">
+        <a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/">
+        <img id="customHeaderImage" label="Header Image" editable="true" width="640" src="<?= $images->banner ?>" class="w640" border="0" align="top" style="display: inline">
         </a>
     </div>
     
@@ -181,54 +175,32 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                         <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
                             <tbody><tr>
                                 <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title"><?= $test ?></singleline></p>
+                                    <? $name = $subscription->getName() ?>
+									<p align="left" class="article-title"><singleline label="Title">Hi<?= !empty($name) ? ' '. $name : '' ?>,</singleline></p>
                                     <div align="left" class="article-content">
-                                        <multiline label="Description">Enter your description</multiline>
+                                        <multiline label="Description"><?= $promotion->text1 ?></multiline>
                                     </div>
                                 </td>
                             </tr>
                             <tr><td class="w580" width="580" height="10"></td></tr>
                         </tbody></table>
                     </layout>
-                                        
-                    
-                    <layout label="Text with full-width image">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title">Add a title</singleline></p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="w580" width="580"><img editable="true" label="Image" class="w580" width="580" border="0"></td>
-                            </tr>
-                            <tr><td class="w580" width="580" height="15"></td></tr>
-                            <tr>
-                                <td class="w580" width="580">
-                                    <div align="left" class="article-content">
-                                        <multiline label="Description">Enter your description</multiline>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr><td class="w580" width="580" height="10"></td></tr>
-                        </tbody></table>
-                    </layout>
-                                        
                     
                     <layout label="Text with right-aligned image">
                         <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
                             <tbody><tr>
                                 <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title">Add a title</singleline></p>
+                                    <p align="left" class="article-title"><singleline label="Title"><?= $promotion->head2 ?></singleline></p>
                                     <table cellpadding="0" cellspacing="0" border="0" align="right">
                                         <tbody><tr>
                                             <td class="w30" width="15"></td>
-                                            <td><img editable="true" label="Image" class="w300" width="300" border="0"></td>
+                                            <td><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/"><img src="<?= $images->image2 ?>" src="asd" editable="true" label="Image" class="w300" width="200" height="200" border="0"></a></td>
                                         </tr>
                                         <tr><td class="w30" width="15" height="5"></td><td></td></tr>
                                     </tbody></table>
                                     <div align="left" class="article-content">
-                                        <multiline label="Description">Enter your description</multiline>
+                                        <multiline label="Description"><?= $promotion->text2 ?></multiline>
+										<p><singleline><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/">Get your free promotional copy!</a></singleline></p>
                                     </div>
                                 </td>
                             </tr>
@@ -241,116 +213,77 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                         <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
                             <tbody><tr>
                                 <td class="w580" width="580">
-                                    <p align="left" class="article-title"><singleline label="Title">Add a title</singleline></p>
+                                    <p align="left" class="article-title"><singleline label="Title"><?= $promotion->head3 ?></singleline></p>
                                     <table cellpadding="0" cellspacing="0" border="0" align="left">
                                         <tbody><tr>
-                                            <td><img editable="true" label="Image" class="w300" width="300" border="0"></td>
+                                            <td><a href="http://www.3886records.de/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/"><img src="<?= $images->image3 ?>" editable="true" label="Image" class="w200" width="200" border="0"></a></td>
                                             <td class="w30" width="15"></td>
                                         </tr>
                                         <tr><td></td><td class="w30" width="15" height="5"></td></tr>
                                     </tbody></table>
                                     <div align="left" class="article-content">
-                                        <multiline label="Description">Enter your description</multiline>
+                                        <multiline label="Description"><?= $promotion->text3 ?></multiline>
                                     </div>
                                 </td>
                             </tr>
                             <tr><td class="w580" width="580" height="10"></td></tr>
                         </tbody></table>
                     </layout>
-                                                                                
-                    
-                    <layout label="Two columns">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w275" width="275" valign="top">
-                                    <table class="w275" width="275" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w275" width="275">
-                                                <p align="left" class="article-title"><singleline label="Title">Add a title</singleline></p>
-                                                <div align="left" class="article-content">
-                                                    <multiline label="Description">Enter your description</multiline>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w275" width="275" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td class="w30" width="30"></td>
-                                <td class="w275" width="275" valign="top">
-                                    <table class="w275" width="275" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w275" width="275">
-                                                <p align="left" class="article-title"><singleline label="Title">Add a title</singleline></p>
-                                                <div align="left" class="article-content">
-                                                    <multiline label="Description">Enter your description</multiline>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w275" width="275" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                            </tr>
-                        </tbody></table>
-                    </layout>
-                                        
-                                        
-                    
+                                                                   
+					<? if (count($promotion->release->artist->releases)): ?>
                     <layout label="Image gallery">
-                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
-                            <tbody><tr>
-                                <td class="w180" width="180" valign="top">
-                                    <table class="w180" width="180" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w180" width="180"><img editable="true" label="Image" class="w180" width="180" border="0"></td>
-                                        </tr>
-                                        <tr><td class="w180" width="180" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w180" width="180">
-                                                <div align="left" class="article-content">
-                                                    <multiline label="Description">Enter your description</multiline>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w180" width="180" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                <td class="w180" width="180" valign="top">
-                                    <table class="w180" width="180" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w180" width="180"><img editable="true" label="Image" class="w180" width="180" border="0"></td>
-                                        </tr>
-                                        <tr><td class="w180" width="180" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w180" width="180">
-                                                <div align="left" class="article-content">
-                                                    <multiline label="Description">Enter your description</multiline>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w180" width="180" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
-                                <td width="20"></td>
-                                <td class="w180" width="180" valign="top">
-                                    <table class="w180" width="180" cellpadding="0" cellspacing="0" border="0">
-                                        <tbody><tr>
-                                            <td class="w180" width="180"><img editable="true" label="Image" class="w180" width="180" border="0"></td>
-                                        </tr>
-                                        <tr><td class="w180" width="180" height="10"></td></tr>
-                                        <tr>
-                                            <td class="w180" width="180">
-                                                <div align="left" class="article-content">
-                                                    <multiline label="Description">Enter your description</multiline>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr><td class="w180" width="180" height="10"></td></tr>
-                                    </tbody></table>
-                                </td>
+                        <p align="left" class="article-title"><singleline label="Title">More releases by <?= $promotion->release->artist->name ?></singleline></p>
+						<table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
+                            <tbody>
+								<tr>
+								<? $numReleases = 0; $maxReleases = 3; ?>
+								<? foreach ($promotion->release->artist->releases as $release): ?>
+									<td class="w180" width="180" valign="top">
+										<table class="w180" width="180" cellpadding="0" cellspacing="0" border="0">
+											<tbody><tr>
+												<td class="w180" width="180">
+												<? if (count($release->links)): ?>
+													<a target="_blank" href="<?= reset($release->links)->link ?>">
+												<? endif ?>
+												<img src="http://www.3886records.de/img/releases/<?= $release->cover ?>" editable="true" label="<?= $release->artist->name ?> - <?= $release->title ?>" class="w180" width="180" border="0">
+												<? if (count($release->links)): ?>
+													</a>
+												<? endif ?>
+												</td>
+											</tr>
+											<tr><td class="w180" width="180" height="10"></td></tr>
+											<tr>
+												<td class="w180" width="180">
+													<div align="left" class="article-content">
+														<singleline label="Description">
+														<? if (count($release->links)): ?>
+															<a target="_blank" href="<?= reset($release->links)->link ?>">
+														<? endif ?>
+														<?= $release->artist->name ?> - <?= $release->title ?>
+														<? if (count($release->links)): ?>
+															</a>
+														<? endif ?>
+														</singleline>
+													</div>
+												</td>
+											</tr>
+											<tr><td class="w180" width="180" height="10"></td></tr>
+										</tbody></table>
+									</td>
+									<? if (++$numReleases == $maxReleases) break ?>
+									<td width="20"></td>
+								<? endforeach ?>
+								<? for ($n = $numReleases; $n < $maxReleases; $n++): ?>
+									<td class="w180" width="180" valign="top"> </td>
+									<? if (++$numReleases != $maxReleases): ?>
+										<td width="20"></td>
+									<? endif ?>
+								<? endfor ?>
                             </tr>
                         </tbody></table>
                     </layout>
+					<? endif ?>
+					
                 </repeater>
             </td>
             <td class="w30" width="30"></td>
@@ -362,16 +295,17 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                 <tr>
                 <td class="w640" width="640">
     <table id="footer" class="w640" width="640" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000">
-        <tbody><tr><td class="w30" width="30"></td><td class="w580 h0" width="360" height="30"></td><td class="w0" width="60"></td><td class="w0" width="160"></td><td class="w30" width="30"></td></tr>
+        <tbody><tr><td class="w30" width="30"></td><td class="w580 h0" width="370" height="30"></td>
+		<td class="w0" width="60"></td><td class="w0" width="160"></td><td class="w30" width="30"></td></tr>
         <tr>
             <td class="w30" width="30"></td>
-            <td class="w580" width="360" valign="top">
-            <span class="hide"><p id="permission-reminder" align="left" class="footer-content-left"><span>You're receiving this mail because you are subscribed to our mailing list.</span></p></span>
-            <p align="left" class="footer-content-left"><preferences lang="en"><a href="http://www.3886records.de/">Change settings</a></preferences> | <unsubscribe><a href="http://www.3886records.de/">Unsubscribe</a></unsubscribe></p>
+            <td class="w580" width="370" valign="top">
+            <span class="hide"><p id="permission-reminder" align="left" class="footer-content-left"><span>You received this because you are subscribed to our mailing list.</span></p></span>
+            <p align="left" class="footer-content-left"><preferences lang="en"><a href="http://www.3886records.de/subscriptions/manage/<?= $subscription->hash ?>">Change settings</a></preferences> | <unsubscribe><a href="http://www.3886records.de/subscriptions/manage/<?= $subscription->hash ?>">Unsubscribe</a></unsubscribe></p>
             </td>
             <td class="hide w0" width="60"></td>
             <td class="hide w0" width="160" valign="top">
-            <p id="street-address" align="right" class="footer-content-right"><span>3886records.de</span></p>
+            <p id="street-address" align="right" class="footer-content-right"><span><a href="http://www.3886records.de">www.3886records.de</a></span></p>
             </td>
             <td class="w30" width="30"></td>
         </tr>

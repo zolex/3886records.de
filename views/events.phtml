@@ -19,8 +19,13 @@
 						<? endif ?>
 						<? if (isset($event->artists) && is_array($event->artists)): ?>
 							<div class="acts">
+							<? $numArtists = count($event->artists) ?>
 							<? foreach ($event->artists as $artist): ?>
-								<a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a>: <?= $artist->shortInfo ?><br/>
+								<? if (!empty($artist->key)): ?>
+									<a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a>, 
+								<? else: ?>
+									<?= $artist->shortInfo ?>, 
+								<? endif ?>
 							<? endforeach ?>
 							</div>
 						<? endif ?>
@@ -51,7 +56,11 @@
 						<? if (isset($event->artists) && is_array($event->artists)): ?>
 							<div class="acts">
 							<? foreach ($event->artists as $artist): ?>
-								<a href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a>: <?= $artist->shortInfo ?><br/>
+								<? if (!empty($artist->key)): ?>
+									<a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a>, 
+								<? else: ?>
+									<?= $artist->shortInfo ?>, 
+								<? endif ?>
 							<? endforeach ?>
 							</div>
 						<? endif ?>

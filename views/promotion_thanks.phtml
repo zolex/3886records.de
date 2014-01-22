@@ -1,0 +1,26 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+	<? if ($exceeded): ?>
+	<div class="hero-unit">
+		<h1>Download limit reached!</h1>
+		<br/>
+		<p>
+			<strong>
+				We're sorry but your donwload limit for <?= $promotion->release->artist->name ?> - <?= $promotion->release->title ?> is reached.
+			</strong><br/>
+			<small>If you really need to download the release again, contact us via info@3886records.de</small>
+		</p>
+	</div>
+	<? else: ?>
+	<div class="hero-unit">
+		<h1>Thanks for your feedback!</h1>
+		<br/>
+		<p>
+			<strong>
+				You can <a href="/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/download">download</a> <?= $promotion->release->artist->name ?> - <?= $promotion->release->title ?> now!
+			</strong><br/>
+			<small>(You have <?= $feedback->availableDownloads() ?> of 3 download<?= $feedback->availableDownloads() == 1 ? '' : 's' ?> left for this promo release)</small>
+		</p>
+	</div>
+	<? endif ?>
+</div>

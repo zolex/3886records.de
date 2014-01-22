@@ -1,0 +1,59 @@
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		$(".box_skitter_large").skitter({
+			animation: 'block', 
+ 			dots: true, 
+ 			numbers_align: 'center', 
+ 			theme: 'round',
+ 			interval: 15000
+		});
+	});
+</script>
+<?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Home')))) ?>
+<div class="container">
+	<div class="row">
+		<div class="span2"></div>
+		<div class="span8">
+			<div class="box_skitter box_skitter_large">
+				<ul>
+					<li>
+						<img src="/img/releases/psybuddy-amrita-ep-800x300.jpg">
+						<div class="label_text">
+							<p>PsyBuddy - Amrita EP</p>
+							<div>
+								Release on January 18th 2014 at Beatport. Hear PsyBuddy Live at his <a href="http://facebook.com/events/1375455859369689/" target="_blank">Release Party</a> on January 17th 2014<br/>
+							</div>
+						</div>
+					</li>
+					<li>
+						<img src="/img/releases/cosmicchuen-introspection-800x300.jpg">
+						<div class="label_text">
+							<p>Cosmic Chuen - Introspection EP</p>
+							<div>
+								Listen to the mix for free on <a target="_blank" href="http://www.youtube.com/watch?v=mHoSaWuMbKI">YouTube</a><br/>
+								Get the EP or single tracks on <a target="_blank" href="http://www.beatport.com/release/introspection/1190765">Beatport</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<img src="/img/releases/sherwee-mbira-800x300.jpg">
+						<div class="label_text"><p>Sherwee - Mbira</p></div>
+					</li>
+					<li>
+						<img src="/img/releases/cannabliss-spykedelic-800x300.jpg">
+						<div class="label_text"><p>CannaBliss - Spykedelic EP</p></div>
+					</li>
+					<li>
+						<img src="/img/releases/zwielicht-shadowplay-800x300.jpg">
+						<div class="label_text"><p>Zwielicht - Shadowplay EP</p></div>
+					</li>
+					<li>
+						<img src="/img/releases/spirtualzune-psychedelic-spirit-800x300.jpg">
+						<div class="label_text"><p>Spirtualzune - Psychedelic Spirit EP</p></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="span2"></div>
+	</div>
+</div>

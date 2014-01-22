@@ -25,4 +25,30 @@ class Events extends ControllerAction
 			),
 		);
 	}
+	
+	public function forward($request) {
+	
+		$event = $request->getParam('event');
+		$dp = $this->getDataProvider();
+		$dp->trackQrCodeVisit($event);
+		
+		switch ($event) {
+		
+			case 'spaceopera':
+				header('Location: http://www.facebook.com/events/534877699920790/?fref=flyer');
+				exit;
+				
+			case 'stampfn8en':
+				header('Location: https://www.facebook.com/events/164675243725736/?fref=flyer');
+				exit;
+				
+			case 'stampfn8en-cologne':
+				header('Location: https://www.facebook.com/events/347252045411886/?ref=flyer');
+				exit;
+				
+			default:
+				header('Location: /');
+				exit;
+		}
+	}
 }

@@ -22,10 +22,14 @@ return array(
 	'smtp' => (@include 'shared/smtp.php'),
     'routes' => array(
         '^/$' => array(
-            'template' => 'home_new',
+            'template' =>  'home',
 			'controller' => array('Controller\Home', 'index')
         ),
-        '^/home/?$' => array(
+        '^/disclaimer/?$' => array(
+            'template' => 'disclaimer',
+			'controller' => array('Controller\Home', 'disclaimer')
+        ),
+		'^/home/?$' => array(
             'template' => 'home',
 			'controller' => array('Controller\Home', 'index')
         ),
@@ -77,7 +81,7 @@ return array(
             'template' => 'subscriptions',
             'controller' => array('Controller\Subscription', 'activate')
         ),
-		'^/subscriptions/(?P<done>done)/?$' => array(
+		'^/subscriptions/(?P<done>done)/(?P<state>\d)/?$' => array(
             'template' => 'subscriptions',
             'controller' => array('Controller\Subscription', 'activate')
         ),
@@ -89,9 +93,33 @@ return array(
             'template' => 'promotion',
             'controller' => array('Controller\Promotion', 'view')
         ),
+		'^/promotion/(?P<key>[^/]+)/(?P<token>[^/]+)/alt/?$' => array(
+            'template' => 'webview',
+            'controller' => array('Controller\Promotion', 'webview')
+        ),
+		'^/promotion/(?P<key>[^/]+)/(?P<token>[^/]+)/thanks?$' => array(
+            'template' => 'promotion_thanks',
+            'controller' => array('Controller\Promotion', 'thanks'),
+        ),
+	   '^/promotion/(?P<key>[^/]+)/(?P<token>[^/]+)/download?$' => array(
+            'template' => null,
+            'controller' => array('Controller\Promotion', 'download'),
+        ),
 		'^/admin/?$' => array(
             'template' => 'admin_index',
             'controller' => array('Controller\Admin', 'index')
+        ),
+		'^/event/(?P<event>[^/]+)/?$' => array(
+            'template' => null,
+            'controller' => array('Controller\Events', 'forward')
+        ),
+        '^/skitter/?$' => array(
+            'template' => 'skitter',
+            'controller' => array('Controller\Home', 'skitter')
+        ),
+        '^/psy-forge-gewinnspiel/?$' => array(
+            'template' => 'win',
+            'controller' => array('Controller\Home', 'win')
         ),
     ),
 );

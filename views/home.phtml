@@ -1,43 +1,98 @@
 <?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Home')))) ?>
-<div class="container">
-    <div class="hero-unit">
-        <div id="slidecaption">
-            <h1><span class="raleway">3886</span>records</h1>
-        </div>
-        <p><strong>thirtyeight eightysix records</strong> is an independent electronic music label with headquarters in Bonn, Germany.</p>
-    </div>
+<script type="text/javascript" language="javascript">
+	$(document).ready(function() {
+		$(".box_skitter_large").skitter({
+			animation: 'block', 
+ 			dots: true, 
+ 			numbers_align: 'center', 
+ 			theme: 'round',
+ 			interval: 25000
+		});
+	});
+</script>
+<?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Home')))) ?>
+<div class="container" style="height: 330px;">
+	<div class="row">
+		<div class="span2"></div>
+		<div class="span8">
+			<div class="box_skitter box_skitter_large">
+				<ul>
+					<li>
+						<a target="_blank" href="https://x.mixcloud.com/3886records/psybuddy-amrita-ep/"><img src="/img/releases/psybuddy-amrita-ep-800x300.jpg"></a>
+						<div class="label_text">
+							<p>PsyBuddy - Amrita EP</p>
+							<div>
+								Listen to the Preview Mix for free on <a target="_blank" href="https://x.mixcloud.com/3886records/psybuddy-amrita-ep/">MixCloud</a><br/>
+								Release on January 18th 2014 at Beatport. Hear PsyBuddy Live at his <a href="http://facebook.com/events/1375455859369689/" target="_blank">Release Party</a> on January 17th 2014<br/>
+							</div>
+						</div>
+					</li>
+					<li>
+						<img src="/img/releases/zwielicht-shadowplay-800x300.jpg">
+						<div class="label_text">
+							<p>Zwielicht - Shadowplay EP</p>
+							<div>
+								Listen to the mix for free on <a target="_blank" href="http://mixcloud.com/3886records/zwielicht-shadowplay-ep/">MixCloud</a><br/>
+								Release on February 1st 2014 at Beatport. Hear Zwielicht Live at their <a href="https://www.facebook.com/events/374789385990978" target="_blank">Release Party</a> on January 31st
+							</div>
+						</div>
+					</li>
+					<li>
+						<a target="_blank" href="http://www.beatport.com/release/introspection/1190765"><img src="/img/releases/cosmicchuen-introspection-800x300.jpg"></a>
+						<div class="label_text">
+							<p>Cosmic Chuen - Introspection EP</p>
+							<div>
+								Listen to the mix for free on <a target="_blank" href="http://www.youtube.com/watch?v=mHoSaWuMbKI">YouTube</a><br/>
+								Get the EP or single tracks on <a target="_blank" href="http://www.beatport.com/release/introspection/1190765">Beatport</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<img src="/img/releases/sherwee-mbira-800x300.jpg">
+						<div class="label_text">
+							<p>Sherwee - Mbira</p>
+							<div>
+								Get the Single on <a target="_blank" href="http://www.beatport.com/track/mbira-original-mix/4858854">Beatport</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<img src="/img/releases/cannabliss-spykedelic-800x300.jpg">
+						<div class="label_text">
+							<p>CannaBliss - Spykedelic EP</p>
+							<div>
+								Get the EP or single tracks on <a target="_blank" href="http://www.beatport.com/release/spykedelic-ep/1145036">Beatport</a>
+							</div>
+						</div>
+					</li>
+					<li>
+						<img src="/img/releases/spirtualzune-psychedelic-spirit-800x300.jpg">
+						<div class="label_text">
+							<p>Spirtualzune - Psychedelic Spirit EP</p>
+							<div>
+								Get the EP or single tracks on <a target="_blank" href="http://www.beatport.com/release/psychedelic-spirit-ep/1135736">Beatport</a>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="span2"></div>
+	</div>
 </div>
+
+<?/*
 <div class="container blocks">
-	<div class="span4 first backgrounded">
-		<h4>Upcoming releases</h4>
-		<ul class="light">
-			<? foreach ($releases as $release): ?>
-				<li class="icon-signal"><span><?= $release->artist->name ?> - <?= $release->title ?></span> <span class="small">(<?= $release->type ?>, <?= null === $release->date ? 'tba.' : $release->date ?>)</span></li>
-			<? endforeach ?>
-		</ul>
-		<a data-method="async" class="bottom" href="/releases/upcoming">more info</a>
+	<div class="span4 backgrounded">
+		<h4>Subscribe to newsletter</h4>
+		<p>
+			Don't miss any release and get limited promotional offers!
+			<form method="post" action="/subscriptions">
+				<input name="email" type="email" placeholder="E-Mail Address" /><br/>
+				<input type="submit" class="btn" value="Subscribe now">
+			</form>
+		</p>
 	</div>
-	<div class="span3 backgrounded">
-		<h4>Upcoming Events</h4>
-		<ul class="light">
-			<? foreach ($events as $event): ?>
-				<li class="icon-star"><span><?= $event->name ?></span> <span class="small">(<?= date("Y-m-d", strtotime($event->fromTime)) ?>)</span></li>
-			<? endforeach ?>
-		</ul>
-		<a data-method="async" class="bottom" href="/events">all events</a>
-	</div>
-	<?/*
-	<div class="span3 backgrounded">
-		<h4>New Artists</h4>
-		<ul class="light">
-			<li class="icon-star"><span>Aldrich</span></li>
-			<li class="icon-star"><span>Cosmic Chuen</span></li>
-			<li class="icon-star"><span>No Publicity</span></li>
-			<li class="icon-star"><span>Take</span></li>
-		</ul>
-		<a data-method="async" class="bottom" href="/artists">all artists</a>
-	</div>
-	*/?>
 	<div class="span4 backgrounded">
 		<h4>Send your Demo!</h4>
 		<p>
@@ -46,25 +101,62 @@
 		<a target="_blank" href='http://soundcloud.com/3886records/dropbox' class='soundcloud-dropbox'>Send us your track!</a>
 	</div>
 </div>
-<div class="container">
-	<div class="span7 first">
-		<iframe width="100%" height="785" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F4623566%3Fsecret_token%3Ds-EkFxj&amp;color=007aff&amp;auto_play=true&amp;show_artwork=false"></iframe>
+*/?>
+<div class="container home">
+	<div class="span4 first backgrounded">
+			<h4>Upcoming releases</h4>
+			<div class="thumbnail">
+				<ul class="light">
+					<? foreach ($releases as $release): ?>
+						<li class="icon-signal"><span><?= $release->artist->name ?> - <?= $release->title ?></span> <span class="small">(<?= $release->type ?>, <?= null === $release->date ? 'tba.' : $release->date ?>)</span></li>
+					<? endforeach ?>
+				</ul>
+				<a data-method="async" class="bottom" href="/releases/upcoming">more info</a>
+			</div>
+			
+			<h4>Upcoming Events</h4>
+			<div class="thumbnail">
+				<ul class="light">
+					<? foreach ($events as $event): ?>
+						<li class="icon-star"><span><?= $event->name ?></span> <span class="small">(<?= date("Y-m-d", strtotime($event->fromTime)) ?>)</span></li>
+					<? endforeach ?>
+				</ul>
+				<a data-method="async" class="bottom" href="/events">all events</a>
+			</div>
+	
+			<h4>Latest releases</h4>
+			<? foreach ($latestReleases as $release): ?>
+				<div class="thumbnail release-box" style="margin-bottom: 5px;">
+					<strong><a href="/artist/<?= $release->artist->key ?>" data-method="async"><?= $release->artist->name ?></a> - <?= $release->title ?></strong>
+					<br/>
+					<img src="/img/releases/<?= $release->cover ?>" width="180" height="180" alt="<?= $release->artist->name ?> - <?= $release->title ?>" />
+					<div class="desc">
+						<p>
+							<strong>Genre:</strong> <?= $release->genre->name ?><br/>
+							<strong>Date:</strong> <?= $release->date ?><br/>
+							<strong>Type:</strong> <?= $release->type ?><br/>
+							<strong>Format:</strong> <?= $release->format ?><br/>
+							<? if (isset($release->tracks)): ?>
+								<strong>Tracks:</strong>
+								<?= implode(', ', $release->tracks) ?>
+							<? endif ?>
+							<? if (count($release->links)): ?>
+								<strong>Buy now:</strong><br/>
+								<? foreach ($release->links as $link): ?>
+									<a target="_blank" href="<?= $link->link ?>"><?= $link->shopName ?></a><br/>
+								<? endforeach ?>
+							<? endif ?>
+						</p>
+					</div>
+					<div class="clear"></div>
+				</div>
+			<? endforeach ?>
 	</div>
-	<div class="span2 backgrounded">
-		<ul class="stores">
-			<li><a target="_blank" href="http://www.amazon.com/s/?url=search-alias%3Ddigital-music&field-keywords=3886records"><img src="/img/stores/amazonmp3.jpg" alt="Amazon mp3" title="Amazon mp3" /></a></li>
-			<li><a target="_blank" href="http://www.beatport.com/label/3886records/32906"><img src="/img/stores/beatport.jpg" alt="Beatport" title="Beatport" /></a></li>
-			<li><a target="_blank" href="http://www.itunes.com/"><img src="/img/stores/itunes.jpg" alt="iTunes" title="iTunes" /></a></li>
-			<li><a target="_blank" href="https://www.trackitdown.net/recordlabel/139950/3886records.html#tracks"><img src="/img/stores/trackitdown.jpg" alt="trackitdown" title="trackitdown" /></li>
-			<li><a target="_blank" href="http://www.musicload.de/"><img src="/img/stores/musicload.jpg" alt="Musicload" title="Musicload" /></a></li>
-			<li><a target="_blank" href="https://play.spotify.com"><img src="/img/stores/spotify.jpg" alt="Spotify" title="Spotify" /></a></li>
-			<li><a target="_blank" href="http://www.rdio.com/"><img src="/img/stores/rdio.jpg" alt="rdio" title="rdio" /></a></li>
-			<li><a target="_blank" href="http://www.deezer.com"><img src="/img/stores/deezer.jpg" alt="Deezer" title="Deezer" /></a></li>
-			<li><a target="_blank" href="https://play.google.com/music"><img src="/img/stores/googleplay.jpg" alt="Google Play" title="Google Play" /></a></li>
-		</ul>
+	<div class="span5">
+		<iframe width="100%" height="1000" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F4623566%3Fsecret_token%3Ds-EkFxj&amp;color=007aff&amp;auto_play=true&amp;show_artwork=false"></iframe>
 	</div>
 	<div class="span3">
 		<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
-		<a class="twitter-timeline"  href="https://twitter.com/3886records" height="785" data-widget-id="336446706327625729">Tweets by @3886records</a>
+		<a class="twitter-timeline"  href="https://twitter.com/3886records" height="1000" data-widget-id="336446706327625729">Tweets by @3886records</a>
 	</div>
 </div>

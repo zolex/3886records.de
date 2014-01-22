@@ -2,276 +2,216 @@
 
 <?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
 <div class="container">
-    <div class="hero-unit">
-        <h1><?= $title ?></h1>
-    </div>
+	<div class="hero-unit">
+		<img style="width: 100%; margin-top: 20px;" alt="" src="/img/email/<?= $promotion->banner2 ?>" />
+	</div>
+
 </div>
 <div class="container">
 	<div class="row-fluid">
 		<div class="span12">
-
-
-			<!-- begin tape -->
-			<div class="clear ma-r90 cutout tape" data-url="/promotions/spekta_cool_air_preview.mp3">
-			 <div class="blur-image-wrapper">
-			  <canvas class="blur-image"></canvas>
-			 </div>
-			 <div class="transparency-sheet"></div>
-			 <div class="tab-left">
-			  <div class="notch"></div>
-			  <div class="ridge"></div>
-			 </div>
-			 <div class="tab-right">
-			  <div class="notch"></div>
-			  <div class="ridge"></div>
-			 </div>
-			 <div class="rail-left"></div>
-			 <div class="rail-right"></div>
-			 <div class="rail-middle">
-			  <div class="rail-middle-outline">
-			   <div class="tape-pad-holder">
-			    <div class="tape-pad"></div>
-			    <div class="tape-pad-line"></div>
-			   </div>
-			  </div>
-			  <div class="screw-bm"></div>
-			 </div>
-			 <div class="screw-tl"></div>
-			 <div class="screw-tr"></div>
-			 <div class="screw-bl"></div>
-			 <div class="screw-br"></div>
-			 <div class="screw-tm"></div>
-			 <div class="left reel-mask"></div>
-			 <div class="right reel-mask"></div>
-			 <canvas class="connecting-tape"></canvas>
-			 <div class="left reel"></div>
-			 <div class="left spokes"></div>
-			 <div class="right reel"></div>
-			 <div class="right spokes"></div>
-			 <div class="progress-notches">
-			  <div class="n1"></div>
-			  <div class="n2"></div>
-			  <div class="n3"></div>
-			  <div class="n4"></div>
-			  <div class="n5"></div>
-			  <div class="n6"></div>
-			  <div class="n7"></div>
-			  <div class="n8"></div>
-			  <div class="n9"></div>
-			 </div>
-			 <div class="label">Spekta - Cool Air (preview 2013)</div>
-			 <div class="aqua controls">
-			  <div class="bd">
-			   <ul>
-			    <li><a href="#" title="play/pause" class="play">&#9658;</a></li>
-			    <li><a href="#" title="rewind" class="rew">&#171;</a></li>
-			    <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
-			    <li><a href="#" title="stop" class="stop">&#9632;</a></li>
-			   </ul>
-			  </div>
-			 </div>
+			<div class="backgrounded">
+				<h1 class="dark">Limited Promotional Offer</h1>	
+				<? $name = $subscription->getName() ?>
+				<? if ($promotion->isExpired()): ?>
+					<strong>We're sorry but the promotion for <?= $promotion->release->artist->name ?> - <?= $promotion->release->title ?> is expired</strong>
+				<? else: ?>
+					<strong>Hi<?= (!empty($name) ? ' '. $name : '') ?>,</strong><br/>
+					<p><?= $promotion->text1 ?>
+					<?= $promotion->text2 ?></p>
+					<p><strong><small>After submitting your feedback you may download the promo release!</small></strong></p>
+				<? endif ?>
 			</div>
-			<!-- end tape -->
-
-			<!-- begin tape -->
-			<div class="clear blue ma-r90 cutout tape" data-url="/promotions/La_Boom_-_Selbstmord_ist_kein_Auxweg.mp3" style="margin-left: 20px;">
-			 <div class="blur-image-wrapper">
-			  <canvas class="blur-image"></canvas>
-			 </div>
-			 <div class="transparency-sheet"></div>
-			 <div class="tab-left">
-			  <div class="notch"></div>
-			  <div class="ridge"></div>
-			 </div>
-			 <div class="tab-right">
-			  <div class="notch"></div>
-			  <div class="ridge"></div>
-			 </div>
-			 <div class="rail-left"></div>
-			 <div class="rail-right"></div>
-			 <div class="rail-middle">
-			  <div class="rail-middle-outline">
-			   <div class="tape-pad-holder">
-			    <div class="tape-pad"></div>
-			    <div class="tape-pad-line"></div>
-			   </div>
-			  </div>
-			  <div class="screw-bm"></div>
-			 </div>
-			 <div class="screw-tl"></div>
-			 <div class="screw-tr"></div>
-			 <div class="screw-bl"></div>
-			 <div class="screw-br"></div>
-			 <div class="screw-tm"></div>
-			 <div class="left reel-mask"></div>
-			 <div class="right reel-mask"></div>
-			 <canvas class="connecting-tape"></canvas>
-			 <div class="left reel"></div>
-			 <div class="left spokes"></div>
-			 <div class="right reel"></div>
-			 <div class="right spokes"></div>
-			 <div class="progress-notches">
-			  <div class="n1"></div>
-			  <div class="n2"></div>
-			  <div class="n3"></div>
-			  <div class="n4"></div>
-			  <div class="n5"></div>
-			  <div class="n6"></div>
-			  <div class="n7"></div>
-			  <div class="n8"></div>
-			  <div class="n9"></div>
-			 </div>
-			 <div class="label">La Boom - Selbstmord ist kein Auxweg</div>
-			 <div class="aqua controls">
-			  <div class="bd">
-			   <ul>
-			    <li><a href="#" title="play/pause" class="play">&#9658;</a></li>
-			    <li><a href="#" title="rewind" class="rew">&#171;</a></li>
-			    <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
-			    <li><a href="#" title="stop" class="stop">&#9632;</a></li>
-			   </ul>
-			  </div>
-			 </div>
-			</div>
-			<!-- end tape -->
-
-			<div style="width: 100%; height: 50px;"></div>
-
-			<!-- begin tape -->
-			<div class="clear green ma-r90 cutout tape" data-url="/promotions/La_Boom_-_Burn_Engholm.mp3">
-			 <div class="blur-image-wrapper">
-			  <canvas class="blur-image"></canvas>
-			 </div>
-			 <div class="transparency-sheet"></div>
-			 <div class="tab-left">
-			  <div class="notch"></div>
-			  <div class="ridge"></div>
-			 </div>
-			 <div class="tab-right">
-			  <div class="notch"></div>
-			  <div class="ridge"></div>
-			 </div>
-			 <div class="rail-left"></div>
-			 <div class="rail-right"></div>
-			 <div class="rail-middle">
-			  <div class="rail-middle-outline">
-			   <div class="tape-pad-holder">
-			    <div class="tape-pad"></div>
-			    <div class="tape-pad-line"></div>
-			   </div>
-			  </div>
-			  <div class="screw-bm"></div>
-			 </div>
-			 <div class="screw-tl"></div>
-			 <div class="screw-tr"></div>
-			 <div class="screw-bl"></div>
-			 <div class="screw-br"></div>
-			 <div class="screw-tm"></div>
-			 <div class="left reel-mask"></div>
-			 <div class="right reel-mask"></div>
-			 <canvas class="connecting-tape"></canvas>
-			 <div class="left reel"></div>
-			 <div class="left spokes"></div>
-			 <div class="right reel"></div>
-			 <div class="right spokes"></div>
-			 <div class="progress-notches">
-			  <div class="n1"></div>
-			  <div class="n2"></div>
-			  <div class="n3"></div>
-			  <div class="n4"></div>
-			  <div class="n5"></div>
-			  <div class="n6"></div>
-			  <div class="n7"></div>
-			  <div class="n8"></div>
-			  <div class="n9"></div>
-			 </div>
-			 <div class="label">La Boom - Burn Engholm</div>
-			 <div class="aqua controls">
-			  <div class="bd">
-			   <ul>
-			    <li><a href="#" title="play/pause" class="play">&#9658;</a></li>
-			    <li><a href="#" title="rewind" class="rew">&#171;</a></li>
-			    <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
-			    <li><a href="#" title="stop" class="stop">&#9632;</a></li>
-			   </ul>
-			  </div>
-			 </div>
-			</div>
-			<!-- end tape -->
-
-
-			<!-- begin tape -->
-			<div class="black-micro dark clear texture tape" data-url="/promotions/La_Boom_-_Burn_Engholm.mp3" style="margin-left: 20px;">
-			 <div class="rail-left"></div>
-			   <div class="rail-right"></div>
-			   <div class="rail-middle">
-			    <div class="rail-middle-outline" style="border:none;background-color:transparent">
-			     <div class="hole-1"></div>
-			     <div class="hole-2"></div>
-			     <div class="hole-3"></div>
-			     <div class="hole-4"></div>
-			     <div class="tape-pad-holder">
-			      <div class="tape-pad"></div>
-			      <div class="tape-pad-line"></div>
-			     </div>
-			    </div>
-			    <div class="screw-bm"></div>
-			   </div>
-			   <div class="screw-tl"></div>
-			   <div class="screw-tr"></div>
-			   <div class="screw-bl"></div>
-			   <div class="screw-br"></div>
-			   <div class="screw-tm"></div>
-			   <div class="left reel"></div>
-			   <div class="left spokes"></div>
-			   <div class="right reel"></div>
-			   <div class="right spokes"></div>
-			   <div class="progress-notches">
-			    <div class="n1"></div>
-			    <div class="n2"></div>
-			    <div class="n3"></div>
-			    <div class="n4"></div>
-			    <div class="n5"></div>
-			    <div class="n6"></div>
-			    <div class="n7"></div>
-			    <div class="n8"></div>
-			    <div class="n9"></div>
-			   </div>
-
-			 <div class="label">La Boom - Burn Engholm</div>
-			 <div class="aqua controls">
-			  <div class="bd">
-			   <ul>
-			    <li><a href="#" title="play/pause" class="play">&#9658;</a></li>
-			    <li><a href="#" title="rewind" class="rew">&#171;</a></li>
-			    <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
-			    <li><a href="#" title="stop" class="stop">&#9632;</a></li>
-			   </ul>
-			  </div>
-			 </div>
-			</div>
-			<!-- end tape -->
-
-
 		</div>
 	</div>
+
+	<? if (!$promotion->isExpired()): ?>
+	<div class="row-fluid">
+		<div class="span12 backgrounded">
+			<div class="span6">
+				<form method="POST" class="form-horizontal feedback">
+					<div class="control-group">
+						<label class="control-label dark" for="inputEmail">Email address: *</label>
+						<div class="controls">
+							<input disabled="disabled" readonly="readonly" id="inputEmail" name="email" type="email" value="<?= $subscription->email ?>"  placeholder="E-Mail address" />
+						</div>
+					</div>
+					<div class="control-group<?= isset($errors['firstname']) ? ' error' : '' ?>">
+						<label class="control-label" for="firstname">Firstname:</label>
+						<div class="controls">
+							<input id="firstname" type="text" name="firstname" placeholder="your firstname" value="<?= $subscription->firstname ?>" />
+							<? if (isset($errors['firstname'])): ?>
+								<span class="help-inline"><?= $errors['firstname'] ?></span>
+							<? endif ?>
+						</div>
+					</div>
+					<div class="control-group<?= isset($errors['lastname']) ? ' error' : '' ?>">
+						<label class="control-label" for="lastname">Lastname:</label>
+						<div class="controls">
+							<input id="lastname" type="text" name="lastname" placeholder="your lastname" value="<?= $subscription->lastname ?>" />
+							<? if (isset($errors['lastname'])): ?>
+								<span class="help-inline"><?= $errors['lastname'] ?></span>
+							<? endif ?>
+						</div>
+					</div>
+					<div class="control-group<?= isset($errors['alias']) ? ' error' : '' ?>">
+						<label class="control-label" for="alias">Alias: *</label>
+						<div class="controls">
+							<input id="alias" type="text" name="alias" placeholder="your alias" value="<?= $subscription->alias ?>" />
+							<? if (isset($errors['alias'])): ?>
+								<span class="help-inline"><?= $errors['alias'] ?></span>
+							<? endif ?>
+						</div>
+					</div>
+					<div class="control-group<?= isset($errors['usertype']) ? ' error' : '' ?>">
+						<label class="control-label" for="usertype">I am: *</label>
+						<div class="controls">
+							<input id="usertype" type="text" name="usertype" placeholder="DJ, radio host, booking agent etc." value="<?= $subscription->usertype ?>" />
+							<? if (isset($errors['usertype'])): ?>
+								<span class="help-inline"><?= $errors['usertype'] ?></span>
+							<? endif ?>
+						</div>
+					</div>
+					<div class="control-group<?= isset($errors['support']) ? ' error' : '' ?>">
+						<label class="control-label">Support?: * </label>
+						<div class="controls">
+							<label class="radio inline"><input type="radio" name="support" value="1"<?= $feedback->support == 1 ? ' checked="checked"' : '' ?> /> yes</label>
+							<label class="radio inline"><input type="radio" name="support" value="2"<?= $feedback->support == 2 ? ' checked="checked"' : '' ?> /> no</label>
+							<? if (isset($errors['support'])): ?>
+								<span class="help-inline"><?= $errors['support'] ?></span>
+							<? else: ?>
+								<span class="help-inline">Supporting the release means that you play it in your next DJ set, in your next radio show etc.</span>
+							<? endif ?>
+						</div>
+					</div>
+					<? if (count($promotion->tracks) > 1): ?>
+					<div class="control-group<?= isset($errors['bestTrack']) ? ' error' : '' ?>">
+						<label class="control-label" for="bestTrack">Best Track: *</label>
+						<div class="controls">
+							<select name="bestTrack">
+								<option value="">Please choose...</option>
+								<? foreach ($promotion->tracks as $track): ?>
+									<option value="<?= $track->id ?>" <?= $feedback->best_track_id == $track->id ? ' selected="selected"' : '' ?>><?= $track->title ?></option>
+								<? endforeach ?>
+							</select>
+							<? if (isset($errors['bestTrack'])): ?>
+								<span class="help-inline"><?= $errors['bestTrack'] ?></span>
+							<? endif ?>
+						</div>
+					</div>
+					<? endif ?>
+					<div class="control-group<?= isset($errors['rating']) ? ' error' : '' ?>">
+						<label class="control-label" for="rating">Overall rating: *</label>
+						<div class="controls">
+							<select name="rating">
+								<option value="">Please choose...</option>
+								<option value="1" <?= $feedback->rating == 1 ? ' selected="selected"' : '' ?>>1</option>
+								<option value="2" <?= $feedback->rating == 2 ? ' selected="selected"' : '' ?>>2</option>
+								<option value="3" <?= $feedback->rating == 3 ? ' selected="selected"' : '' ?>>3</option>
+								<option value="4" <?= $feedback->rating == 4 ? ' selected="selected"' : '' ?>>4</option>
+								<option value="5" <?= $feedback->rating == 5 ? ' selected="selected"' : '' ?>>5</option>
+								<option value="6" <?= $feedback->rating == 6 ? ' selected="selected"' : '' ?>>6</option>
+								<option value="7" <?= $feedback->rating == 7 ? ' selected="selected"' : '' ?>>7</option>
+								<option value="8" <?= $feedback->rating == 8 ? ' selected="selected"' : '' ?>>8</option>
+								<option value="9" <?= $feedback->rating == 9 ? ' selected="selected"' : '' ?>>9</option>
+								<option value="10" <?= $feedback->rating == 10 ? ' selected="selected"' : '' ?>>10</option>
+							</select>
+							<span class="help-inline">Higher value is a better rating</span>
+							<? if (isset($errors['lastname'])): ?>
+								<span class="help-inline"><?= $errors['rating'] ?></span>	
+							<? endif ?>
+						</div>
+					</div>
+					<div class="control-group<?= isset($errors['review']) ? ' error' : '' ?>">
+						<label class="control-label" for="review">Review: </label>
+						<div class="controls">
+							<textarea style="height: 150px;" id="review" name="review" placeholder="your Review"><?= $feedback->review ?></textarea>
+							<? if (isset($errors['review'])): ?>
+								<span class="help-inline"><?= $errors['review'] ?></span>
+							<? else: ?>
+								<span class="help-inline">Please write a short review about the release. Tell us what you like about it, what you criticize and what could be done better. Note that we may use your feedback in our marketing.</span>
+							<? endif ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<small>Fields marked with a star (*) are mandatory.</small>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<input class="btn btn-primary" type="submit" value="Send feedback" />
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="span6">
+
+				<?= $promotion->widget ?>
+
+				<?/* foreach ($promotion->tracks as $track): ?>
+
+					<!-- begin tape -->
+					<div class="black-micro dark clear texture tape" data-url="<?= $track->link ?>" style="margin-left: 20px;">
+					 <div class="rail-left"></div>
+					   <div class="rail-right"></div>
+					   <div class="rail-middle">
+					    <div class="rail-middle-outline" style="border:none;background-color:transparent">
+					     <div class="hole-1"></div>
+					     <div class="hole-2"></div>
+					     <div class="hole-3"></div>
+					     <div class="hole-4"></div>
+					     <div class="tape-pad-holder">
+					      <div class="tape-pad"></div>
+					      <div class="tape-pad-line"></div>
+					     </div>
+					    </div>
+					    <div class="screw-bm"></div>
+					   </div>
+					   <div class="screw-tl"></div>
+					   <div class="screw-tr"></div>
+					   <div class="screw-bl"></div>
+					   <div class="screw-br"></div>
+					   <div class="screw-tm"></div>
+					   <div class="left reel"></div>
+					   <div class="left spokes"></div>
+					   <div class="right reel"></div>
+					   <div class="right spokes"></div>
+					   <div class="progress-notches">
+					    <div class="n1"></div>
+					    <div class="n2"></div>
+					    <div class="n3"></div>
+					    <div class="n4"></div>
+					    <div class="n5"></div>
+					    <div class="n6"></div>
+					    <div class="n7"></div>
+					    <div class="n8"></div>
+					    <div class="n9"></div>
+					   </div>
+
+					 <div class="label"><?= $promotion->release->artist->name ?> - <?= $track->title ?></div>
+					 <div class="aqua controls">
+					  <div class="bd">
+					   <ul>
+					    <li><a href="#" title="play/pause" class="play">&#9658;</a></li>
+					    <li><a href="#" title="rewind" class="rew">&#171;</a></li>
+					    <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
+					    <li><a href="#" title="stop" class="stop">&#9632;</a></li>
+					   </ul>
+					  </div>
+					 </div>
+					</div>
+					<!-- end tape -->
+
+					<br/><br/>	
+
+				<? endforeach */?>			
+
+			</div>
+		</div>
+	</div>
+	<? endif ?>
 </div>
 
 <script src="/js/soundmanager2-nodebug-jsmin.js"></script>
 <script src="/js/cassette-tape-ui.js"></script>
-
-<?/*<script src="/js/soundmanager2.js"></script>
-<script>
-soundManager.setup({
-  url: '/sm2/',
-  flashVersion: 9, // optional: shiny features (default = 8)
-  preferFlash: false,
-  onready: function() {
-    var mySound = soundManager.createSound({
-      id: 'aSound',
-      url: '/promotions/spekta_cool_air_preview.mp3'
-    });
-    mySound.play();
-  }
-});
-</script>*/?>

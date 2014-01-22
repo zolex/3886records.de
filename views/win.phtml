@@ -1,0 +1,128 @@
+<?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Admin')))) ?>
+<div class="container">
+    <div class="hero-unit">
+        <h1>Gewinne freien Eintritt!</h1>
+        <br/>
+        <div class="row">
+	        <div class="span7">
+		        <p id="info">
+		        	<strong><a target="_blank" href="https://www.facebook.com/events/198446550360373">°★° Psy-Forge °★° Spekta's Birthday °★°</a></strong><br/>
+		        	<br/>
+		        	<strong>5 Mal freier Eintritt für die Psy-Forge am 24.1.2014 zu gewinnen!</strong><br/>
+		        	<strong>Um an dem Gewinnspiel Teilzunehmen führe folgende Schritte aus:</strong>
+		        </p>
+				<br/>
+		        <div id="rules">
+		        <p>
+		        	<b>1.</b> Verbinde Dich mit unserer Facebook App falls Du dies noch nicht getan hast.<br/>
+		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Wenn Du schon verbunden bist öffnet sich ein Fester, geht aber sofort wieder zu, alles ist in Ordnung)</div>
+		        	<div style="margin-left: 15px;"><fb:login-button show-faces="false" width="200" max-rows="1">Jetzt verbinden</fb:login-button></div>
+		        </p>
+		        <p>
+		        	<b>2.</b> Werde Fan unserer Facebook Seite mit einem Klick auf den folgenden Button:<br/>
+		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Du kannst unsere <a target="_blank" href="http://www.facebook.com/3886records">Facebook-Seite</a> auch direkt besuchen und dort auf gefällt mir klicken. Wenn Du bereits Fan bist, kannst Du diesen Schritt überspringen).</div>
+		        	<div class="fb-like-box" data-href="http://www.facebook.com/3886records" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
+		        </p>
+		        <p>
+		        	<b>3.</b> Teile dieses Gewinnspiel bei Facebook öffentlich mit einem Klick auf den folgenden Button:<br/>
+		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Wähle im sich öffnenden Fester unten öffentlich bzw. public aus, damit wir auch nachvollziehen können dass Du das Gewinnspiel geteilt hast. Du kannst beliebig oft teilnehmen, Deine Chancen erhöhen sich durch öfteres Teilen!)</div>
+		        	<div style="margin-left: 15px;"><img id="sharebutton" alt="Teilen" titel="Auf Facebook teilen" src="/img/facebook-teilen.png" border="0" style="cursor: pointer; margin-top: 10px;" /></div>
+		        </p>
+		        <br/>
+		        <p>Nur wenn Du alle drei Schritte befolgst und Deine Teilnahme nach dem letzten Schritt bestätigt wird nimmst Du am Gewinnspiel teil. Bekommst Du diese Nachricht nicht, versuche es bitte nocheinmal.</p>
+				</div>
+		    </div>
+		    <div class="span4">
+		    	<a target="_blank" href="https://www.facebook.com/events/198446550360373"><img src="/img/psy-forge.jpg" alt="Psy-Forge" border="0"></a>
+		    </div>
+		</div>
+
+
+        
+
+        <script>
+		
+        $(document).ready(function() {
+		
+			$('#sharebutton').click(function() {
+
+				if (typeof window.fbAuthResponse == 'undefined' || typeof window.fbAuthResponse.id == 'undefined') {
+
+					alert("Bitte erst Schritt 1 ausführen!");
+					return;
+				}
+
+	        	FB.ui(
+				  {
+				    method: 'feed',
+				    display: 'popup',
+				    name: 'Gewinne freien Eintritt für die Psy-Forge am 24.1.',
+				    link: 'http://www.3886records.de/psy-forge-gewinnspiel',
+				    picture: 'http://3886records.de/img/psy-forge.jpg',
+				    caption: '3886records Gewinnspiel',
+				    description: 'Für den 24. Januar in der Klangstation gibt es 5 Mal freien Eintritt zu gewinnen! Erlebe internationale Top Acts wie Necmi, Nitro & Glycerine, Nayana She, Spectral Vibration, Spekta, Maskay und HighQ.',
+				  },
+				  function(response) {
+				    if (response && response.post_id) {
+
+						var location = '';
+						if (typeof window.fbAuthResponse.location == 'object' && typeof window.fbAuthResponse.location.name != 'undefined') {
+						
+							location = window.fbAuthResponse.location.name;
+						}
+						
+				    	$.ajax({
+				    		async: true,
+				    		type: 'POST',
+				    		url: '/psy-forge-gewinnspiel',
+				    		data: {
+				    			firstname: window.fbAuthResponse.first_name,
+				    			lastname: window.fbAuthResponse.last_name,
+				    			name:window.fbAuthResponse.name,
+				    			fb_id: window.fbAuthResponse.id,
+				    			link: window.fbAuthResponse.link,
+				    			location: location,
+				    			game: 'psyforge'
+							},
+				    		dataType: 'json',
+				    		success: function(json) {
+
+				    			alert(json.message);
+				    		},
+				    		error: function() {
+
+				    			console.log("wtf...");
+				    		}
+				    	});
+				    } else {
+
+				    	alert("Doch keine Lust? :P");
+				    }
+				  }
+				);
+			});
+		});
+
+        </script>
+		
+
+		<br/>
+
+		<a style="color: #222; font-weight: bold; font-size: 9px; text-decoration: none;" href="javascript: $('#teilnahmebedingungen').show();">Teilnahmebedingungen anzeigen</a>
+		<div id="teilnahmebedingungen" style="color: #000; font-size: 11px; display: none;">
+			<ol>
+				<li>Die Teilnahme ist kostenlos und unabhängig von dem Erwerb von Waren oder Dienstleistungen. Mit der Teilnahme an dem Gewinnspiel akzeptiert der Benutzer diese Teilnahmebedingungen.</li>
+				<li>Teilnahmeberechtigt sind Personen mit Wohnsitz in Deutschland, die bei der Teilnahme mindestens 18 Jahre alt sind. Angestellte von 3886records und andere an der Konzeption und Umsetzung dieses Gewinnspiels beteiligte Personen sind von der Teilnahme ausgeschlossen.</li>
+				<li>Es werden nur die im Gewinnspiel näher beschriebenen Preise vergeben. Die Vergabe der Preise findet nur unter den Teilnehmern statt, die eigenhändig sämtliche für die Teilnahme an dem Gewinnspiel notwendigen Schritt nachweislich durchgeführt haben.</li>
+				<li>Der Gewinner eines Preises wird zeitnah benachrichtigt. Der Gewinner hat den Erhalt der Gewinnbenachrichtigung unverzüglich zu bestätigen und die für den Erhalt des Gewinnes notwendigen Angaben zu machen. Andernfalls ist 3886records berechtigt, einen neuen Gewinner gemäß Auslosung zu bestimmen. Mit der Annahme des Preises willigt der Gewinner ein, dass sein Name von 3886records und mit dieser verbundenen Unternehmen zu Werbezwecken ohne Vergütung verwendet werden darf.</li>
+				<li>Eine Barauszahlung der Sachwerte oder Tausch der Gewinne ist nicht möglich. Die Preise sind nicht übertragbar. Der Gewinner akzeptiert notwendige Änderungen des Gewinns, die durch andere außerhalb des Einflussbereichs der am Gewinnspiel beteiligten Firmen liegenden Faktoren bedingt sind.</li>
+				<li>Die Entscheidungen von 3886records sind endgültig. Diesbezügliche Anfragen können nicht beantwortet werden. Wir behalten uns das Recht vor, das Gewinnspiel ganz oder zeitweise auszusetzen, wenn irgendwelche Schwierigkeiten auftreten, die die Integrität des Gewinnspiels gefährden.</li>
+				<li>Wir behalten uns das Recht vor, diese Teilnahmebedingungen auch unangekündigt zu ändern.</li>
+				<li>Jegliche Schadenersatzverpflichtung aus oder im Zusammenhang mit dem Gewinnspiel, gleich aus welchem Rechtsgrund, ist, soweit gesetzlich zulässig, auf Fälle von Vorsatz oder grober Fahrlässigkeit beschränkt.</li>
+				<li>Aus technischen Gründen sind Cookies für das Gewinnspiel notwendig. Eine Teilnahme ohne aktivierte Cookies ist leider nicht möglich.</li>
+				<li>Die bei diesem Gewinnspiel von Ihnen gemachten Angaben können von zum Zwecke der Werbung für eigene Produkte gespeichert und genutzt werden. Eine Weitergabe an Dritte findet nicht statt. Die Einwilligung zur Nutzung Ihrer personenbezogenen Daten können Sie jederzeit durch eine eMail an info@3886records.de widerrufen.</li>
+				<li>Der Rechtsweg ist ausgeschlossen.</li>
+			</ol>
+		</div>
+    </div>
+</div>
