@@ -81,7 +81,6 @@ class Promotion extends ControllerAction
 			$dp->savePromotionFeedback($feedback);
 		}
 
-<<<<<<< HEAD
 		if ($feedback->updated_at) {
 
 			header('Location: /promotion/'. $promotion->key . '/'. $subscription->hash . '/thanks');
@@ -130,18 +129,13 @@ class Promotion extends ControllerAction
 			}
 		}
 
-=======
->>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 		return array(
 			'metaTitle' => $promotion->title,
 			'title' => $promotion->release->title,
 			'promotion' => $promotion,
 			'subscription' => $subscription,
-<<<<<<< HEAD
 			'feedback' => $feedback,
 			'errors' => $messages,
-=======
->>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 			'breadcrumb' => array(
 				(object)array(
 					'url' => '/',
@@ -179,15 +173,7 @@ class Promotion extends ControllerAction
 				'image3' => '/img/email/'. $promotion->image3,
 				'like' => '/img/email/like-glyph.png',
 				'tweet' => '/img/email/tweet-glyph.png',
-<<<<<<< HEAD
-				
 			),
-=======
-				'forward' => '/img/email/forward-glyph.png',
-				
-			),
-			'test' => 'Lorem Ipsum',
->>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 		));
 	
 		return array(
@@ -195,7 +181,6 @@ class Promotion extends ControllerAction
 			'content' => $body,
 		);
 	}
-<<<<<<< HEAD
 
 	public function download($request) {
 
@@ -244,6 +229,4 @@ class Promotion extends ControllerAction
 		readfile($promotion->download);
 		exit;
 	}
-=======
->>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 }

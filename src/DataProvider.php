@@ -630,11 +630,7 @@ class DataProvider
 
 		if ($feedback->id) {
 
-<<<<<<< HEAD
 			$stmt = $this->dbh->prepare("UPDATE promotion_feedback SET downloads = :downloads, promotion_id = :promotion_id, subscription_id = :subscription_id, viewed = :viewed, support = :support, rating = :rating, review = :review, best_track_id = :best_track_id, updated_at = :updated_at WHERE id = :id LIMIT 1;");
-=======
-			$stmt = $this->dbh->prepare("UPDATE promotion_feedback SET promotion_id = :promotion_id, subscription_id = :subscription_id, viewed = :viewed, support = :support, rating = :rating, review = :review, best_track_id = :best_track_id WHERE id = :id LIMIT 1;");
->>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 			$stmt->bindValue('id', (integer)$feedback->id);
 			$stmt->bindValue('promotion_id', $feedback->promotion->id);
 			$stmt->bindValue('subscription_id', $feedback->subscription->id);
@@ -643,11 +639,8 @@ class DataProvider
 			$stmt->bindValue('rating', $feedback->rating);
 			$stmt->bindValue('review', $feedback->review);
 			$stmt->bindValue('best_track_id', $feedback->best_track_id);
-<<<<<<< HEAD
 			$stmt->bindValue('updated_at', $feedback->updated_at);
 			$stmt->bindValue('downloads', $feedback->downloads);
-=======
->>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 
 			if (!$stmt->execute()) {
 		
@@ -657,11 +650,7 @@ class DataProvider
 
 		} else {
 
-<<<<<<< HEAD
 			$stmt = $this->dbh->prepare("INSERT INTO promotion_feedback (downloads, promotion_id, subscription_id, viewed, support, rating, review, best_track_id, created_at) VALUES(0, :promotion_id, :subscription_id, :viewed, :support, :rating, :review, :best_track_id, NOW())");
-=======
-			$stmt = $this->dbh->prepare("INSERT INTO promotion_feedback (promotion_id, subscription_id, viewed, support, rating, review, best_track_id) VALUES(:promotion_id, :subscription_id, :viewed, :support, :rating, :review, :best_track_id)");
->>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 			$stmt->bindValue('promotion_id', $feedback->promotion->id);
 			$stmt->bindValue('subscription_id', $feedback->subscription->id);
 			$stmt->bindValue('support', $feedback->support);
@@ -679,8 +668,7 @@ class DataProvider
 			$feedback->id = $this->dbh->lastInsertId(); 
 		}
 	}
-<<<<<<< HEAD
-	
+
 	public function trackQrCodeVisit($info) {
 	
 		$stmt = $this->dbh->prepare("INSERT INTO qrcode_visit (info, ip, client, created_at) VALUES(:info, :ip, :client, NOW());");
@@ -707,6 +695,4 @@ class DataProvider
 			throw new \Exception($errorInfo[2], $errorInfo[1]);
 		}
 	}
-=======
->>>>>>> 1945c2ee25995977526604b77d2ad5e745cfb2ce
 }
