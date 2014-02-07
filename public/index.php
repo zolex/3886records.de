@@ -4,7 +4,6 @@ chdir(dirname(dirname(__FILE__)));
 $config = (require 'config.php');
 require 'vendor/autoload.php';
 
-$debug = true;
 $request = new Request($config);
 
 $dbh = new PDO('mysql:host='. $config['db']['host'] .';port='. $config['db']['port'] .';dbname='. $config['db']['name'] .';charset=utf8', $config['db']['user'], $config['db']['password']);
@@ -20,17 +19,14 @@ try {
 
 	$content = ViewLoader::load($template, $params);
 	
-} catch (Exception $e) {
+} catch (\Exception $e) {
 
-	if (false === $debug) {
-
-		header("HTTP/1.0 404 Not Found");
-		$content = ViewLoader::load('404', array('route' => $request->getRoute()));
-		
-	} else {
-	
-		throw $e;
-	}
+	header("HTTP/1.0 404 Not Found");
+	$content = ViewLoader::load('404', array(
+		'route' => $request->getRoute(),
+		'exception' => $e,
+		'displayException' => $config['debug'],
+	));
 }
 
 if ($request->isXmlHttpRequest()) {
@@ -63,6 +59,7 @@ $navigation = ViewLoader::load('navigation', array(
 	'genres' => $dataProvider->getGenres(),
 	'labels' => $dataProvider->getLabels(),
 ));
+
 
 echo ViewLoader::load($layout, array_merge($params, array(
     'navigation' => $navigation,

@@ -1,8 +1,5 @@
 <?php
 
-ini_set('error_reporting', -1);
-ini_set('display_errors', true);
-
 define('DS', DIRECTORY_SEPARATOR);
 
 function __autoload($className) {
@@ -18,6 +15,7 @@ date_default_timezone_set('Europe/Berlin');
 
 return array(
 
+    'debug' => (@include 'shared/debug.php'),
     'db' => (@include 'shared/database.php'),
 	'smtp' => (@include 'shared/smtp.php'),
     'routes' => array(

@@ -1,6 +1,13 @@
 <div class="container">
     <div class="hero-unit">
         <h1>something went wrong...</h1>
-        <p><strong>404</strong> - We're sorry but we can not find any content at '<?= $route ?>'.</p>
+        <? if (true === $displayException): ?>
+        	<p><strong><?= $exception->getMessage() ?></strong></p>
+        	<? foreach ($exception->getTrace() as $step): ?>
+        	<p style="font-size: 13px; font-family: sans;"><?= $step['file'] ?>:<?= $step['line'] ?> - <b><?= $step['class'] ?><?= $step['type'] ?><?= $step['function'] ?>()</b></p>
+        	<? endforeach ?>
+    	<? else: ?>
+        	<p><strong>404</strong> - We're sorry but we can not find any content at '<?= $route ?>'.</p>
+        <? endif ?>
     </div>
 </div>
