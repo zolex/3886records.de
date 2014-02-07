@@ -2,8 +2,9 @@
     <div class="hero-unit">
         <h1>something went wrong...</h1>
         <? if (true === $displayException): ?>
-        	<p><strong><?= $exception->getMessage() ?></strong></p>
+        	<p><strong>EXCEPTION: <?= $exception->getMessage() ?></strong></p>
         	<? foreach ($exception->getTrace() as $step): ?>
+        	<span>Stack Trace</span>
         	<p style="font-size: 13px; font-family: sans;"><?= $step['file'] ?>:<?= $step['line'] ?> - <b><?= $step['class'] ?><?= $step['type'] ?><?= $step['function'] ?>()</b></p>
         	<? endforeach ?>
     	<? else: ?>
