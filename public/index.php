@@ -49,6 +49,12 @@ if (isset($params['noLayout']) && true === $params['noLayout']) {
 	exit;
 }
 
+$layout = 'layout';
+if (isset($params['layout'])) {
+
+	$layout = $params['layout'];
+}
+
 $dataProvider = DataProvider::getInstance();
 
 $navigation = ViewLoader::load('navigation', array(
@@ -58,7 +64,7 @@ $navigation = ViewLoader::load('navigation', array(
 	'labels' => $dataProvider->getLabels(),
 ));
 
-echo ViewLoader::load('layout', array_merge($params, array(
+echo ViewLoader::load($layout, array_merge($params, array(
     'navigation' => $navigation,
     'content' => $content
 )));
