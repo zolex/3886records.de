@@ -276,7 +276,7 @@ class DataProvider
 			INNER JOIN artists a ON a.id = r.artist_id
 			INNER JOIN genres g ON g.id = r.genre_id
 			LEFT JOIN release_links l ON l.release_id = r.id
-			WHERE r.date < CURRENT_DATE()
+			WHERE r.date <= CURRENT_DATE()
 			  AND r.visible = 1
 			ORDER BY r.date DESC";
 
@@ -295,7 +295,7 @@ class DataProvider
 			INNER JOIN artists a ON a.id = r.artist_id
 			INNER JOIN genres g ON g.id = r.genre_id
 			LEFT JOIN release_links l ON l.release_id = r.id
-			WHERE (r.date >= CURRENT_DATE() OR r.date IS NULL)
+			WHERE (r.date > CURRENT_DATE() OR r.date IS NULL)
 			  AND r.visible = 1
 			ORDER BY IF(r.date IS NULL, 1, 0) ASC, r.date ASC";
 		}

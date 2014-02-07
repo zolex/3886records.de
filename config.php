@@ -121,5 +121,9 @@ return array(
             'template' => 'win',
             'controller' => array('Controller\Home', 'win')
         ),
+        '^/sales/?$' => array(
+            'template' => 'sales_report',
+            'controller' => array('Controller\Sales', 'index')
+        ),
     ),
 );
