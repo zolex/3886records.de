@@ -33,11 +33,11 @@ while ($row = $stmt->fetchObject()) {
 		'promotion' => $promotion,
 		'subscription' => $subscription,
 		'images' => (object)array(
-			'banner' => $message->embed(Swift_Image::fromPath('views/email/images/'. $promotion->banner)),
-			'image2' => $message->embed(Swift_Image::fromPath('views/email/images/'. $promotion->image2)),
-			'image3' => $message->embed(Swift_Image::fromPath('views/email/images/'. $promotion->image3)),
-			'like' => $message->embed(Swift_Image::fromPath('views/email/images/like-glyph.png')),
-			'tweet' => $message->embed(Swift_Image::fromPath('views/email/images/tweet-glyph.png')),
+			'banner' => $message->embed(Swift_Image::fromPath('public/img/email/'. $promotion->banner)),
+			'image2' => $message->embed(Swift_Image::fromPath('public/img/email/'. $promotion->image2)),
+			'image3' => $message->embed(Swift_Image::fromPath('public/img/email/'. $promotion->image3)),
+			'like' => $message->embed(Swift_Image::fromPath('public/img/email/like-glyph.png')),
+			'tweet' => $message->embed(Swift_Image::fromPath('public/img/email/tweet-glyph.png')),
 		
 		),
 	));
