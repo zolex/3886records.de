@@ -15,7 +15,7 @@ date_default_timezone_set('Europe/Berlin');
 
 return array(
 
-    'debug' => (@include 'shared/debug.php'),
+    'debug' => true,
     'db' => (@include 'shared/database.php'),
 	'smtp' => (@include 'shared/smtp.php'),
     'routes' => array(
@@ -34,8 +34,16 @@ return array(
         '^/artists/?$' => array(
             'template' => 'artists',
             'controller' => array('Controller\Artist', 'overview')
+        ),
+        '^/djs/?$' => array(
+            'template' => 'artists',
+            'controller' => array('Controller\Artist', 'djs')
         ),        
 		'^/artist/(?P<artist>[^/]+)/?$' => array(
+            'template' => 'artist',
+            'controller' => array('Controller\Artist', 'details')
+        ),
+        '^/dj/(?P<artist>[^/]+)/?$' => array(
             'template' => 'artist',
             'controller' => array('Controller\Artist', 'details')
         ),

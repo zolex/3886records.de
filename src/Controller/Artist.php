@@ -10,6 +10,7 @@ class Artist extends ControllerAction
 	
 		return array(
 			'artists' => $this->getDataProvider()->getArtists(),
+			'headline' => 'Artists Overview',
 			'breadcrumb' => array(
 				(object)array(
 					'url' => '/',
@@ -18,6 +19,24 @@ class Artist extends ControllerAction
 				(object)array(
 					'active' => true,
 					'title' => 'Artists',
+				),
+			),
+		);
+	}
+
+	public function djs($request) {
+	
+		return array(
+			'artists' => $this->getDataProvider()->getDJs(),
+			'headline' => 'DJs Overview',
+			'breadcrumb' => array(
+				(object)array(
+					'url' => '/',
+					'title' => 'Home',
+				),
+				(object)array(
+					'active' => true,
+					'title' => 'DJs',
 				),
 			),
 		);

@@ -241,7 +241,12 @@ class DataProvider
 	
 	public function getArtists() {
 	
-		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE visible = 1 ORDER BY position");
+		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 0 AND visible = 1 ORDER BY name ASC");
+	}
+
+	public function getDJs() {
+	
+		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 1 ORDER BY name ASC");
 	}
 
 	public function getGenre($name) {

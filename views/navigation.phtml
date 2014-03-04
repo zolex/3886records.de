@@ -1,6 +1,10 @@
 <ul class="nav pull-right">
+  
   <li class="divider-vertical"></li>
+  
   <li><a href="/events" data-method="async"><span class="current"><i class="icon-calendar"></i></span> Events</a></li>
+  
+  <?php /*
   <li class="divider-vertical"></li>
   <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-signal"></i></span> Releases <b class="caret"></b></a>
     <ul class="dropdown-menu">
@@ -9,6 +13,30 @@
     </ul>
   </li>
   <li class="divider-vertical"></li>
+  */ ?>
+
+  <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-star"></i></span> Artists <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li><a data-method="async" href="/artists">Artist overview</a></li>
+      <li class="divider"></li>
+    <? foreach ($artists as $artist): ?>
+    <li><a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a></li>
+    <? endforeach ?>
+    </ul>
+  </li>
+  <li class="divider-vertical"></li>
+
+  <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-star"></i></span> DJs <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+      <li><a data-method="async" href="/djs">DJ overview</a></li>
+      <li class="divider"></li>
+    <? foreach ($djs as $dj): ?>
+    <li><a data-method="async" href="/dj/<?= $dj->key ?>"><?= $dj->name ?></a></li>
+    <? endforeach ?>
+    </ul>
+  </li>
+  <li class="divider-vertical"></li>
+
   <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-music"></i></span> Genres <b class="caret"></b></a>
     <ul class="dropdown-menu">
 	  <? foreach ($genres as $genre): ?>
@@ -17,16 +45,7 @@
     </ul>
   </li>
   <li class="divider-vertical"></li>
-  <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-star"></i></span> Artists <b class="caret"></b></a>
-    <ul class="dropdown-menu">
-      <li><a data-method="async" href="/artists">Artist overview</a></li>
-      <li class="divider"></li>
-	  <? foreach ($artists as $artist): ?>
-		<li><a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a></li>
-	  <? endforeach ?>
-    </ul>
-  </li>
-  <li class="divider-vertical"></li>
+
   <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-headphones"></i></span> Labels <b class="caret"></b></a>
     <ul class="dropdown-menu">
 	  <? foreach ($labels as $label): ?>
@@ -34,4 +53,5 @@
 	  <? endforeach ?>
     </ul>
   </li>
+
 </ul>
