@@ -12,13 +12,11 @@
 				</li>
 			</ul>
 		</div>
-		<? if (!empty($artist->longInfo)): ?>
-			<div class="span7">
-				<p><?= $artist->longInfo ?></p>
-			</div>
-		<? endif ?>
+		<div class="span7" style="float: left">	
+			<p><?= $artist->longInfo ?></p>
+		</div>
 		<? if (count($artist->links)): ?>
-			<ul class="social">
+			<ul class="social" style="width: 34px; float: right;">
 			<? foreach ($artist->links as $link): ?>
 				<li><a target="_blank" href="<?= $link->link ?>"><img alt="<?= ucfirst($link->type) ?>" title="<?= ucfirst($link->type) ?>" src="/img/social/<?= $link->type ?>.png" border="0" /></a></li>
 			<? endforeach ?>
