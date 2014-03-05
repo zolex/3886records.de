@@ -110,6 +110,11 @@ $(document).ready(function () {
 	});
 });
 
+window.onpopstate = function(e) {
+
+	gotoPage(window.location.href, false);
+};
+
 var gotoPage = function(target, pushState) {
 
 	if (target.match(/\?/))
