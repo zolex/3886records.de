@@ -61,4 +61,39 @@ class Home extends ControllerAction
 			'facebookImage' => "http://www.3886records.de/img/psy-forge.jpg",
 		);
 	}
+	
+	public function sweepstake($request) {
+
+		$dp = DataProvider::getInstance();
+
+		if ($request->isPost()) {
+
+			$dp->insertSweepstake($_POST);
+			echo json_encode(array('message' => 'Danke für Deine Teilnahme!'));
+			die();
+		}
+
+		$sweepstake = null;
+		if ($party = $request->getParam('party')) {
+		
+			$sweepstake = $dp->getSweepstake($party);
+		
+		} else {
+		
+			$sweepstake = $dp->getSweepstake('psy-forge');
+		}
+		
+		if (!$sweepstake) {
+		
+			// not existant
+		}
+		
+		return array(
+			'metaTitle' => $sweepstake->info,
+			'metaDescription' => $sweepstake->description,
+			'facebookDescription' => $sweepstake->description,
+			'facebookImage' => $sweepstake->image,
+			'sweepstake' => $sweepstake,
+		);
+	}
 }

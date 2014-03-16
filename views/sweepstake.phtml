@@ -1,45 +1,41 @@
 <?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Gewinnspiel')))) ?>
 <div class="container">
     <div class="hero-unit">
-        <h1>Gewinne freien Eintritt!</h1>
+        <h1><?= $sweepstake->headline ?></h1>
         <br/>
         <div class="row">
 	        <div class="span7">
 				
-				<? if (time() > strtotime('2014-01-23 23:00:00')): ?>
+				<? if (time() > strtotime($sweepstake->validUntil)): ?>
 				
 				 <p id="info">
-		        	<strong><a title="zum Event bei Facebook" target="_blank" href="https://www.facebook.com/events/198446550360373">°★° Psy-Forge °★° Spekta's Birthday °★°</a></strong><br/>
+		        	<strong><a title="zum Event bei Facebook" target="_blank" href="<?= $sweepstake->facebookLink ?>"><?= $sweepstake->eventName ?></a></strong><br/>
 		        	<br/>
-		        	<strong>5 Mal freier Eintritt für die Psy-Forge am 24.1.2014 zu gewinnen!</strong><br/>
+		        	<strong><?= $sweepstake->info ?></strong><br/>
 					<span style="line-height: 19px; font-size: 12px; color: #000;">(Teilnahmeschluss: Donnerstag, 23.1.2014, 23:00 Uhr).</span>
 		        </p>
 				<p>
 					<strong>Die Gewinner stehen fest. Viel Spaß bei freiem Eintritt wünschen wir:</strong>
 					<ul style="color: #000;">
-						<li>Acid Junk</li>
-						<li>Jacky Mit Cola</li>
-						<li>Jason Kramer</li>
-						<li>Pitu Brazil</li>
-						<li>Philipp	Psytel</li>
+
 					</ul>
 				</p>
 				
 				<? else: ?>
 
 		        <p id="info">
-		        	<strong><a target="_blank" href="https://www.facebook.com/events/198446550360373">°★° Psy-Forge °★° Spekta's Birthday °★°</a></strong><br/>
+		        	<strong><a title="zum Event bei Facebook" target="_blank" href="<?= $sweepstake->facebookLink ?>"><?= $sweepstake->eventName ?></a></strong><br/>
 		        	<br/>
-		        	<strong>5 Mal freier Eintritt für die Psy-Forge am 24.1.2014 zu gewinnen!</strong><br/>
+		        	<strong><?= $sweepstake->info ?></strong><br/>
 		        	<strong>Um an dem Gewinnspiel Teilzunehmen führe folgende Schritte aus:</strong><br/>
-					<span style="line-height: 19px; font-size: 12px; color: #000;">(Teilnahmeschluss: Donnerstag, 23.1.2014, 23:00 Uhr).</span>
+					<span style="line-height: 19px; font-size: 12px; color: #000;">(Teilnahmeschluss: <?= date('d.m.Y, H:i', strtotime($sweepstake->validUntil)) ?>)</span>
 		        </p>
 				<br/>
 		        <div id="rules">
 		        <p>
 		        	<b>1.</b> Verbinde Dich mit unserer Facebook App falls Du dies noch nicht getan hast.<br/>
 		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Wenn Du schon verbunden bist öffnet sich ein Fester, geht aber sofort wieder zu, alles ist in Ordnung)</div>
-		        	<div style="margin-left: 15px;"><fb:login-button show-faces="false" width="200" max-rows="1">Jetzt verbinden</fb:login-button></div>
+		        	<div style="margin-left: 15px;"><fb:login-button max_rows="1" size="medium" show_faces="false" auto_logout_link="false"></fb:login-button></div>
 		        </p>
 		        <p>
 		        	<b>2.</b> Werde Fan unserer Facebook Seite mit einem Klick auf den folgenden Button:<br/>
@@ -58,7 +54,7 @@
 				<? endif ?>
 		    </div>
 		    <div class="span4">
-		    	<a target="_blank" href="https://www.facebook.com/events/198446550360373" titel="zum Event bei Facebook"><img src="/img/psy-forge.jpg" alt="Psy-Forge" border="0"></a>
+				<a title="zum Event bei Facebook" target="_blank" href="<?= $sweepstake->facebookLink ?>"><img src="<?= $sweepstake->image ?>" alt="<?= $sweepstake->eventName ?>" border="0"></a>
 		    </div>
 		</div>
 
@@ -81,11 +77,11 @@
 				  {
 				    method: 'feed',
 				    display: 'popup',
-				    name: 'Gewinne freien Eintritt für die Psy-Forge am 24.1.',
-				    link: 'http://www.3886records.de/psy-forge-gewinnspiel',
-				    picture: 'http://3886records.de/img/psy-forge.jpg',
+				    name: '<?= $sweepstake->info ?>',
+				    link: 'http://www.3886records.de/gewinnspiel/<?= $sweepstake->party ?>',
+				    picture: '<?= $sweepstake->image ?>',
 				    caption: '3886records Gewinnspiel',
-				    description: 'Für den 24. Januar in der Klangstation gibt es 5 Mal freien Eintritt zu gewinnen! Erlebe internationale Top Acts wie Necmi, Nitro & Glycerine, Nayana She, Spectral Vibration, Spekta, Maskay und HighQ.',
+				    description: '<?= $sweepstake->description ?>',
 				  },
 				  function(response) {
 				    if (response && response.post_id) {
@@ -99,7 +95,7 @@
 				    	$.ajax({
 				    		async: true,
 				    		type: 'POST',
-				    		url: '/psy-forge-gewinnspiel',
+				    		url: '/gewinnspiel/<?= $sweepstake->party ?>',
 				    		data: {
 				    			firstname: window.fbAuthResponse.first_name,
 				    			lastname: window.fbAuthResponse.last_name,
@@ -107,7 +103,7 @@
 				    			fb_id: window.fbAuthResponse.id,
 				    			link: window.fbAuthResponse.link,
 				    			location: location,
-				    			game: 'psyforge'
+				    			game: '<?= $sweepstake->party ?>'
 							},
 				    		dataType: 'json',
 				    		success: function(json) {
@@ -146,7 +142,7 @@
 				<li>Jegliche Schadenersatzverpflichtung aus oder im Zusammenhang mit dem Gewinnspiel, gleich aus welchem Rechtsgrund, ist, soweit gesetzlich zulässig, auf Fälle von Vorsatz oder grober Fahrlässigkeit beschränkt.</li>
 				<li>Aus technischen Gründen sind Cookies für das Gewinnspiel notwendig. Eine Teilnahme ohne aktivierte Cookies ist leider nicht möglich.</li>
 				<li>Die bei diesem Gewinnspiel von Ihnen gemachten Angaben können von zum Zwecke der Werbung für eigene Produkte gespeichert und genutzt werden. Eine Weitergabe an Dritte findet nicht statt. Die Einwilligung zur Nutzung Ihrer personenbezogenen Daten können Sie jederzeit durch eine eMail an info@3886records.de widerrufen.</li>
-				<li>Teilnahmeschluss ist Donnerstag der 23.1.2014 um 23:00 Uhr</li>
+				<li>Teilnahmeschluss ist <?= date('d.m.Y, H:i', strtotime($sweepstake->validUntil)) ?></li>
 				<li>Der Rechtsweg ist ausgeschlossen.</li>
 			</ol>
 		</div>

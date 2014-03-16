@@ -127,6 +127,10 @@ return array(
             'template' => 'win',
             'controller' => array('Controller\Home', 'win')
         ),
+		'^/gewinnspiel/(?P<party>[^/]+)/?$' => array(
+            'template' => 'sweepstake',
+            'controller' => array('Controller\Home', 'sweepstake')
+        ),
         '^/sales/?$' => array(
             'template' => 'sales_report',
             'controller' => array('Controller\Sales', 'index')
