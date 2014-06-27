@@ -177,6 +177,46 @@ class DataProvider
 		return $label;
 	}	
 	
+	public function getLabelByName($name) {
+	
+		$query = "SELECT * FROM labels WHERE name = :name";
+		$stmt = $this->getDbh()->prepare($query);
+		$stmt->bindValue('name', $name);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$label = null;
+		if ($row = $stmt->fetchObject()) {
+		
+			$label = (new \Models\Label)->fromObject($row);
+		}
+		
+		return $label;
+	}	
+	
+	public function getSalesReportByQuarter($quarter) {
+	
+		$query = "SELECT * FROM sales_reports WHERE quarter = :quarter";
+		$stmt = $this->getDbh()->prepare($query);
+		$stmt->bindValue('quarter', $quarter);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$report = null;
+		if ($row = $stmt->fetchObject()) {
+		
+			$report = (new \Models\SalesReport)->fromObject($row);
+		}
+		
+		return $report;
+	}
+	
 	public function getArtist($name) {
 	
 		$query = "SELECT a.*,
@@ -234,6 +274,46 @@ class DataProvider
 					$artist->events[$row->event_id] = (new \Models\Event)->fromObject($row, 'event_');
 				}
 			}
+		}
+
+		return $artist;
+	}
+	
+	public function getArtistByName($name) {
+	
+		$query = "SELECT * FROM artists WHERE lw_name = :name OR name = :name";
+		$stmt = $this->getDbh()->prepare($query);
+		$stmt->bindValue('name', $name);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$artist = null;
+		if ($row = $stmt->fetchObject()) {
+
+			$artist = (new \Models\Artist)->fromObject($row);
+		}
+
+		return $artist;
+	}
+	
+	public function getArtistById($id) {
+	
+		$query = "SELECT * FROM artists WHERE id = :id";
+		$stmt = $this->getDbh()->prepare($query);
+		$stmt->bindValue('id', $id);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$artist = null;
+		if ($row = $stmt->fetchObject()) {
+
+			$artist = (new \Models\Artist)->fromObject($row);
 		}
 
 		return $artist;
@@ -341,6 +421,26 @@ class DataProvider
 		}
 
 		return $releases;
+	}
+	
+	public function getReleaseByCatalog($catalog) {
+	
+		$query = "SELECT * FROM releases WHERE catalog = :catalog";
+		$stmt = $this->getDbh()->prepare($query);
+		$stmt->bindValue('catalog', $catalog);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$release = null;
+		if ($row = $stmt->fetchObject()) {
+
+			$release = (new \Models\Release)->fromObject($row);
+		}
+
+		return $release;
 	}
 	
 	public function getSubscription($value) {
@@ -698,6 +798,279 @@ class DataProvider
 	
 			$errorInfo = $stmt->errorInfo();
 			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+	}
+	
+	public function insertSale(&$sale) {
+
+		$stmt = $this->dbh->prepare("INSERT INTO sales (artist_id, label_id, release_id, report_id, release_artist, release_name, track_artist, track_title, mix_name, format, sale_type, quantity, value, deal, royalty, isrc, ean, store, track_ref) VALUES(:artist_id, :label_id, :release_id, :report_id, :release_artist, :release_name, :track_artist, :track_title, :mix_name, :format, :sale_type, :quantity, :value, :deal, :royalty, :isrc, :ean, :store, :track_ref)");
+
+		$stmt->bindValue('artist_id', $sale->artist_id);
+		$stmt->bindValue('label_id', $sale->label_id);
+		$stmt->bindValue('release_id', $sale->release_id);
+		$stmt->bindValue('report_id', $sale->report_id);
+		$stmt->bindValue('release_artist', $sale->release_artist);
+		$stmt->bindValue('release_name', $sale->release_name);
+		$stmt->bindValue('track_artist', $sale->track_artist);
+		$stmt->bindValue('track_title', $sale->track_title);
+		$stmt->bindValue('mix_name', $sale->mix_name);
+		$stmt->bindValue('format', $sale->format);
+		$stmt->bindValue('sale_type', $sale->sale_type);
+		$stmt->bindValue('quantity', $sale->quantity);
+		$stmt->bindValue('value', $sale->value);
+		$stmt->bindValue('deal', $sale->deal);
+		$stmt->bindValue('royalty', $sale->royalty);
+		$stmt->bindValue('isrc', $sale->isrc);
+		$stmt->bindValue('ean', $sale->ean);
+		$stmt->bindValue('store', $sale->store);
+		$stmt->bindValue('track_ref', $sale->track_ref);
+
+		if (!$stmt->execute()) {
+	
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$sale->id = $this->dbh->lastInsertId(); 
+	}
+	
+	public function insertSalesReport(&$salesReport) {
+
+		$stmt = $this->dbh->prepare("INSERT INTO sales_reports (name, filename, quarter, created_at) VALUES(:name, :filename, :quarter, NOW())");
+		$stmt->bindValue('name', $salesReport->name);
+		$stmt->bindValue('filename', $salesReport->filename);
+		$stmt->bindValue('quarter', $salesReport->quarter);
+		
+		if (!$stmt->execute()) {
+	
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$salesReport->id = $this->dbh->lastInsertId(); 
+	}
+
+	public function getNewSales($labelId = null) {
+
+		$sql = "SELECT s.* FROM sales s WHERE s.invoiced = 0";
+		if ($labelId !== null) {
+
+			$sql .= " AND s.label_id = :label";
+		}
+
+		$sql .= " ORDER BY s.release_artist, s.release_name, s.format, s.sale_type";
+
+		$stmt = $this->dbh->prepare($sql);
+		if ($labelId !== null) {
+
+			$stmt->bindValue('label', $labelId);
+		}
+
+		if (!$stmt->execute()) {
+	
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$sales = array();
+		while ($row = $stmt->fetchObject()) {
+
+			$sales[] = (new \Models\Sale)->fromObject($row);
+		}
+
+		return $sales;
+	}
+
+	public function getSalesReportByLabel($labelId = null) {
+
+		$sql = "SELECT l.name AS label, s.format, SUM(s.quantity) AS num, SUM(s.royalty) AS value FROM sales s INNER JOIN labels l ON l.id = s.label_id WHERE s.invoiced = 0";
+		if ($labelId != null) {
+
+			$sql .= " AND s.label_id = :label";
+		}
+
+		$sql .= " GROUP BY s.label_id, s.format";
+
+		$stmt = $this->dbh->prepare($sql);
+		if ($labelId != null) {
+
+			$stmt->bindValue('label', $labelId);
+		}
+
+		if (!$stmt->execute()) {
+	
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+
+		$report = (object)array(
+
+			'date' => null,
+			'items' => array(),
+		);
+
+		while ($row = $stmt->fetchObject()) {
+
+			$report->items[] = $row;
+		}
+
+
+		// get date for report
+		$sql = "SELECT r.* FROM sales s INNER JOIN sales_reports r WHERE s.invoiced = 0";
+		if ($labelId !== null) {
+
+			$sql .= " AND s.label_id = :label";
+		}
+
+		$sql .= " GROUP BY r.id ORDER BY r.quarter ASC";
+		$stmt = $this->dbh->prepare($sql);
+		if ($labelId != null) {
+
+			$stmt->bindValue('label', $labelId);
+		}
+
+		if (!$stmt->execute()) {
+	
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+
+		$dates = array();
+		while ($row = $stmt->fetchObject()) {
+
+			$dates[] = $row->quarter;
+		}
+
+		$report->date = implode(', ', $dates);
+
+		return $report;
+	}
+
+	public function getSalesReportByArtist($labelId = null, $artistId = null) {
+
+		$stmt = $this->dbh->prepare("SELECT a.name AS artist, s.format, SUM(s.quantity) AS num, SUM(s.royalty) AS value FROM sales s INNER JOIN artists a ON a.id = s.artist_id GROUP BY s.artist_id, s.format");
+		if (!$stmt->execute()) {
+	
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$report = array();
+		while ($row = $stmt->fetchObject()) {
+
+			$report[] = $row;
+		}
+
+		return $report;
+	}
+	
+	public function getSweepstake($key) {
+	
+		switch ($key) {
+		
+			case 'psy-force':
+				return array(
+					'metaTitle' => "Gewinne freien Eintritt für die Psy-Forge / Spekta's Birthday",
+					'facebookDescription' => "Für den 24. Januar in der Klangstation gibt es 5 Mal freien Eintritt zu gewinnen! Erlebe internationale Top Acts wie Necmi, Nitro & Glycerine, Nayana She, Spectral Vibration, Spekta, Maskay und HighQ.",
+					'facebookImage' => "http://www.3886records.de/img/psy-forge.jpg",
+				);
+				
+			case 'labelnight-no2':
+				return (object)array(
+					'party' => 'labelnight-no2',
+					'eventName' => 'Goa Cologne Birthday / 3886records Labelnight No.2',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '5 Mal freier Eintritt für die Labelnight am 21.3.2014 zu gewinnen!',
+					'validUntil' => '2014-03-20 23:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Labelnight No.2 / Goa Cologne Birthday',
+					'description' => 'Für den 21. März in der Werkstatt Köln gibt es 5 Mal freien Eintritt zu gewinnen! Erlebe internationale 3886records Acts sowie ein Top Local Lineup.',
+					'image' => 'http://www.3886records.de/img/flyer/labelnight-2014-03.jpg',
+					'facebookLink' => 'http://www.facebook.com/events/560921743997008/',
+				);
+				
+			case 'darkn8en':
+				return (object)array(
+					'party' => 'darkn8en',
+					'eventName' => 'Darkn8en - Dark Psy Goa',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für die Darkn8en am 5.4.2014 zu gewinnen!',
+					'validUntil' => '2014-04-04 23:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Darkn8en',
+					'description' => 'Für den 5. April in der N8Lounge Bonn gibt es 3 Mal freien Eintritt zu gewinnen! Ein Muss für Fans dunkler Materie.',
+					'image' => 'http://www.3886records.de/img/flyer/darkn8en.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/240201426146009/?fref=gewinnspiel',
+					'winners' => array(
+						'Jules Vegas',
+						'Zerstreutes Kleingeld',
+						'Nicole Ananda',
+					),
+				);
+				
+			case 'psy-spring-night':
+				return (object)array(
+					'party' => 'psy-spring-night',
+					'eventName' => 'Psychedelic Spring Night',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für die Psychedelic Spring Night',
+					'validUntil' => '2014-04-10 23:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Psychedelic Spring Night',
+					'description' => 'Für den 11. April in der N8Lounge Bonn gibt es 3 Mal freien Eintritt zu gewinnen! Erlebe Progressive & Psychedelic Top Acts',
+					'image' => 'http://www.3886records.de/img/flyer/spring-night.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/599409263459218/?fref=gewinnspiel',
+					'winners' => array(
+						'Mario Hilberath',
+						'Sebastian Van Mil',
+						'Dominic Fox',
+					),
+				);
+				
+			case 'lustig-stampfen':
+				return (object)array(
+					'party' => 'lustig-stampfen',
+					'eventName' => 'Lustig Stampfen - Prog, Psy & Dark Goa',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '5 Mal freier Eintritt für die Lustig Stampfen am 26.4.2014 zu gewinnen!',
+					'validUntil' => '2014-04-25 23:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Lustig Stampfen',
+					'description' => 'Für den 26. April in der Werkstatt Köln gibt es 5 Mal freien Eintritt zu gewinnen! Erlebe Progressive & Psychedelic Top Acts',
+					'image' => 'http://www.3886records.de/img/flyer/lustig-stampfen.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/726505837382375/?fref=gewinnspiel',
+					'winners' => array(
+						'Melanie Bürger',
+						'Felix Larisika',
+						'Thomas Langer',
+						'Enny Mol',
+						'Claudia Jahn',
+					),
+				);
+				
+			case 'corpus-sarasvati':
+				return (object)array(
+					'party' => 'corpus-sarasvati',
+					'eventName' => 'Corpus Sarasvati (Goa, Psy & Prog)',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für die Corpus Sarasvati am 02.05.2014 zu gewinnen!',
+					'validUntil' => '2014-05-02 12:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Corpus Sarasvati',
+					'description' => 'Für den 2. Mai in der N8Lounge gibt es 3 Mal freien Eintritt zu gewinnen! Erlebe Progressive & Psychedelic Top Acts',
+					'image' => 'http://www.3886records.de/img/flyer/corpus-sarasvati.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/223432371180723/?fref=gewinnspiel',
+					'winners' => array(),
+				);
+				
+			case '3886inlove':
+				return (object)array(
+					'party' => '3886inlove',
+					'eventName' => '3886 in Love',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für die 3886 in Love am 05.07.2014 zu gewinnen!',
+					'validUntil' => '2014-07-04 12:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die 3886 in Love',
+					'description' => 'Für den 5. Juli in der N8Lounge gibt es 3 Mal freien Eintritt zu gewinnen! Erlebe Progressive & Psychedelic Top Acts',
+					'image' => 'http://www.3886records.de/img/flyer/3886inlove.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/612196595516881/?fref=gewinnspiel',
+					'winners' => array(),
+				);
 		}
 	}
 }

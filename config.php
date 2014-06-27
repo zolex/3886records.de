@@ -47,9 +47,9 @@ return array(
             'template' => 'artist',
             'controller' => array('Controller\Artist', 'details')
         ),
-		'^/artist/(?P<artist>[^/]+)/booking?$' => array(
+		'^/bookings?$' => array(
             'template' => 'booking',
-            'controller' => array('Controller\Artist', 'booking')
+            'controller' => array('Controller\Booking', 'index')
         ),
         '^/events/?$' => array(
             'template' => 'events',

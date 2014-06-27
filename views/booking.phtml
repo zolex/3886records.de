@@ -1,11 +1,7 @@
 <?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
 <div class="container">
-    <div class="hero-unit">
-        <h1><?= $artist->name ?></h1>
-        <p><?= $artist->shortInfo ?></p>
-		<? if (isset($artist->longInfo)): ?>
-			<p><?= $artist->longInfo ?></p>
-		<? endif ?>
+    <div class="hero-unit" style="background-image: url(/img/bookings-banner.jpg); background-repeat: no-repeat; height: 215px;">
+	<p style="margin-top: 160px; margin-left: -12px; font-weight: bold; color: #fff;">Get your party started with our DJs and Live Acts!</p>
     </div>
 </div>
 <div class="container">
@@ -17,7 +13,35 @@
 			<? if (count($errors)): ?>
 				<div class="alert alert-error">Oops, please check your input!</div>
 			<? endif ?>
+			<div>
+			Please enter your information to request a booking for our artists. We will contact you as soon as possible to make an offer for your event.
+			</div>
 			<form method="POST" class="form-horizontal">
+			
+				<h3 style="margin-left: 130px;">Artist</h3>
+				<div class="control-group<?= isset($errors['artist']) ? ' error' : '' ?>">
+					<label class="control-label" for="firstname">Artist:</label>
+					<div class="controls">
+						<select id="artist" name="artist">
+							<option value="">Please choose</option>
+							<optgroup label="DJs">
+							<? foreach ($djs as $artist): ?>
+								<option <?= isset($values['artist']) && $values['artist'] == $artist->id ? ' selected="selected"' : '' ?>value="<?= $artist->id ?>"><?= $artist->name ?></option>
+							<? endforeach ?>
+							</optgroup>
+							<optgroup label="Live Acts">
+							<? foreach ($artists as $artist): ?>
+								<option <?= isset($values['artist']) && $values['artist'] == $artist->id ? ' selected="selected"' : '' ?>value="<?= $artist->id ?>"><?= $artist->name ?></option>
+							<? endforeach ?>
+							</optgroup>
+						</select>
+						<? if (isset($errors['artist'])): ?>
+							<span class="help-inline"><?= $errors['artist'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
+				
+				<h3 style="margin-left: 130px;">Personal information</h3>
 				<div class="control-group<?= isset($errors['firstname']) ? ' error' : '' ?>">
 					<label class="control-label" for="firstname">Firstname:</label>
 					<div class="controls">
@@ -36,12 +60,32 @@
 						<? endif ?>
 					</div>
 				</div>
+				<div class="control-group<?= isset($errors['company']) ? ' error' : '' ?>">
+					<label class="control-label" for="company">Company:</label>
+					<div class="controls">
+						<input id="company" type="text" name="company" placeholder="your company"<?= isset($values['company']) ? ' value="'. $values['company'] .'"' : '' ?> />
+						<? if (isset($errors['company'])): ?>
+							<span class="help-inline"><?= $errors['company'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
 				<div class="control-group<?= isset($errors['email']) ? ' error' : '' ?>">
 					<label class="control-label" for="email">E-Mail:</label>
 					<div class="controls">
 						<input id="email" type="text" name="email" placeholder="your email address"<?= isset($values['email']) ? ' value="'. $values['email'] .'"' : '' ?> />
 						<? if (isset($errors['email'])): ?>
 							<span class="help-inline"><?= $errors['email'] ?></span>
+						<? endif ?>
+					</div>
+				</div>
+				
+				<h3 style="margin-left: 130px;">Booking information</h3>
+				<div class="control-group<?= isset($errors['date']) ? ' error' : '' ?>">
+					<label class="control-label" for="date">Date:</label>
+					<div class="controls">
+						<input id="date" type="text" class="date-input" name="date" placeholder="desired date"<?= isset($values['date']) ? ' value="'. $values['date'] .'"' : '' ?> />
+						<? if (isset($errors['date'])): ?>
+							<span class="help-inline"><?= $errors['date'] ?></span>
 						<? endif ?>
 					</div>
 				</div>
@@ -54,24 +98,25 @@
 						<? endif ?>
 					</div>
 				</div>
-				<div class="control-group<?= isset($errors['date']) ? ' error' : '' ?>">
-					<label class="control-label" for="date">Date:</label>
+				<div class="control-group<?= isset($errors['size']) ? ' error' : '' ?>">
+					<label class="control-label" for="size">Event size:</label>
 					<div class="controls">
-						<input id="date" type="date" name="date" placeholder="desired date"<?= isset($values['date']) ? ' value="'. $values['date'] .'"' : '' ?> />
-						<? if (isset($errors['date'])): ?>
-							<span class="help-inline"><?= $errors['date'] ?></span>
+						<input id="size" type="number" name="size" value="<?= isset($values['size']) ? $values['size'] : 250 ?>" />
+						<? if (isset($errors['size'])): ?>
+							<span class="help-inline"><?= $errors['size'] ?></span>
 						<? endif ?>
 					</div>
 				</div>
 				<div class="control-group<?= isset($errors['message']) ? ' error' : '' ?>">
 					<label class="control-label" for="message">Info:</label>
 					<div class="controls">
-						<textarea id="message" type="text" name="message" placeholder="your message to <?= $artist->name ?>"><?= isset($values['message']) ? $values['message'] : '' ?></textarea>
+						<textarea id="message" type="text" name="message" placeholder="your message"><?= isset($values['message']) ? $values['message'] : '' ?></textarea>
 						<? if (isset($errors['message'])): ?>
 							<span class="help-inline"><?= $errors['message'] ?></span>
 						<? endif ?>
 					</div>
 				</div>
+				
 				<div class="control-group">
 					<div class="controls">
 						<input class="btn btn-primary" type="submit" value="Send booking request" />

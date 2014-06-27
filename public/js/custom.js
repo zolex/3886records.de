@@ -11,50 +11,6 @@ $.support.transition = false;
   
 $(document).ready(function () {
 
-	$.ajaxSetup({ cache: true });
-	$.getScript('http://connect.facebook.net/de_DE/all.js', function() {
-
-	    FB.init({
-			appId      : '583037658388035',
-			status     : true,
-			cookie     : true,
-			xfbml      : true
-		});
-
-		FB.Event.subscribe('auth.authResponseChange', function(response) {
-
-			if (response.status === 'connected') {
-
-			  FB.api('/me', function(response) {
-				  window.fbAuthResponse = response;
-			  });
-			  
-			} else if (response.status === 'not_authorized') {
-
-				alert('Bitte logge dich bei Facebook ein und autorisiere die 3886records app!');
-				
-			} else {
-
-				// alert('Bitte logge dich bei Facebook ein!');
-			}
-		});
-		  
-		if (!cookiesEnabled()) {
-
-			$('#info').append('<p style="margin-top: 10px; font-weight: bold; color: red;">Bitte aktiviere Cookies damit die Teilnahme möglich ist!<br/><span style="font-weight: normal; font-size: 12px;">(Mindestens für diese Seite und für Facebook, am besten aktivierst Du sie vorrübergehen komplett. Danach kannst du unsere Cookies auch wieder löschen!)</span></p>');
-
-		} else {
-
-			FB.getLoginStatus(function(r) {
-			
-				if (r.authResponse == null || r.status == "unknown") {
-				
-					$('#info').append('<p style="margin-top: 10px; font-weight: bold; line-height: 19px; color: red;">Es scheint so dass Du Cookies nicht aktiviert hast. Bitte aktiviere Cookies.<br/><span style="font-weight: normal; font-size: 12px;">(Cookies sind für die Teilnahme am Gewinnspiel erforderlich. Mindestens für diese Seite und für Facebook, besser aktivierst Du sie vorrübergehen komplett. Danach kannst du unsere Cookies auch wieder löschen!)</span></p>');
-				}
-			});
-		}
-  	});
-
 	$.supersized({
 	    slideshow               :   0,
 	    vertical_center         :   1,
@@ -96,8 +52,9 @@ $(document).ready(function () {
 	});
 	*/
 	
-	$( "input[type=date]" ).datepicker({
-		inline: true
+	$( "input.date-input" ).datepicker({
+		inline: true,
+		dateFormat: 'dd.mm.yy'
 	});
 });
 

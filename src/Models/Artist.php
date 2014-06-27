@@ -18,6 +18,7 @@ class Artist extends AbstractModel
 	protected $key;
 	protected $position;
 	protected $name;
+	protected $lw_name;
 	protected $shortInfo;
 	protected $longInfo;
 	protected $soundcloud;

@@ -3,10 +3,11 @@
         <div class="addresses">
             <div class="sender">3886records - Andreas Linden - Agnesstr. 3a - 53225 Bonn</div>
             <div class="recepient">
-                Max Mustermann<br/>
-                Musterstraße 42<br/>
-                12345 Musterstadt<br/>
-                Musterland
+                <strong>Enchanted Recordings</strong><br/>
+                Aljosha Konstanty<br/>
+                Van Voorschotenlaan 17<br/>
+                2597PA Den Haag<br/>
+                Niederlande
             </div>
         </div>
         
@@ -16,13 +17,13 @@
                     <td class="datalabel">Datum:</td>
                     <td><?= date('d.m.Y') ?></td>
                 </tr>
-                <tr>
+                <!--tr>
                     <td class="datalabel">Unsere Ust-ID:</td>
                     <td>DE xxxxxxxx</td>
-                </tr>
+                </tr-->
                 <tr>
                     <td class="datalabel">Rechnungsnr.:</td>
-                    <td>2014-01-1002</td>
+                    <td>2014-04-1003</td>
                 </tr>
              </table>
         </div>
@@ -32,7 +33,7 @@
         <div class="content">
             <p><strong>ABRECHNUNG</strong>
             <p>
-                <strong>Rechnungszeitraum: 01.01.2013 bis 31.12.2013</strong><br/>
+                <strong>Rechnungszeitraum: <?= $report->date ?></strong><br/>
                 Eine detailierte Auflistung aller Umsätze finden Sie in der Abrechnung ab Seite 2
             </p>
             
@@ -42,37 +43,37 @@
                     <th style="width: 21mm" class="taright">Menge</th>
                     <th style="width: 21mm" class="taright">Gesamt</th>
                 </tr>
-                <tr class="">
-                    <td class="nobottom" colspan="2">
-                        Digitale Verkäufe
-                    </td>
-                    <td class="taright nobottom">
-                        423
-                    </td>
-                    <td class="taright">316,42 €</td>
-                </tr>
-                <tr class="last">
-                    <td class="nobottom" colspan="2">
-                        Online Streams
-                    </td>
-                    <td class="taright nobottom">
-                        1027
-                    </td>
-                    <td class="taright">23,15 €</td>
-                </tr>
+                <? $numItems = count($report->items) ?>
+                <? $sum = 0 ?>
+                <? for ($n = 0; $n < $numItems; $n++): ?>
+                    <? $sum += round($report->items[$n]->value, 2) ?>
+                    <tr class="<?= $n == $numItems - 1 ? 'last' : '' ?>">
+                        <td class="nobottom" colspan="2">
+                            <?= $report->items[$n]->label ?> <?= $report->items[$n]->format ?>
+                        </td>
+                        <td class="taright nobottom">
+                            <?= $report->items[$n]->num ?>
+                        </td>
+                        <td class="taright">
+                            <?= sprintf("%.2f", round($report->items[$n]->value, 2)) ?> GBP
+                        </td>
+                    </tr>
+                <? endfor ?>
                 <tr class="last">
                     <td colspan="4" class="taright noborder vatop">&nbsp;</td>
                 </tr>
                 <tr>
                     <td colspan="3" class="taright noborder double">
-                        Summe brutto:<br />
+                        Summe:
+                        <!--Summe brutto:<br />
                         Ust. 19%: <br />
-                        Rechnungsbetrag netto: 
+                        Rechnungsbetrag netto: -->
                     </td>
                     <td class="taright double" style="border-bottom: 1px solid #000;">
-                        339,57 €<br />
-                        54,22 €<br />
-                        285,35 €
+                        <?= sprintf("%.2f", round($sum, 2)) ?> GBP
+                        <!--0 GBP<br />
+                        0 GBP<br />
+                        0 GBP-->
                     </td>
                 </tr>
                 <tr class="last">
@@ -80,14 +81,117 @@
                 </tr>
                 <tr class="last">
                     <td colspan="3" style="text-align: right"><strong>Auszahlungsbetrag:</strong></td>
-                    <td style="text-align: right;"><strong>0 €</strong></td>
+                    <td style="text-align: right;"><strong>0 GBP</strong></td>
                 </tr>
                 <tr class="last">
                     <td colspan="4" class="tacenter">
-                        Sed nec rutrum erat. Aenean erat mauris, dignissim eu quam eget, egestas accumsan orci. Fusce sit amet leo enim. Suspendisse malesuada pellentesque eros, ut convallis eros semper placerat. Vestibulum convallis erat vel lacus rutrum pharetra. Donec rutrum tortor sit amet scelerisque hendrerit. Etiam feugiat scelerisque risus, venenatis hendrerit elit sagittis nec.
+                        Es wird gemäß §19 Abs. 1 Umsatzsteuergesetz keine Umsatzsteuer ausgeschrieben. Eine Auszahlung der Umsätze ist ab dem vertraglich festgelegten Betrag möglich. Wurde keine Auszahlungsgrenze definiert, liegt diese bei 50,00 GPB. Die nicht zahlbaren Umsätze werden Ihrem Guthabenkonto für die nächste Abrechnung gutgeschrieben.
                     </td>
                 </tr>
             </table>
         </div>
     </div>
+    <br/>
+    <div class="page">
+        <div class="addresses">
+            <div class="sender">3886records - Andreas Linden - Agnesstr. 3a - 53225 Bonn</div>
+            <div class="recepient">
+                <strong>Enchanted Recordings</strong><br/>
+                Aljosha Konstanty<br/>
+                Van Voorschotenlaan 17<br/>
+                2597PA Den Haag<br/>
+                Niederlande
+            </div>
+        </div>
+        
+        <div class="data">
+            <table border="0">
+                <tr>
+                    <td class="datalabel">Datum:</td>
+                    <td><?= date('d.m.Y') ?></td>
+                </tr>
+                <!--tr>
+                    <td class="datalabel">Unsere Ust-ID:</td>
+                    <td>DE xxxxxxxx</td>
+                </tr-->
+                <tr>
+                    <td class="datalabel">Rechnungsnr.:</td>
+                    <td>2014-01-1003</td>
+                </tr>
+             </table>
+        </div>
+        <div class="clear"></div>
+        <div class="references">&nbsp;</div>
+        <div class="clear"></div>
+        <div class="content">
+            <p><strong>UMSATZAUFLISTUNG</strong>
+            <p>
+                <strong>Zeitraum: <?= $report->date ?></strong><br/>
+            </p>
+            
+            <table>
+                <tr>
+                    <th class="taleft"><strong>Artist</strong></th>
+                    <th class="taleft"><strong>Track/Release</strong></th>
+                    <th class="taleft"><strong>Format</strong></th>
+                    <th class="taleft"><strong>Store</strong></th>
+                    <th class="taright"><strong>Num</strong></th>
+                    <th class="taright"><strong>Value</strong></th>
+                </tr>
+
+                <? $numItems = count($details) ?>
+                <? for ($n = 0; $n < $numItems; $n++): ?>
+                    <tr class="<?= $n == $numItems - 1 ? 'last' : '' ?>">
+                        <td class="nobottom">
+                            <?= $details[$n]->release_artist ?>
+                        </td>
+                        <td class="nobottom">
+                            <? if ($details[$n]->sale_type == 'Track'): ?>
+                                <?= $details[$n]->track_title ?> (Track)
+                            <? else: ?>
+                                <?= $details[$n]->release_name ?> (Release)
+                            <? endif ?>
+                            
+                        </td>
+                        <td class="nobottom">
+                            <?= $details[$n]->format ?>
+                        </td>
+                        <td class="nobottom">
+                            <?= $details[$n]->store ?>
+                        </td>
+                        <td class="nobottom taright">
+                            <?= $details[$n]->quantity ?>
+                        </td>
+                        <td class="nobottom taright">
+                            <nobr><?= $details[$n]->royalty ?> GBP</nobr>
+                        </td>
+                    </tr>
+                <? endfor ?>
+                <tr>
+                    <td colspan="5" class="taright noborder double">
+                        Summe:
+                        <!--Summe brutto:<br />
+                        Ust. 19%: <br />
+                        Rechnungsbetrag netto: -->
+                    </td>
+                    <td class="taright double" style="border-bottom: 1px solid #000;">
+                        <?= sprintf("%.2f", round($sum, 2)) ?> GBP
+                        <!--0 GBP<br />
+                        0 GBP<br />
+                        0 GBP-->
+                    </td>
+                </tr>
+                <tr class="last">
+                    <td colspan="6" class="noborder">&nbsp;</td>
+                </tr>
+                <tr class="last">
+                    <td colspan="6" class="tacenter">
+                        Unsere Digital Service Provider haben unterschiedliche Abrechnungszeiträume. Daher kann es vorkommen, dass Umsätze nicht in dieser Rechnung aufgeführt sind auch wenn Sie innerhalb der einbezogenen Quartale stattgefunden haben. Spätestens ein Quartal nach der Abrechnung mit unseren Digital Service Providern werden die Umsätze hier aufgeführt.
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br/>
 </div>

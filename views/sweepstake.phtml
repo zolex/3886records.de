@@ -1,3 +1,63 @@
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	$.ajaxSetup({ cache: true });
+	$.getScript('http://connect.facebook.net/de_DE/all.js', function() {
+
+	    FB.init({
+			appId      : '583037658388035',
+			status     : true,
+			cookie     : true,
+			xfbml      : true
+		});
+		
+		FB.Event.subscribe('auth.authResponseChange', function(response) {
+
+			if (response.status === 'connected') {
+
+			  FB.api('/me', function(response) {
+				  window.fbAuthResponse = response;
+			  });
+			  
+			} else if (response.status === 'not_authorized') {
+
+				alert('Bitte logge dich bei Facebook ein und autorisiere die 3886records app!');
+				
+			} else {
+
+				// alert('Bitte logge dich bei Facebook ein!');
+			}
+		});
+		  
+		if (!cookiesEnabled()) {
+
+			$('#info').append('<p style="margin-top: 10px; font-weight: bold; color: red;">Bitte aktiviere Cookies damit die Teilnahme möglich ist!<br/><span style="font-weight: normal; font-size: 12px;">(Mindestens für diese Seite und für Facebook, am besten aktivierst Du sie vorrübergehen komplett. Danach kannst du unsere Cookies auch wieder löschen!)</span></p>');
+
+		} else {
+
+			FB.getLoginStatus(function(r) {
+			
+				if (r.authResponse == null || r.status == "unknown") {
+				
+					$('#info').append('<p style="margin-top: 10px; font-weight: bold; line-height: 19px; color: red;">Es scheint so dass Du Cookies nicht aktiviert hast. Bitte aktiviere Cookies.<br/><span style="font-weight: normal; font-size: 12px;">(Cookies sind für die Teilnahme am Gewinnspiel erforderlich. Mindestens für diese Seite und für Facebook, besser aktivierst Du sie vorrübergehen komplett. Danach kannst du unsere Cookies auch wieder löschen!)</span></p>');
+				}
+			});
+		}
+  	});
+	
+	window.setTimeout(function() {
+		
+		if (!$('#sharebutton').is(':visible') && !$('#winners').is(':visible')) {
+		
+			$('#info').append('<p style="margin-top: 10px; font-weight: bold; color: red;">Es scheint so dass Du einen AdBlocker benutzt. Bitte schalte diesen aus um an dem Gewinnspiel teilnehmen zu können!</span></p>');
+		}
+	
+	}, 3000);
+});
+
+</script>
+
 <?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Gewinnspiel')))) ?>
 <div class="container">
     <div class="hero-unit">
@@ -7,19 +67,26 @@
 	        <div class="span7">
 				
 				<? if (time() > strtotime($sweepstake->validUntil)): ?>
-				
 				 <p id="info">
 		        	<strong><a title="zum Event bei Facebook" target="_blank" href="<?= $sweepstake->facebookLink ?>"><?= $sweepstake->eventName ?></a></strong><br/>
 		        	<br/>
 		        	<strong><?= $sweepstake->info ?></strong><br/>
-					<span style="line-height: 19px; font-size: 12px; color: #000;">(Teilnahmeschluss: Donnerstag, 23.1.2014, 23:00 Uhr).</span>
+					<span style="line-height: 19px; font-size: 12px; color: #000;">(Teilnahmeschluss: <?= date('d.m.Y, H:i', strtotime($sweepstake->validUntil)) ?>)</span>
 		        </p>
-				<p>
-					<strong>Die Gewinner stehen fest. Viel Spaß bei freiem Eintritt wünschen wir:</strong>
-					<ul style="color: #000;">
-
-					</ul>
-				</p>
+					<? if (isset($sweepstake->winners) && count($sweepstake->winners)): ?>
+					<p>
+						<strong>Die Gewinner stehen fest. Viel Spaß bei freiem Eintritt wünschen wir:</strong>
+						<ul style="color: #000;" id="winners">
+						<? foreach ($sweepstake->winners as $winner): ?>
+							<li><?= $winner ?></li>
+						<? endforeach ?>
+						</ul>
+					</p>
+					<? else: ?>
+					<p>
+						<strong>Die Zeit ist abgelaufen. Die Gewinner werden in Kürze bekannt gegeben.</strong>
+					</p>	
+					<? endif ?>
 				
 				<? else: ?>
 
@@ -33,7 +100,7 @@
 				<br/>
 		        <div id="rules">
 		        <p>
-		        	<b>1.</b> Verbinde Dich mit unserer Facebook App falls Du dies noch nicht getan hast.<br/>
+		        	<b>1.</b> Melde dich mit Facebook an falls Du dies noch nicht getan hast.<br/>
 		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Wenn Du schon verbunden bist öffnet sich ein Fester, geht aber sofort wieder zu, alles ist in Ordnung)</div>
 		        	<div style="margin-left: 15px;"><fb:login-button max_rows="1" size="medium" show_faces="false" auto_logout_link="false"></fb:login-button></div>
 		        </p>
