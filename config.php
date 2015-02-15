@@ -13,6 +13,8 @@ function __autoload($className) {
 
 date_default_timezone_set('Europe/Berlin');
 
+\Models\AbstractModel::enablePublicAccess();
+
 return array(
 
     'debug' => true,
@@ -54,6 +56,18 @@ return array(
         '^/events/?$' => array(
             'template' => 'events',
             'controller' => array('Controller\Events', 'overview')
+        ), 
+         '^/events-new/?$' => array(
+            'template' => 'events-new',
+            'controller' => array('Controller\Events', 'overview')
+        ),
+          '^/events/json/?$' => array(
+            'template' => 'events-new',
+            'controller' => array('Controller\Events', 'json')
+        ),
+        '^/genres/?$' => array(
+            'template' => 'genres',
+            'controller' => array('Controller\Genre', 'overview')
         ), 
 		'^/genre/(?P<genre>[^/]+)/?$' => array(
             'template' => 'genre',
@@ -99,6 +113,10 @@ return array(
             'template' => 'promotion',
             'controller' => array('Controller\Promotion', 'view')
         ),
+        '^/promotion/(?P<key>[^/]+)/?$' => array(
+            'template' => 'promotion',
+            'controller' => array('Controller\Promotion', 'view')
+        ),
 		'^/promotion/(?P<key>[^/]+)/(?P<token>[^/]+)/alt/?$' => array(
             'template' => 'webview',
             'controller' => array('Controller\Promotion', 'webview')
@@ -130,6 +148,14 @@ return array(
 		'^/gewinnspiel/(?P<party>[^/]+)/?$' => array(
             'template' => 'sweepstake',
             'controller' => array('Controller\Home', 'sweepstake')
+        ),
+        '^/pics/?$' => array(
+            'template' => 'gallery',
+            'controller' => array('Controller\Gallery', 'index')
+        ),
+        '^/pics/(?P<gallery>[^/]+)/?$' => array(
+            'template' => 'gallery',
+            'controller' => array('Controller\Gallery', 'index')
         ),
         '^/sales/?$' => array(
             'template' => 'sales_report',

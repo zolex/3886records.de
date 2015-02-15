@@ -228,59 +228,113 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                         </tbody></table>
                     </layout>
                                                                    
-					<? if (count($promotion->release->artist->releases)): ?>
+					<? if (count($promotion->release->artist->events)): ?>
                     <layout label="Image gallery">
-                        <p align="left" class="article-title"><singleline label="Title">More releases by <?= $promotion->release->artist->name ?></singleline></p>
-						<table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
+                        <p align="left" class="article-title"><singleline label="Title">Upcomming Events with <?= $promotion->release->artist->name ?></singleline></p>
+                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
                             <tbody>
-								<tr>
-								<? $numReleases = 0; $maxReleases = 3; ?>
-								<? foreach ($promotion->release->artist->releases as $release): ?>
-									<td class="w180" width="180" valign="top">
-										<table class="w180" width="180" cellpadding="0" cellspacing="0" border="0">
-											<tbody><tr>
-												<td class="w180" width="180">
-												<? if (count($release->links)): ?>
-													<a target="_blank" href="<?= reset($release->links)->link ?>">
-												<? endif ?>
-												<img src="http://www.3886records.de/img/releases/<?= $release->cover ?>" editable="true" label="<?= $release->artist->name ?> - <?= $release->title ?>" class="w180" width="180" border="0">
-												<? if (count($release->links)): ?>
-													</a>
-												<? endif ?>
-												</td>
-											</tr>
-											<tr><td class="w180" width="180" height="10"></td></tr>
-											<tr>
-												<td class="w180" width="180">
-													<div align="left" class="article-content">
-														<singleline label="Description">
-														<? if (count($release->links)): ?>
-															<a target="_blank" href="<?= reset($release->links)->link ?>">
-														<? endif ?>
-														<?= $release->artist->name ?> - <?= $release->title ?>
-														<? if (count($release->links)): ?>
-															</a>
-														<? endif ?>
-														</singleline>
-													</div>
-												</td>
-											</tr>
-											<tr><td class="w180" width="180" height="10"></td></tr>
-										</tbody></table>
-									</td>
-									<? if (++$numReleases == $maxReleases) break ?>
-									<td width="20"></td>
-								<? endforeach ?>
-								<? for ($n = $numReleases; $n < $maxReleases; $n++): ?>
-									<td class="w180" width="180" valign="top"> </td>
-									<? if (++$numReleases != $maxReleases): ?>
-										<td width="20"></td>
-									<? endif ?>
-								<? endfor ?>
+                                <tr>
+                                <? $numEvents = 0; $maxEvents = 3; ?>
+                                <? foreach ($promotion->release->artist->events as $event): ?>
+                                    <td class="w180" width="180" valign="top">
+                                        <table class="w180" width="180" cellpadding="0" cellspacing="0" border="0">
+                                            <tbody><tr>
+                                                <td class="w180" width="180">
+                                                <? if (!empty($event->facebook)): ?>
+                                                    <a target="_blank" href="<?= $event->facebook ?>">
+                                                <? endif ?>
+                                                <img src="http://www.3886records.de/img/events/<?= $event->flyer ?>" editable="true" alt="<?= $event->name ?>" class="w180" width="180" border="0">
+                                                <? if (!empty($event->facebook)): ?>
+                                                    </a>
+                                                <? endif ?>
+                                                </td>
+                                            </tr>
+                                            <tr><td class="w180" width="180" height="10"></td></tr>
+                                            <tr>
+                                                <td class="w180" width="180">
+                                                    <div align="left" class="article-content">
+                                                        <singleline label="Description">
+                                                        <? if (!empty($event->facebook)): ?>
+                                                            <a target="_blank" href="<?= $event->facebook ?>">
+                                                        <? endif ?>
+                                                        <?= $event->name ?>
+                                                        <? if (!empty($event->facebook)): ?>
+                                                            </a>
+                                                        <? endif ?>
+                                                        </singleline>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr><td class="w180" width="180" height="10"></td></tr>
+                                        </tbody></table>
+                                    </td>
+                                    <? if (++$numEvents == $maxEvents) break ?>
+                                    <td width="20"></td>
+                                <? endforeach ?>
+                                <? for ($n = $numEvents; $n < $maxEvents; $n++): ?>
+                                    <td class="w180" width="180" valign="top"> </td>
+                                    <? if (++$numEvents != $maxEvents): ?>
+                                        <td width="20"></td>
+                                    <? endif ?>
+                                <? endfor ?>
                             </tr>
                         </tbody></table>
                     </layout>
-					<? endif ?>
+                    <? endif ?>
+
+                    <? if (count($promotion->release->artist->releases)): ?>
+                    <layout label="Image gallery">
+                        <p align="left" class="article-title"><singleline label="Title">More releases by <?= $promotion->release->artist->name ?></singleline></p>
+                        <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
+                            <tbody>
+                                <tr>
+                                <? $numReleases = 0; $maxReleases = 3; ?>
+                                <? foreach ($promotion->release->artist->releases as $release): ?>
+                                    <td class="w180" width="180" valign="top">
+                                        <table class="w180" width="180" cellpadding="0" cellspacing="0" border="0">
+                                            <tbody><tr>
+                                                <td class="w180" width="180">
+                                                <? if (count($release->links)): ?>
+                                                    <a target="_blank" href="<?= reset($release->links)->link ?>">
+                                                <? endif ?>
+                                                <img src="http://www.3886records.de/img/releases/<?= $release->cover ?>" editable="true" label="<?= $release->artist->name ?> - <?= $release->title ?>" class="w180" width="180" border="0">
+                                                <? if (count($release->links)): ?>
+                                                    </a>
+                                                <? endif ?>
+                                                </td>
+                                            </tr>
+                                            <tr><td class="w180" width="180" height="10"></td></tr>
+                                            <tr>
+                                                <td class="w180" width="180">
+                                                    <div align="left" class="article-content">
+                                                        <singleline label="Description">
+                                                        <? if (count($release->links)): ?>
+                                                            <a target="_blank" href="<?= reset($release->links)->link ?>">
+                                                        <? endif ?>
+                                                        <?= $release->artist->name ?> - <?= $release->title ?>
+                                                        <? if (count($release->links)): ?>
+                                                            </a>
+                                                        <? endif ?>
+                                                        </singleline>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr><td class="w180" width="180" height="10"></td></tr>
+                                        </tbody></table>
+                                    </td>
+                                    <? if (++$numReleases == $maxReleases) break ?>
+                                    <td width="20"></td>
+                                <? endforeach ?>
+                                <? for ($n = $numReleases; $n < $maxReleases; $n++): ?>
+                                    <td class="w180" width="180" valign="top"> </td>
+                                    <? if (++$numReleases != $maxReleases): ?>
+                                        <td width="20"></td>
+                                    <? endif ?>
+                                <? endfor ?>
+                            </tr>
+                        </tbody></table>
+                    </layout>
+                    <? endif ?>
 					
                 </repeater>
             </td>

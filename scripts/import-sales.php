@@ -44,12 +44,7 @@ $lines = file($csvFile);
 $end = count($lines) - 1;
 for ($n = 1; $n < $end; $n++) {
 
-	$data = explode(',', $lines[$n]);
-	foreach ($data as &$item) {
-
-		$item = trim($item, '"\' 	');
-	}
-
+	$data = str_getcsv($lines[$n]);
 	$sale = new \Models\Sale;
 	$sale->report_id = $salesReport->id;
 	

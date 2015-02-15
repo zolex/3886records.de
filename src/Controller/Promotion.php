@@ -14,9 +14,10 @@ class Promotion extends ControllerAction
 		$dp = \DataProvider::getInstance();
 		$promotion = $dp->getPromotionByKey($promoKey);
 		$subscription = $dp->getSubscription(array('hash' => $promoToken));
-		
+
 		if (!$promotion || !$subscription) {
-		
+
+			die("no promo or subscr");
 			header('Location: /');
 			exit;
 		}
@@ -30,8 +31,8 @@ class Promotion extends ControllerAction
 		$feedback = $dp->getPromotionFeedback($promotion, $subscription);
 		if (!$feedback->updated_at) {
 
-			header('Location: /');
-			exit;	
+			header('Location: /promotion/'. $promotion->key . '/'. $subscription->hash);
+			exit;
 		}
 
 		if (!isset($_GET['exceeded']) && $feedback->availableDownloads() == 0) {
@@ -62,29 +63,51 @@ class Promotion extends ControllerAction
 	public function view($request) {
 
 		$promoKey = $request->getParam('key');
+		if ($promoKey == 'spekta-lite-prog' || $promoKey == 'spekta-lite-prog-test') {
+
+			$promoKey = 'spekta-liteprog';
+		}
+
 		$promoToken = $request->getParam('token');
 	
 		$dp = \DataProvider::getInstance();
-		$promotion = $dp->getPromotionByKey($promoKey);
-		$subscription = $dp->getSubscription(array('hash' => $promoToken));
 
-		if (!$promotion || !$subscription) {
+		$promotion = $dp->getPromotionByKey($promoKey);
+		if (!$promotion) {
 		
 			header('Location: /');
 			exit;
 		}
 
-		$feedback = $dp->getPromotionFeedback($promotion, $subscription);
-		if (!$feedback->viewed) {
+
+		$newSubscriber = false;
+		if (!$subscription = $dp->getSubscription(array('hash' => $promoToken))) {
+
+			if ($request->isPost() && $email = $request->getPost('email')) {
+
+				$subscription = $dp->getSubscription(array('email' => $email));
+			}
+
+			if (!$subscription) {
+
+				$subscription = new \Models\Subscription;
+			}
+
+			$newSubscriber = true;
+		}
+
+		// find feedback or create new subscription with feedback
+		if (!$feedback = $dp->getPromotionFeedback($promotion, $subscription)) {
+
+			$feedback = new \Models\PromotionFeedback;
+			$feedback->subscription = $subscription;
+		}
+
+		// mark feedback as viewed
+		if (!$feedback->viewed && !$newSubscriber) {
 
 			$feedback->viewed = 1;
 			$dp->savePromotionFeedback($feedback);
-		}
-
-		if ($feedback->updated_at) {
-
-			header('Location: /promotion/'. $promotion->key . '/'. $subscription->hash . '/thanks');
-			exit;
 		}
 
 		$messages = array();
@@ -92,6 +115,16 @@ class Promotion extends ControllerAction
 
 			$subscription->firstname = $request->getPost('firstname');
 			$subscription->lastname = $request->getPost('lastname');
+			if (!$subscription->email) {
+
+				$subscription->email = $request->getPost('email');
+			}
+
+			if (!$subscription->email) {
+
+				$messages['email'] = 'Please enter your email.';
+			}
+
 			if (!$subscription->alias = $request->getPost('alias')) {
 
 				$messages['alias'] = 'Please enter your alias.';
@@ -121,16 +154,26 @@ class Promotion extends ControllerAction
 
 			if (!count($messages)) {
 
+				$dp->saveSubscription($subscription);
+				$feedback->subscription = $subscription;
 				$feedback->updated_at = date("Y-m-d H:i:s");
 				$dp->savePromotionFeedback($feedback);
-				$dp->saveSubscription($subscription);
+
 				header('Location: /promotion/'. $promotion->key . '/'. $subscription->hash . '/thanks');
 				exit;
 			}
 		}
 
+		// already has feedback, continue to download page
+		if ($feedback->updated_at) {
+
+			header('Location: /promotion/'. $promotion->key . '/'. $subscription->hash . '/thanks');
+			exit;
+		}
+
 		return array(
 			'metaTitle' => $promotion->title,
+			'facebookImage' => 'http://www.3886records.de/img/releases/'. $promotion->release->cover,
 			'title' => $promotion->release->title,
 			'promotion' => $promotion,
 			'subscription' => $subscription,

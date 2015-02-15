@@ -14,9 +14,9 @@ $transport = Swift_SmtpTransport::newInstance($config['smtp']['host'], $config['
 $mailer = Swift_Mailer::newInstance($transport);
 
 
-die("DISABLED-CHECK-VALUES-FOR-NEXT-MAILING!");
+//die("DISABLED-CHECK-VALUES-FOR-NEXT-MAILING!");
 
-$promotion = $dp->getPromotionByKey('zwielicht-shadowplay-ep');
+$promotion = $dp->getPromotionByKey('spekta-liteprog');
 
 $stmt = $dbh->prepare("SELECT email FROM subscriptions WHERE active = 1 ORDER BY email DESC");
 if (!$stmt->execute()) {

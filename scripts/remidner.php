@@ -16,7 +16,7 @@ $transport = Swift_SmtpTransport::newInstance($config['smtp']['host'], $config['
 
 $mailer = Swift_Mailer::newInstance($transport);
 
-$promotion = $dp->getPromotionByKey('zwielicht-shadowplay-ep');
+$promotion = $dp->getPromotionByKey('spekta-liteprog');
 
 $stmt = $dbh->prepare("SELECT s.email FROM subscriptions s LEFT JOIN promotion_feedback pf ON (pf.subscription_id = s.id AND pf.promotion_id = ". $promotion->id .") WHERE pf.updated_at IS NULL AND s.active = 1 ORDER BY s.email DESC");
 if (!$stmt->execute()) {

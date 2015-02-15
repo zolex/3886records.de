@@ -17,4 +17,15 @@ class Event extends AbstractModel
 	protected $toTime;
 	protected $flyer;
 	protected $facebook;
+	protected $visible;
+
+	public function toJson() {
+
+		return json_encode((object)array(
+			'id' => $this->id,
+			'title' => $this->name,
+			'start' => $this->fromTime,
+			'end' => $this->toTime,
+		));
+	}
 }

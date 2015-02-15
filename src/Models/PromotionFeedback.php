@@ -6,7 +6,9 @@ class PromotionFeedback extends AbstractModel
 {
 	protected $id;
 	protected $promotion;
+	protected $promotion_id;
 	protected $subscription;
+	protected $subscription_id;
 	protected $sent = 1;
 	protected $viewed = 0;
 	protected $rating;

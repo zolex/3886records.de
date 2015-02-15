@@ -86,6 +86,11 @@ ul.social a:hover {
 .events-small .thumbnail {
 	height: 138px;
 }
+.crews-small a .artist-name,
+.members-small a .artist-name {
+	font-size: 12px;
+	color: #000;
+}
 .eventsfull .thumbnail {
 	height: 360px !important;
 }

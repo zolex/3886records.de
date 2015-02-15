@@ -3,11 +3,11 @@
         <div class="addresses">
             <div class="sender">3886records - Andreas Linden - Agnesstr. 3a - 53225 Bonn</div>
             <div class="recepient">
-                <strong>Enchanted Recordings</strong><br/>
-                Aljosha Konstanty<br/>
-                Van Voorschotenlaan 17<br/>
-                2597PA Den Haag<br/>
-                Niederlande
+                <strong>Begünstiger</strong><br/>
+                Max Mustermann<br/>
+                Musterstraße 42<br/>
+                55555 Musterhausen<br/>
+                Musterland
             </div>
         </div>
         
@@ -33,7 +33,7 @@
         <div class="content">
             <p><strong>ABRECHNUNG</strong>
             <p>
-                <strong>Rechnungszeitraum: <?= $report->date ?></strong><br/>
+                <strong>Rechnungsquartale: <?= $report->date ?></strong><br/>
                 Eine detailierte Auflistung aller Umsätze finden Sie in der Abrechnung ab Seite 2
             </p>
             
@@ -49,7 +49,7 @@
                     <? $sum += round($report->items[$n]->value, 2) ?>
                     <tr class="<?= $n == $numItems - 1 ? 'last' : '' ?>">
                         <td class="nobottom" colspan="2">
-                            <?= $report->items[$n]->label ?> <?= $report->items[$n]->format ?>
+                            <?= $report->items[$n]->position ?>
                         </td>
                         <td class="taright nobottom">
                             <?= $report->items[$n]->num ?>
@@ -96,11 +96,11 @@
         <div class="addresses">
             <div class="sender">3886records - Andreas Linden - Agnesstr. 3a - 53225 Bonn</div>
             <div class="recepient">
-                <strong>Enchanted Recordings</strong><br/>
-                Aljosha Konstanty<br/>
-                Van Voorschotenlaan 17<br/>
-                2597PA Den Haag<br/>
-                Niederlande
+                <strong>Begünstiger</strong><br/>
+                Max Mustermann<br/>
+                Musterstraße 42<br/>
+                55555 Musterhausen<br/>
+                Musterland
             </div>
         </div>
         
@@ -139,9 +139,11 @@
                     <th class="taright"><strong>Value</strong></th>
                 </tr>
 
+				<? $sumDetail = 0 ?>
                 <? $numItems = count($details) ?>
                 <? for ($n = 0; $n < $numItems; $n++): ?>
-                    <tr class="<?= $n == $numItems - 1 ? 'last' : '' ?>">
+                    <? $sumDetail += $details[$n]->avail ?>
+					<tr class="<?= $n == $numItems - 1 ? 'last' : '' ?>">
                         <td class="nobottom">
                             <?= $details[$n]->release_artist ?>
                         </td>
@@ -163,7 +165,7 @@
                             <?= $details[$n]->quantity ?>
                         </td>
                         <td class="nobottom taright">
-                            <nobr><?= $details[$n]->royalty ?> GBP</nobr>
+                            <nobr><?= $details[$n]->avail ?> GBP</nobr>
                         </td>
                     </tr>
                 <? endfor ?>
@@ -175,7 +177,7 @@
                         Rechnungsbetrag netto: -->
                     </td>
                     <td class="taright double" style="border-bottom: 1px solid #000;">
-                        <?= sprintf("%.2f", round($sum, 2)) ?> GBP
+                        <?= $sumDetail ?> GBP
                         <!--0 GBP<br />
                         0 GBP<br />
                         0 GBP-->

@@ -1,0 +1,53 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+    <div class="hero-unit">
+    	<h1>All genres at a glance</h1>
+    	<p>A small but well-sorted glossary of musical genres covered by Thirtyeight Eightysix Records.</p>
+
+<? foreach ($genres as $genre): ?>
+	<div class="row-fluid">
+		<h2>
+		    <?= $genre->name ?>
+		    <? if (null !== $genre->altName): ?>
+		    	<span style="font-weight: normal; font-size: 32pt;">(<?= $genre->altName ?>)</span>
+		    <? endif ?>
+	    </h2>
+		<? if (!empty($genre->description)): ?>
+			<p><?= $genre->description ?></p>
+		<? endif ?>
+		<div class="row-fluid" style="font-size: 10pt;">
+			<? if (count($genre->superiors)): ?>
+				<div class="span4" style="padding: 0; margin: 0;">
+					<p>
+						<strong style="float: left;">Superior Genres:</strong>
+						<? foreach ($genre->superiors AS $superior): ?>
+							<span style="margin: 0 0 0 10pt;"><a data-method="async" href="/genre/<?= $superior->key ?>"><?= $superior->name?></a></span>
+						<? endforeach ?>
+					</p>
+				</div>
+			<? endif ?>
+			<? if (count($genre->subgenres)): ?>
+				<div class="span8" style="padding: 0; margin: 0;">
+					<p>
+						<strong style="float: left;">Subgenres:</strong>
+						<? foreach ($genre->subgenres AS $subgenre): ?>
+							<span style="margin: 0 0 0 10pt;"><a data-method="async" href="/genre/<?= $subgenre->key ?>"><?= $subgenre->name?></a></span>
+						<? endforeach ?>
+						</p>
+				</div>			
+			<? endif ?>
+		</div>
+		<div class="row-fluid" style="font-size: 10pt;">
+			<? if (count($genre->artists)): ?>
+				<div class="span12">
+					<p>
+						<strong style="float: left;">Artists:</strong>
+						<? foreach ($genre->artists AS $artist): ?>
+							<span style="margin: 0 0 0 10pt;"><a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name?></a></span>
+						<? endforeach ?>
+					</p>
+				</div>
+			<? endif ?>
+		</div>
+<? endforeach ?>
+</div>

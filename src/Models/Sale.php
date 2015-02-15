@@ -27,4 +27,5 @@ class Sale extends AbstractModel
 	protected $store;
 	protected $track_ref;
 	protected $invoiced;
+	protected $avail;
 }

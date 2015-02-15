@@ -37,7 +37,8 @@
 					<input <?= $subscription->newsletter == 1 ? 'checked="checked" ' : '' ?>id="inputNewsletter" name="newsletter" value="1" type="checkbox" />
 				</div>
 			</div>
-			<div class="control-group">
+
+			<div class="control-group" style="display: none;">
 				<label class="control-label dark">Promotions</label>
 				<div class="controls">
 				  <? foreach ($genres as $genre): ?>

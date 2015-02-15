@@ -8,7 +8,16 @@ class Events extends ControllerAction
 {
 	public function overview($request) {
 	
+		$facebookImage = null;
+		if ($event = $this->getDataProvider()->getNextEvent()) {
+		
+			$facebookImage = 'http://www.3886records.de/img/events/'. $event->flyer;
+		}
+
 		return array(
+			'metaTitle' => 'Upcomming Events',
+			'facebookImage' => $facebookImage,
+			'facebookDescription' => 'Show all the upcomming events with Thirtyeight Eightysix Records artists and DJs.',
 			'events' => (object)array(
 				'upcomming' => $this->getDataProvider()->getEvents(\Models\Event::UPCOMMING, true),
 				'past' => $this->getDataProvider()->getEvents(\Models\Event::PAST, true),
@@ -24,6 +33,13 @@ class Events extends ControllerAction
 				),
 			),
 		);
+	}
+
+	public function json($request) {
+	
+		$events = $this->getDataProvider()->getEvents(\Models\Event::UPCOMMING, true);
+		echo '{"events": ['. implode(',', $events) . ']}';
+		exit;
 	}
 	
 	public function forward($request) {

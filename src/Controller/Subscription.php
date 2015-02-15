@@ -44,32 +44,22 @@ class Subscription extends ControllerAction
 			$message = 'No email address provided';
 		
 		} else {
-
-			$genres = $dp->getGenres();
-			foreach ($genres AS $genre) {
-			
-				$subscription->genres[] = $genre;
-			}
 		
 			if ($subscription = $dp->getSubscription($email)) {
 
 				if ($subscription->active == 0) {
 
-				$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
+					$dp->generateSubscriptionHash($subscription);
+					$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
 				}
 			
 			} else {
 			
 				$subscription = new \Models\Subscription;
 				$subscription->email = $email;
+				$dp->generateSubscriptionHash($subscription);
 
 				$this->sendActivationEmail($subscription, $request->getConfig('smtp'));
-			}
-			
-			$genres = $dp->getGenres();
-			foreach ($genres AS $genre) {
-			
-				$subscription->genres[] = $genre;
 			}
 			
 			$dp->saveSubscription($subscription);
@@ -169,21 +159,14 @@ class Subscription extends ControllerAction
 			if ($subscription = $dp->getSubscription(array('hash' => $token))) {
 
 				if ($request->isPost()) {
-				
-					$genreIds = $request->getPost('genres');
-					$genres = array();
-					foreach ($genreIds as $genreId) {
-					
-						$genres[] = $dp->getGenreById($genreId);
-					}
-					
+			
 					//$subscription->email = $request->getPost('email');
 					$subscription->firstname = $request->getPost('firstname');
 					$subscription->lastname = $request->getPost('lastname');
 					$subscription->alias = $request->getPost('alias');
 					$subscription->newsletter = $request->getPost('newsletter');
 					$subscription->promotions = 0 == count($genreIds) ? 0 : 1;
-					$subscription->genres = $genres;
+					$subscription->genres = array();
 				
 					if (null !== $request->getPost('update')) {
 					

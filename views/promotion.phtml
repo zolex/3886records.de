@@ -12,6 +12,7 @@
 		<div class="span12">
 			<div class="backgrounded">
 				<h1 class="dark">Limited Promotional Offer</h1>	
+				<br><br>
 				<? $name = $subscription->getName() ?>
 				<? if ($promotion->isExpired()): ?>
 					<strong>We're sorry but the promotion for <?= $promotion->release->artist->name ?> - <?= $promotion->release->title ?> is expired</strong>
@@ -30,10 +31,13 @@
 		<div class="span12 backgrounded">
 			<div class="span6">
 				<form method="POST" class="form-horizontal feedback">
-					<div class="control-group">
+					<div class="control-group<?= isset($errors['email']) ? ' error' : '' ?>">
 						<label class="control-label dark" for="inputEmail">Email address: *</label>
 						<div class="controls">
-							<input disabled="disabled" readonly="readonly" id="inputEmail" name="email" type="email" value="<?= $subscription->email ?>"  placeholder="E-Mail address" />
+							<input <?php if (!empty($subscription->email)): ?>disabled="disabled" readonly="readonly"<? endif ?> id="inputEmail" name="email" type="email" value="<?= $subscription->email ?>"  placeholder="E-Mail address" />
+							<? if (isset($errors['email'])): ?>
+								<span class="help-inline"><?= $errors['email'] ?></span>
+							<? endif ?>
 						</div>
 					</div>
 					<div class="control-group<?= isset($errors['firstname']) ? ' error' : '' ?>">

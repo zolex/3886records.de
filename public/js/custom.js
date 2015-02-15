@@ -61,7 +61,6 @@ $(document).ready(function () {
 window.isFirstCall = true;
 window.onpopstate = function(e) {
 
-	if (window.isFirstCall) return;
 	window.isFirstCall = false;
 	gotoPage(window.location.href, false);
 };

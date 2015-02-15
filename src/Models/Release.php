@@ -6,6 +6,7 @@ class Release extends AbstractModel
 {
 	protected $id;
 	protected $links = array();
+	protected $catalog;
 	protected $artist;
 	protected $genre;
 	protected $title;
@@ -13,4 +14,6 @@ class Release extends AbstractModel
 	protected $date;
 	protected $format;
 	protected $type;
+	protected $deal;
+	protected $visible;
 }

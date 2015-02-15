@@ -49,7 +49,7 @@ class DataProvider
 	
 		if (!$stmt->execute()) {
 		
-			throw new \Exception($stmt->errorInfo());
+			throw new \Exception();
 		}
 		
 		return $stmt->fetchAll(\PDO::FETCH_CLASS, $className);
@@ -71,6 +71,25 @@ class DataProvider
 		return $stmt->fetchObject($className);
 	}
 	
+	public function getNextEvent() {
+
+		$query = $query = "SELECT e.* FROM events e WHERE e.toTime >= NOW() ORDER BY fromTime ASC LIMIT 1;";
+		$stmt = $this->getDbh()->prepare($query);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+
+		$event = null;
+		if ($row = $stmt->fetchObject()) {
+
+			$event = (new \Models\Event)->fromObject($row, null, true);
+		}
+
+		return $event;
+	}
+
 	// 0 = all
 	// 1 = upcomming
 	// 2 = past
@@ -93,20 +112,19 @@ class DataProvider
 				FROM events e";
 		}
 
-
 		if ($which === \Models\Event::UPCOMMING) {
 
-			$where = "WHERE e.toTime >= NOW()";
+			$where = "WHERE e.toTime >= NOW() AND e.visible = 1";
 			$order = "ORDER BY e.fromTime ASC";
 		
 		} else if ($which === \Models\Event::PAST) {
 
-			$where = "WHERE e.toTime < NOW()";
+			$where = "WHERE e.toTime < NOW() AND e.visible = 1";
 			$order = "ORDER BY e.fromTime DESC";
 
 		} else {
 
-			$where = "";
+			$where = "WHERE e.visible = 1";
 			$order = "";
 		}
 
@@ -125,7 +143,7 @@ class DataProvider
 
 			if (null === $lastRow || $lastRow->id != $row->id) {
 
-				$events[] = (new \Models\Event)->fromObject($row);
+				$events[] = (new \Models\Event)->fromObject($row, null, true);
 				$current = count($events) - 1;
 			}
 
@@ -168,7 +186,7 @@ class DataProvider
 
 			if (null === $label) {
 
-				$label = (new \Models\Label)->fromObject($row);
+				$label = (new \Models\Label)->fromObject($row, null, true);
 			}
 
 			$label->links[] = (new \Models\LabelLink)->fromObject($row);
@@ -219,64 +237,9 @@ class DataProvider
 	
 	public function getArtist($name) {
 	
-		$query = "SELECT a.*,
-					l.id AS link_id,
-					l.type AS link_type,
-					l.link AS link_link,
-					v.id AS video_id,
-					v.link AS video_link,
-					e.id AS event_id,
-					e.key AS event_key,
-					e.name AS event_name,
-					e.fromTime AS event_fromTime,
-					e.toTime AS event_toTime,
-					e.shortInfo AS event_shortInfo,
-					e.longInfo AS event_longInfo,
-					e.flyer AS event_flyer,
-					e.facebook AS event_facebook
-			FROM artists a
-			LEFT JOIN artist_links l ON l.artist_id = a.id
-			LEFT JOIN artist_videos v ON v.artist_id = a.id
-			LEFT JOIN event_artists ea ON ea.artist_id = a.id
-			LEFT JOIN events e ON e.id = ea.event_id
-			WHERE a.`key` = :key
-			ORDER BY l.position, v.position, e.fromTime";
-		$stmt = $this->getDbh()->prepare($query);
-		$stmt->bindValue('key', $name);
-		if (!$stmt->execute()) {
-		
-			$errorInfo = $stmt->errorInfo();
-			throw new \Exception($errorInfo[2], $errorInfo[1]);
-		}
-		
-		$artist = null;
-		while ($row = $stmt->fetchObject()) {
-
-			if (null === $artist) {
-
-				$artist = (new \Models\Artist)->fromObject($row);
-			}
-
-			if (null !== $row->link_id && !array_key_exists($row->link_id, $artist->links)) {
-
-				$artist->links[$row->link_id] = (new \Models\ArtistLink)->fromObject($row, 'link_');
-			}
-
-			if (null !== $row->video_id && !array_key_exists($row->video_id, $artist->videos)) {
-
-				$artist->videos[$row->video_id] = (new \Models\ArtistVideo)->fromObject($row, 'video_');
-			}
-
-			if (null !== $row->event_id && !array_key_exists($row->event_id, $artist->events)) {
-
-				if (strtotime($row->event_toTime) >= time() || $row->event_toTime === null) {
-				
-					$artist->events[$row->event_id] = (new \Models\Event)->fromObject($row, 'event_');
-				}
-			}
-		}
-
-		return $artist;
+		return \Domains\Artists::getInstance()
+			->setDbh($this->getDbh())
+			->findOneByKey($name);
 	}
 	
 	public function getArtistByName($name) {
@@ -293,7 +256,7 @@ class DataProvider
 		$artist = null;
 		if ($row = $stmt->fetchObject()) {
 
-			$artist = (new \Models\Artist)->fromObject($row);
+			$artist = (new \Models\Artist)->fromObject($row, null);
 		}
 
 		return $artist;
@@ -321,17 +284,59 @@ class DataProvider
 	
 	public function getArtists() {
 	
-		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 0 AND visible = 1 ORDER BY position, name ASC");
+		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 0 AND visible = 1 ORDER BY name ASC");
 	}
 
 	public function getDJs() {
 	
-		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 1 ORDER BY position, name ASC");
+		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 1 AND visible = 1 ORDER BY name ASC");
 	}
 
 	public function getGenre($name) {
 	
-		return $this->fetchOne('\Models\Genre', "SELECT * FROM genres where `key` = :key", array('key' => $name));
+		$query = "SELECT g.*,
+					sg.id AS sub_id,
+					sg.name AS sub_name,
+					sg.`key` AS sub_key,
+					pg.id AS parent_id,
+					pg.name AS parent_name,
+					pg.`key` AS parent_key
+				FROM genres g
+				LEFT JOIN genre_relations gr ON gr.parent_id = g.id
+				LEFT JOIN genres sg ON sg.id = gr.genre_id
+				LEFT JOIN genre_relations gr2 ON gr2.genre_id = g.id
+				LEFT JOIN genres pg ON pg.id = gr2.parent_id
+				WHERE g.`key` = :key";
+
+		$stmt = $this->getDbh()->prepare($query);
+		$stmt->bindValue('key', $name);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+
+
+		$genre = null;
+		while ($row = $stmt->fetchObject()) {
+
+			if (null === $genre) {
+
+				$genre = (new \Models\Genre)->fromObject($row, null, true);
+			}
+
+			if (null !== $row->sub_id && !array_key_exists($row->sub_id, $genre->subgenres)) {
+
+				$genre->subgenres[$row->sub_id] = (new \Models\Genre)->fromObject($row, 'sub_');
+			}
+
+			if (null !== $row->parent_id && !array_key_exists($row->parent_id, $genre->superiors)) {
+
+				$genre->superiors[$row->parent_id] = (new \Models\Genre)->fromObject($row, 'parent_');
+			}
+		}
+
+		return $genre;
 	}
 	
 	public function getGenreById($id) {
@@ -341,7 +346,62 @@ class DataProvider
 	
 	public function getGenres() {
 	
-		return $this->fetchAll('\Models\Genre', "SELECT * FROM genres");
+		$query = "SELECT g.*,
+					sg.id AS sub_id,
+					sg.name AS sub_name,
+					sg.`key` AS sub_key,
+					pg.id AS parent_id,
+					pg.name AS parent_name,
+					pg.`key` AS parent_key,
+					a.id AS artist_id,
+					a.`key` AS artist_key,
+					a.name AS artist_name
+				FROM genres g
+				LEFT JOIN genre_relations gr ON gr.parent_id = g.id
+				LEFT JOIN genres sg ON sg.id = gr.genre_id
+				LEFT JOIN genre_relations gr2 ON gr2.genre_id = g.id
+				LEFT JOIN genres pg ON pg.id = gr2.parent_id
+				LEFT JOIN artist_genres AS ag ON ag.genre_id = g.id
+				LEFT JOIN artists AS a ON a.id = ag.artist_id
+				ORDER BY g.position ASC, sg.position ASC, a.name ASC";
+
+		$stmt = $this->getDbh()->prepare($query);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+
+
+		$lastRow = null;
+		$genres = array();
+		while ($row = $stmt->fetchObject()) {
+
+			if (null === $lastRow || $lastRow->id != $row->id) {
+
+				$genres[] = (new \Models\Genre)->fromObject($row, null, true);
+				$current = count($genres) - 1;
+			}
+
+			if (null !== $row->sub_id && !array_key_exists($row->sub_id, $genres[$current]->subgenres)) {
+
+				$genres[$current]->subgenres[$row->sub_id] = (new \Models\Genre)->fromObject($row, 'sub_');
+			}
+
+			if (null !== $row->parent_id && !array_key_exists($row->parent_id, $genres[$current]->superiors)) {
+
+				$genres[$current]->superiors[$row->parent_id] = (new \Models\Genre)->fromObject($row, 'parent_');
+			}
+
+			if (null !== $row->artist_id && !array_key_exists($row->artist_id, $genres[$current]->artists)) {
+
+				$genres[$current]->artists[$row->artist_id] = (new \Models\Artist)->fromObject($row, 'artist_');
+			}
+
+			$lastRow = $row;
+		}
+
+		return $genres;
 	}	
 	
 	public function getReleases($type) {
@@ -398,7 +458,7 @@ class DataProvider
 
 			if (null === $lastRow || $lastRow->id != $row->id) {
 
-				$releases[] = (new \Models\Release)->fromObject($row);
+				$releases[] = (new \Models\Release)->fromObject($row, null, true);
 				$current = count($releases) - 1;
 			}
 
@@ -484,7 +544,7 @@ class DataProvider
 
 			if (null === $subscription) {
 
-				$subscription = (new \Models\Subscription)->fromObject($row);
+				$subscription = (new \Models\Subscription)->fromObject($row, null, true);
 			}
 
 			if (null !== $row->genre_id && !array_key_exists($row->genre_id, $subscription->genres)) {
@@ -498,7 +558,7 @@ class DataProvider
 
 	public function saveSubscription($subscription) {
 	
-		if (null === $subscription->id) {
+		if (!$subscription->id) {
 		
 			$this->insertSubscription($subscription);
 			
@@ -524,8 +584,6 @@ class DataProvider
 	}
 	
 	public function insertSubscription(&$subscription) {
-
-		$this->generateSubscriptionHash($subscription);
 	
 		$stmt = $this->dbh->prepare("INSERT INTO subscriptions (email, firstname, lastname, alias, newsletter, promotions, active, hash, usertype) VALUES(:email, :firstname, :lastname, :alias, :newsletter, :promotions, :active, :hash, :usertype);"); 
 		$stmt->bindValue('email', $subscription->email);
@@ -541,9 +599,13 @@ class DataProvider
 		try { 
 		
 			$this->dbh->beginTransaction(); 
-			$stmt->execute();
+			if (!$stmt->execute()) {
+		
+				$info = $stmt->errorInfo();
+				throw new \Exception($info[2], $info[1]);
+			}
+
 			$subscription->id = $this->dbh->lastInsertId(); 
-			
 			foreach ($subscription->genres as $genre) {
 			
 				$stmt = $this->dbh->prepare("INSERT INTO subscription_genres (subscription_id, genre_id) VALUES (:subscription_id, :genre_id);");
@@ -618,6 +680,11 @@ class DataProvider
 				a.`key` AS artist_key,
 				a.name AS artist_name,
 				g.id AS genre_id,
+				e.id AS event_id,
+				e.name AS event_name,
+				e.key AS event_key,
+				e.facebook AS event_facebook,
+				e.flyer AS event_flyer,
 				g.`key` AS genre_key,
 				g.name AS genre_name,
 				rs.id AS releases_id,
@@ -638,6 +705,8 @@ class DataProvider
 			LEFT JOIN release_links rl ON rl.release_id = r.id
 			INNER JOIN artists a ON a.id = r.artist_id
 			INNER JOIN genres g ON g.id = r.genre_id
+			LEFT JOIN event_artists ea ON ea.artist_id = a.id
+			LEFT JOIN events e ON (e.id = ea.event_id AND e.fromTime >= NOW())
 			LEFT JOIN releases rs ON (rs.artist_id = a.id AND rs.id != r.id)
 			LEFT JOIN release_links rsl ON (rsl.release_id = rs.id)
 			WHERE p.`key` = :key"); 
@@ -654,7 +723,7 @@ class DataProvider
 
 			if (null === $promotion) {
 
-				$promotion = (new \Models\Promotion)->fromObject($row);
+				$promotion = (new \Models\Promotion)->fromObject($row, null, true);
 			}
 
 			if (null !== $row->genre_id && null === $promotion->genre) {
@@ -675,6 +744,11 @@ class DataProvider
 			if (null !== $row->artist_id && null !== $promotion->release && null === $promotion->release->artist) {
 
 				$promotion->release->artist = (new \Models\Artist)->fromObject($row, 'artist_');
+			}
+
+			if (null !== $row->event_id && null !== $promotion->release->artist->events && !array_key_exists($row->releases_id, $promotion->release->artist->events)) {
+
+				 $promotion->release->artist->events[$row->event_id] = (new \Models\Event)->fromObject($row, 'event_');
 			}
 			
 			if (null !== $row->releases_id && null !== $promotion->release->artist && !array_key_exists($row->releases_id, $promotion->release->artist->releases)) {
@@ -716,7 +790,7 @@ class DataProvider
 		$feedback = new \Models\PromotionFeedback;
 		if ($row = $stmt->fetchObject()) {
 	
-			$feedback->fromObject($row);
+			$feedback->fromObject($row, null, false);
 		}
 
 		if (!$feedback) {
@@ -755,13 +829,14 @@ class DataProvider
 
 		} else {
 
-			$stmt = $this->dbh->prepare("INSERT INTO promotion_feedback (downloads, promotion_id, subscription_id, viewed, support, rating, review, best_track_id, created_at) VALUES(0, :promotion_id, :subscription_id, :viewed, :support, :rating, :review, :best_track_id, NOW())");
+			$stmt = $this->dbh->prepare("INSERT INTO promotion_feedback (downloads, promotion_id, subscription_id, viewed, support, rating, review, best_track_id, updated_at, created_at) VALUES(0, :promotion_id, :subscription_id, :viewed, :support, :rating, :review, :best_track_id, :updated_at, NOW())");
 			$stmt->bindValue('promotion_id', $feedback->promotion->id);
 			$stmt->bindValue('subscription_id', $feedback->subscription->id);
 			$stmt->bindValue('support', $feedback->support);
 			$stmt->bindValue('viewed', (integer)$feedback->viewed);
 			$stmt->bindValue('rating', $feedback->rating);
 			$stmt->bindValue('review', $feedback->review);
+			$stmt->bindValue('updated_at', $feedback->updated_at);
 			$stmt->bindValue('best_track_id', $feedback->best_track_id);
 
 			if (!$stmt->execute()) {
@@ -852,7 +927,7 @@ class DataProvider
 
 	public function getNewSales($labelId = null) {
 
-		$sql = "SELECT s.* FROM sales s WHERE s.invoiced = 0";
+		$sql = "SELECT s.*, s.royalty AS avail FROM sales s WHERE s.invoiced = 0";
 		if ($labelId !== null) {
 
 			$sql .= " AND s.label_id = :label";
@@ -880,10 +955,43 @@ class DataProvider
 
 		return $sales;
 	}
+	
+	public function getNewSalesByArtist($artistId) {
+
+		$sql = "SELECT s.*, s.royalty * r.deal AS avail
+			FROM sales s
+			INNER JOIN releases r ON r.id = s.release_id
+			WHERE s.invoiced = 0
+			AND s.artist_id = :artist
+			ORDER BY s.release_artist, s.release_name, s.format, s.sale_type";
+			
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->bindValue('artist', $artistId);
+
+		if (!$stmt->execute()) {
+	
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$sales = array();
+		while ($row = $stmt->fetchObject()) {
+
+			$sales[] = (new \Models\Sale)->fromObject($row);
+		}
+
+		return $sales;
+	}
 
 	public function getSalesReportByLabel($labelId = null) {
 
-		$sql = "SELECT l.name AS label, s.format, SUM(s.quantity) AS num, SUM(s.royalty) AS value FROM sales s INNER JOIN labels l ON l.id = s.label_id WHERE s.invoiced = 0";
+		$sql = "SELECT CONCAT(l.name, ' ', s.format) AS position,
+			SUM(s.quantity) AS num,
+			SUM(s.royalty) AS value
+			FROM sales s
+			INNER JOIN labels l ON l.id = s.label_id
+			WHERE s.invoiced = 0";
+
 		if ($labelId != null) {
 
 			$sql .= " AND s.label_id = :label";
@@ -905,8 +1013,10 @@ class DataProvider
 
 		$report = (object)array(
 
-			'date' => null,
+			'date' => 'xxx',
 			'items' => array(),
+			'labelId' => $labelId,
+			'artistId' => null,
 		);
 
 		while ($row = $stmt->fetchObject()) {
@@ -915,18 +1025,36 @@ class DataProvider
 		}
 
 
-		// get date for report
+		$report->dates = $this->getDatesForReport($report);
+		$report->date = implode(', ', $dates);
+
+		return $report;
+	}
+	
+	public function getDatesForReport($report) {
+	
+		// determine date for report
 		$sql = "SELECT r.* FROM sales s INNER JOIN sales_reports r WHERE s.invoiced = 0";
-		if ($labelId !== null) {
+		if ($report->labelId !== null) {
 
 			$sql .= " AND s.label_id = :label";
+		}
+		
+		if ($report->artistId !== null) {
+
+			$sql .= " AND s.artist_id = :artist";
 		}
 
 		$sql .= " GROUP BY r.id ORDER BY r.quarter ASC";
 		$stmt = $this->dbh->prepare($sql);
-		if ($labelId != null) {
+		if ($report->labelId != null) {
 
-			$stmt->bindValue('label', $labelId);
+			$stmt->bindValue('label', $report->labelId);
+		}
+		
+		if ($report->artistId != null) {
+
+			$stmt->bindValue('artist', $report->labelId);
 		}
 
 		if (!$stmt->execute()) {
@@ -940,27 +1068,54 @@ class DataProvider
 
 			$dates[] = $row->quarter;
 		}
-
-		$report->date = implode(', ', $dates);
-
-		return $report;
+		
+		return $dates;
 	}
 
 	public function getSalesReportByArtist($labelId = null, $artistId = null) {
 
-		$stmt = $this->dbh->prepare("SELECT a.name AS artist, s.format, SUM(s.quantity) AS num, SUM(s.royalty) AS value FROM sales s INNER JOIN artists a ON a.id = s.artist_id GROUP BY s.artist_id, s.format");
+		$sql = "SELECT CONCAT(a.name, ' ', s.format) AS position,
+				SUM(s.quantity) AS num,
+				SUM(s.royalty) * r.deal AS value
+			FROM sales s
+			INNER JOIN artists a ON a.id = s.artist_id
+			INNER JOIN releases r ON r.id = s.release_id
+			WHERE s.invoiced = 0";
+			
+		if (null !== $artistId) {
+		
+			$sql .= " AND a.id = :artistId";
+		}
+			
+		$sql .= " GROUP BY s.artist_id, s.format";
+		$stmt = $this->dbh->prepare($sql);
+		if (null !== $artistId) {
+		
+			$stmt->bindValue('artistId', $artistId);
+		}
+		
 		if (!$stmt->execute()) {
 	
 			$errorInfo = $stmt->errorInfo();
 			throw new \Exception($errorInfo[2], $errorInfo[1]);
 		}
 		
-		$report = array();
+		$report = (object)array(
+		
+			'date' => null,
+			'items' => array(),
+			'labelId' => $labelId,
+			'artistId' => $artistId,
+		);
+		
+		$dates = $this->getDatesForReport($report);
+		$report->date = implode(', ', $dates);
+		
 		while ($row = $stmt->fetchObject()) {
 
-			$report[] = $row;
+			$report->items[] = $row;
 		}
-
+		
 		return $report;
 	}
 	
@@ -1069,6 +1224,75 @@ class DataProvider
 					'description' => 'Für den 5. Juli in der N8Lounge gibt es 3 Mal freien Eintritt zu gewinnen! Erlebe Progressive & Psychedelic Top Acts',
 					'image' => 'http://www.3886records.de/img/flyer/3886inlove.jpg',
 					'facebookLink' => 'https://www.facebook.com/events/612196595516881/?fref=gewinnspiel',
+					'winners' => array(
+						'Lena Faye',
+						'André Di Lauro',
+						'Sarah Wochnik',
+					),
+				);
+					
+			case 'mahadeva':
+				return (object)array(
+					'party' => 'mahadeva',
+					'eventName' => 'Mahadeva Linga',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für die Mahadeva Linga am 24.10.2014 zu gewinnen!',
+					'validUntil' => '2014-10-23 12:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Mahadeva Linga',
+					'description' => 'Für den 24. Oktober in der N8Lounge gibt es 3 Mal freien Eintritt zu gewinnen! Erlebe Progressive & Psychedelic Label DJs',
+					'image' => 'http://www.3886records.de/img/flyer/mahadeva-linga.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/262469157273772/?fref=gewinnspiel',
+					'winners' => array(
+						'Andre Lorenz',
+						'Louisa Käsi',
+						'Martin Urner',
+					),
+				);
+
+			case 'garuda':
+				return (object)array(
+					'party' => 'garuda',
+					'eventName' => 'Wings of Garuda',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für die Wings of Garuda am 14.11.2014 zu gewinnen!',
+					'validUntil' => '2014-11-13 12:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Wings of Garuda',
+					'description' => 'Für den 14.11. in der N8Lounge gibt es 3 Mal freien Eintritt zu gewinnen!',
+					'image' => 'http://www.3886records.de/img/flyer/garuda.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/262469157273772/?fref=gewinnspiel',
+				);
+
+			case 'brahma-quinio':
+				return (object)array(
+					'party' => 'brahma-quinio',
+					'eventName' => 'Brahma Quinio',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '5 Mal freier Eintritt für die Brahma Quinio 12.12.2014 zu gewinnen!',
+					'validUntil' => '2014-12-11 12:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Wings of Garuda',
+					'description' => 'Da wir bei der Wings of Garuda leider versäumt haben die Gewinner zu ziehen, gibt es nun 5 Mal freien Eintritt für die Brahma Quinio zu gewinnen!',
+					'image' => 'http://www.3886records.de/img/flyer/brahma-quinio.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/753095014733588/?fref=gewinnspiel',
+					'winners' => array(
+						'Donna Kopf',
+						'Gianluca Keßler',
+						'Manzur Kadiri',
+						'Tanja Kuhn',
+						'Vittorio David R',
+					),
+				);
+
+			case 'psyforge2':
+				return (object)array(
+					'party' => 'psyforge2',
+					'eventName' => 'Psy-Forge 2',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für den 30.1.2015 zu gewinnen!',
+					'validUntil' => '2015-01-29 12:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Psy-Forge 2',
+					'description' => 'Für den 30.1.2015 gibt es drei Mal freien Eintritt zu gewinnen.',
+					'image' => 'http://www.3886records.de/img/flyer/brahma-quinio.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/511261482310857//?fref=gewinnspiel',
 					'winners' => array(),
 				);
 		}
