@@ -10,4 +10,13 @@ class ControllerAction
 	
 		return DataProvider::getInstance();
 	}
+
+	public function requireLogin() {
+	
+		if (null === \Registry::get('user')) {
+
+			header('Location: /login');
+			exit;
+		}
+	}
 }

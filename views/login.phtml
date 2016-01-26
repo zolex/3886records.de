@@ -1,0 +1,37 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+    <div class="jumbotron hero-unit">
+        <h1>LOGIN</h1>
+        <? if ($reg == 1): ?>
+        	<p>Registration successful. You can login now.</p>
+    	<? endif ?>
+    	<? if ($loginFailed): ?>
+        	<p>Invalid credentials!</p>
+    	<? endif ?>
+        <form method="post" action="/login" class="form-horizontal">
+		  <div class="control-group form-group<?= $loginFailed ? ' has-error' : '' ?>">
+		    <label for="user" class="col-sm-2 control-label">Login:</label>
+		    <div class="controls col-sm-10">
+		      <input name="user" type="text" value="<?= @$values['user'] ?>" class="form-control" id="user" placeholder="Username">
+			  <? if (isset($errors['user'])): ?>
+		      	<span class="help-block"><?= $errors['user'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= $loginFailed ? ' has-error' : '' ?>">
+		    <label for="password" class="col-sm-2 control-label">Password:</label>
+		    <div class="controls col-sm-10">
+		      <input name="password" type="password" class="form-control" id="password" placeholder="Password">
+		      <? if (isset($errors['password'])): ?>
+		      	<span class="help-block"><?= $errors['password'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group">
+		    <div class="controls col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default">Login</button>
+		    </div>
+		  </div>
+		</form>
+    </div>
+</div>

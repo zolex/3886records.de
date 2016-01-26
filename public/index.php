@@ -11,9 +11,40 @@ if (true === $config['debug']) {
 }
 
 $request = new Request($config);
-
 $dbh = new PDO('mysql:host='. $config['db']['host'] .';port='. $config['db']['port'] .';dbname='. $config['db']['name'] .';charset=utf8', $config['db']['user'], $config['db']['password']);
 DataProvider::getInstance()->setDbh($dbh);
+Registry::set('dbh', $dbh);
+
+// cutstomer session
+session_start();
+$user = null;
+if (isset($_SESSION['csid'])) {
+
+	$dhb = Registry::get('dbh');
+	$stmt = $dbh->prepare('SELECT id, artist_id, name, rights, cstime FROM users WHERE csid = :csid LIMIT 1');
+	$stmt->bindValue('csid', $_SESSION['csid']);
+	$stmt->execute();
+	if ($user = $stmt->fetchObject()) {
+
+		if (strtotime($user->cstime) + 600 < time()) {
+
+			$stmt = $dbh->prepare('UPDATE users SET csid = NULL, cstime = NULL WHERE csid = :csid LIMIT 1');
+			$stmt->bindValue('csid', $_SESSION['csid']);
+			$stmt->execute();
+
+			$_SESSION['csid'] = null;
+			unset($_SESSION['csid']);
+			header('Location: /');
+			exit;
+		}
+
+		$stmt = $dbh->prepare('UPDATE users SET cstime = NOW() WHERE csid = :csid LIMIT 1');
+		$stmt->bindValue('csid', $_SESSION['csid']);
+		$stmt->execute();
+
+		\Registry::set('user', $user);
+	}
+}
 
 $router = new Router();
 list($template, $params) = $router->route($request);
@@ -65,6 +96,7 @@ $navigation = ViewLoader::load('navigation', array(
 	'djs' => $dataProvider->getDJs(),
 	'genres' => $dataProvider->getGenres(),
 	'labels' => $dataProvider->getLabels(),
+	'user' => $user,
 ));
 
 

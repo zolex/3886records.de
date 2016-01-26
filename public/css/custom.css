@@ -1964,3 +1964,22 @@ input.span2, textarea.span2, .uneditable-input.span2 {
 .error-page #search form {
 	display: inline-block;
 }
+
+.control-group {
+
+	margin-top: 20px;
+}
+
+.form-group.has-error input {
+	border-color: red;
+}
+.form-group.has-error label,
+.form-group.has-error .help-block {
+	color: red;
+}
+.control-group label,
+.form-group label {
+	color : #000;
+	font-weight: bold;
+	margin-top: 8px;
+}

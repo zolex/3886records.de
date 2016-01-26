@@ -23,9 +23,9 @@
 			</ul>
 		<? endif ?>
 		<? if (count($artist->genres)): ?>
-			<ul class="social" style="width: 34px; float: right;">
+			<ul class="social">
 			<? foreach ($artist->genres as $genre): ?>
-				<li><a target="_blank" href="/genre/<?= $genre->key ?>"><img alt="<?= ucfirst($genre->name) ?>" title="<?= ucfirst($genre->name) ?>" src="/img/social/<?= $genre->name ?>.png" border="0" /></a></li>
+				<li style="float: left; margin-left: 20px;"><a target="_blank" href="/genre/<?= $genre->key ?>"><?= $genre->name ?></a></li>
 			<? endforeach ?>
 			</ul>
 		<? endif ?>
@@ -74,11 +74,31 @@
 		<? endif ?>
     </div>
 </div>
+<? if (count($artist->releases)): ?>
+	<div class="container">
+		<h2>Releases</h2>
+		<ul class="thumbnails">
+			<? foreach ($artist->releases as $release): ?>
+				<li class="span2">
+					<div class="thumbnail">
+						<? if (!empty($release->beatport)): ?>
+							<a target="_blank" title="Download Release" href="<?= $release->beatport ?>"><?= $release->title ?>
+						<? endif ?>
+						<img width="100" src="/img/releases/<?= $release->cover ?>" border="0" alt="<?= $release->title ?>" title="<?= $release->title ?>">
+						<? if (!empty($release->beatport)): ?>
+							</a>
+						<? endif ?>
+					</div>
+				</li>
+			<? endforeach ?>
+		</ul>
+	</div>
+<? endif ?>
 <? if (count($artist->events)): ?>
 	<div class="container events-small">
-		<h2>Upcomming Events with <?= $artist->name ?></h2>
+		<h2>Upcomming events with <?= $artist->name ?></h2>
 		<ul class="thumbnails">
-			<? foreach ($artist->events as $event): ?>
+			<? foreach ($artist->events as $events): ?>
 				<li class="span2">
 					<div class="thumbnail">
 						<? if (!empty($event->facebook)): ?>

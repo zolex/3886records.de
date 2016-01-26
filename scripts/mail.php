@@ -16,7 +16,7 @@ $mailer = Swift_Mailer::newInstance($transport);
 
 //die("DISABLED-CHECK-VALUES-FOR-NEXT-MAILING!");
 
-$promotion = $dp->getPromotionByKey('spekta-liteprog');
+$promotion = $dp->getPromotionByKey('liquidtrance-intercalaris');
 
 $stmt = $dbh->prepare("SELECT email FROM subscriptions WHERE active = 1 ORDER BY email DESC");
 if (!$stmt->execute()) {

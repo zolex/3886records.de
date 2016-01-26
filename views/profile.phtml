@@ -1,0 +1,30 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+    <div class="jumbotron hero-unit">
+        <div>
+            <h1>3886profile</h1>
+        </div>
+		<p>
+			All information on your 3886records account.
+		</p>
+		<p>
+			<? if (isset($artist)): ?>
+				<strong>Hello <?= $artist->name ?>!</strong>
+			<? endif ?>
+		</p>
+    </div>
+
+    <? if (isset($artists) && count($artists)): ?>
+	<div class="jumbotron hero-unit">
+		<div>
+            <h1>Signup Codes</h1>
+        </div>
+		<p>
+			<? foreach ($artists as $artist): ?>
+				<strong><?= $artist->name ?></strong>: <?= $artist->code ?> <a href="https://www.3886records.de/signup?ref=<?= base64_encode($artist->id.'x') ?>">https://www.3886records.de/signup?ref=<?= base64_encode($artist->id.'x') ?></a><br>
+			<? endforeach ?>
+		</p>
+	</div>
+	<? endif ?>
+	
+</div>

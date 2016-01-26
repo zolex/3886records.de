@@ -6,6 +6,7 @@ class Artists extends AbstractDomain {
 
 	protected $_correlationMap = array(
 
+		'releases' => 'Release',
 		'crews' => 'artists',
 		'members' => 'artists',
 		'links' => 'artistLinks',
@@ -39,9 +40,15 @@ class Artists extends AbstractDomain {
 					e.facebook AS event_facebook,
 					g.id AS genre_id,
 					g.key AS genre_key,
-					g.name AS genre_name
+					g.name AS genre_name,
+					ar.id AS release_id,
+					ar.title AS release_title,
+					ar.cover AS release_cover,
+					ar.beatport AS release_beatport,
+					ar.date AS release_date
 			FROM artists a
 			LEFT JOIN artist_crews ac ON ac.artist_id_original = a.id
+			LEFT JOIN releases ar ON (ar.artist_id = a.id AND ar.visible = 1)
 			LEFT JOIN artists c ON c.id = ac.artist_id_crew
 			LEFT JOIN artist_crews acm ON acm.artist_id_crew = a.id
 			LEFT JOIN artists cm ON cm.id = acm.artist_id_original

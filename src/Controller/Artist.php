@@ -49,6 +49,17 @@ class Artist extends ControllerAction
 			return false;
 		}
 
+		if ($artist->type == 0) {
+
+			$link = '/artists';
+			$type = 'Artists';
+		
+		} else {
+
+			$link = '/djs';
+			$type = 'DJs';
+		}
+
 		return array(
 			'metaTitle' => $artist->name,
 			'metaTitleSuffix' => '3886records artist',
@@ -60,8 +71,8 @@ class Artist extends ControllerAction
 					'title' => 'Home',
 				),
 				(object)array(
-					'url' => '/artists',
-					'title' => 'Artists',
+					'url' => $link,
+					'title' => $type,
 				),
 				(object)array(
 					'active' => true,

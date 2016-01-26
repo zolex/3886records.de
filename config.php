@@ -161,5 +161,21 @@ return array(
             'template' => 'sales_report',
             'controller' => array('Controller\Sales', 'index')
         ),
+        '^/signup/?$' => array(
+            'template' => 'signup',
+            'controller' => array('Controller\Profile', 'signup'),
+        ),
+        '^/login/?$' => array(
+            'template' => 'login',
+            'controller' => array('Controller\Profile', 'login'),
+        ),
+        '^/profile/?$' => array(
+            'template' => 'profile',
+            'controller' => array('Controller\Profile', 'index'),
+        ),
+        '^/logout/?$' => array(
+            'template' => 'logout',
+            'controller' => array('Controller\Profile', 'logout'),
+        ),
     ),
 );

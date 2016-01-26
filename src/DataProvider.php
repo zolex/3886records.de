@@ -1295,6 +1295,24 @@ class DataProvider
 					'facebookLink' => 'https://www.facebook.com/events/511261482310857//?fref=gewinnspiel',
 					'winners' => array(),
 				);
+
+			case 'mahadeva2015':
+				return (object)array(
+					'party' => 'mahadeva2015',
+					'eventName' => 'Mahadeva Linga',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für die Mahadeva Linga am 2.5.2015 zu gewinnen!',
+					'validUntil' => '2015-05-01 12:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die Mahadeva Linga',
+					'description' => 'Für den 2. Mai in der N8Lounge gibt es 3 Mal freien Eintritt zu gewinnen! Erlebe Progressive & Psychedelic Label DJs',
+					'image' => 'http://www.3886records.de/img/flyer/mahadeva-linga-2015.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/799924283403679/?fref=gewinnspiel',
+					'winners' => array(
+						'Gianluca Keßler',
+						'Hanna Von Hell',
+						'Sandra Landa',
+					),
+				);
 		}
 	}
 }

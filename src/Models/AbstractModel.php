@@ -214,19 +214,28 @@ class AbstractModel {
 
 		foreach ($object as $property => $value) {
 
+			/*
 			if (true === $ingoreOtherParams) {
 
 				if (null === $prefix && false !== strpos($property, '_')) continue;
 				if (null !== $prefix && 0 !== strpos($property, $prefix)) continue;
 			}
+			*/
 
 			if (null !== $prefix) {
 
 				$property = preg_replace('/^'. $prefix .'/', '', $property);
 			}
 
-			$property = $this->_filterAndValidatePropertyName($property);
-			$this->$property = $value;
+			try {
+
+				$property = $this->_filterAndValidatePropertyName($property);
+				$this->$property = $value;
+
+			} catch (\Exception $e) {
+
+
+			}
 		}
 
 		return $this;
