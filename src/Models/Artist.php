@@ -35,4 +35,5 @@ class Artist extends AbstractModel
 	protected $location;
 	protected $birthday;
 	protected $visible;
+	protected $email;
 }

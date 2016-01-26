@@ -21,7 +21,7 @@ $user = null;
 if (isset($_SESSION['csid'])) {
 
 	$dhb = Registry::get('dbh');
-	$stmt = $dbh->prepare('SELECT id, artist_id, name, rights, cstime FROM users WHERE csid = :csid LIMIT 1');
+	$stmt = $dbh->prepare('SELECT id, artist_id, name, rights, salt, cstime FROM users WHERE csid = :csid LIMIT 1');
 	$stmt->bindValue('csid', $_SESSION['csid']);
 	$stmt->execute();
 	if ($user = $stmt->fetchObject()) {
@@ -98,7 +98,6 @@ $navigation = ViewLoader::load('navigation', array(
 	'labels' => $dataProvider->getLabels(),
 	'user' => $user,
 ));
-
 
 echo ViewLoader::load($layout, array_merge($params, array(
     'navigation' => $navigation,

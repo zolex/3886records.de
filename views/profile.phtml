@@ -12,19 +12,6 @@
 				<strong>Hello <?= $artist->name ?>!</strong>
 			<? endif ?>
 		</p>
+		<p><i>coming sooon...</i></p>
     </div>
-
-    <? if (isset($artists) && count($artists)): ?>
-	<div class="jumbotron hero-unit">
-		<div>
-            <h1>Signup Codes</h1>
-        </div>
-		<p>
-			<? foreach ($artists as $artist): ?>
-				<strong><?= $artist->name ?></strong>: <?= $artist->code ?> <a href="https://www.3886records.de/signup?ref=<?= base64_encode($artist->id.'x') ?>">https://www.3886records.de/signup?ref=<?= base64_encode($artist->id.'x') ?></a><br>
-			<? endforeach ?>
-		</p>
-	</div>
-	<? endif ?>
-	
 </div>

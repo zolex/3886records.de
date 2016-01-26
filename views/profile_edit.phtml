@@ -1,0 +1,103 @@
+<div class="container">
+    <div class="jumbotron hero-unit">
+        <h1>Edit Profile</h1>
+        <? if ($updated): ?>
+        	<p>Your profile has been updated!</p>
+        <? endif ?>
+        <form method="post" action="/profile/edit" class="form-horizontal">
+		  
+		  <div class="control-group form-group<?= isset($errors['firstname']) ? ' has-error' : '' ?>">
+		    <label for="firstname" class="col-sm-2 control-label">Firstname:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="firstname" type="text" value="<?= $values['firstname'] ?>" class="form-control" id="firstname" placeholder="Firstname">
+		      <? if (isset($errors['firstname'])): ?>
+		      	<span class="help-block"><?= $errors['firstname'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['lastname']) ? ' has-error' : '' ?>">
+		    <label for="lastname" class="col-sm-2 control-label">Lastname:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="lastname" type="text" value="<?= $values['lastname'] ?>" class="form-control" id="lastname" placeholder="Lastname">
+		      <? if (isset($errors['lastname'])): ?>
+		      	<span class="help-block"><?= $errors['lastname'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['email']) ? ' has-error' : '' ?>">
+		    <label for="email" class="col-sm-2 control-label">E-Mail:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="email" type="text" value="<?= $values['email'] ?>" class="form-control" id="email" placeholder="E-Mail address">
+		      <? if (isset($errors['email'])): ?>
+		      	<span class="help-block"><?= $errors['email'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['location']) ? ' has-error' : '' ?>">
+		    <label for="location" class="col-sm-2 control-label">Location:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="location" type="text" value="<?= $values['location'] ?>" class="form-control" id="location" placeholder="City, Country">
+		      <? if (isset($errors['location'])): ?>
+		      	<span class="help-block"><?= $errors['location'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  		  
+		  <hr>
+		  
+		  <div class="control-group form-group<?= isset($errors['shortInfo']) ? ' has-error' : '' ?>">
+		    <label for="shortInfo" class="col-sm-2 control-label">Short Info:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="shortInfo" type="text" value="<?= $values['shortInfo'] ?>" class="form-control" id="shortInfo" placeholder="Genres DJ/Producer">
+		      <? if (isset($errors['shortInfo'])): ?>
+		      	<span class="help-block"><?= $errors['shortInfo'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['longInfo']) ? ' has-error' : '' ?>">
+		    <label for="longInfo" class="col-sm-2 control-label">Bio/CV:</label>
+		    <div class="form-control controls col-sm-10">
+		      <textarea style="width: 100%; height: 100px;" name="longInfo" class="form-control" id="longInfo" placeholder=""><?= $values['longInfo'] ?></textarea>
+		      <? if (isset($errors['longInfo'])): ?>
+		      	<span class="help-block"><?= $errors['longInfo'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  
+		  <hr>
+		  
+		  <div class="control-group form-group<?= isset($errors['password']) ? ' has-error' : '' ?>">
+		    <label for="password_current" class="col-sm-2 control-label">Current password:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="password_current" type="password" class="form-control" id="password_current" placeholder="Current password">
+		      <? if (isset($errors['password_current'])): ?>
+		      	<span class="help-block"><?= $errors['password_current'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['password']) ? ' has-error' : '' ?>">
+		    <label for="password" class="col-sm-2 control-label">New password:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="password" type="password" class="form-control" id="password" placeholder="Password">
+		      <? if (isset($errors['password'])): ?>
+		      	<span class="help-block"><?= $errors['password'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['password_conf']) ? ' has-error' : '' ?>">
+		    <label for="password_conf" class="col-sm-2 control-label">Confirmation:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="password_conf" type="password" class="form-control" id="password_conf" placeholder="Password confirmation">
+		      <? if (isset($errors['password_conf'])): ?>
+		      	<span class="help-block"><?= $errors['password_conf'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group">
+		    <div class="form-control controls col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default">Update Profile</button>
+		    </div>
+		  </div>
+		</form>
+    </div>
+</div>

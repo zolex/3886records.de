@@ -1964,9 +1964,7 @@ input.span2, textarea.span2, .uneditable-input.span2 {
 .error-page #search form {
 	display: inline-block;
 }
-
 .control-group {
-
 	margin-top: 20px;
 }
 
@@ -1982,4 +1980,9 @@ input.span2, textarea.span2, .uneditable-input.span2 {
 	color : #000;
 	font-weight: bold;
 	margin-top: 8px;
+}
+.box {
+	background: transparent url("../img/overlays/light-solid.png") repeat scroll 0px 0px;
+	padding: 0 15px;
+	margin-bottom: 5px;
 }

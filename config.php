@@ -173,6 +173,14 @@ return array(
             'template' => 'profile',
             'controller' => array('Controller\Profile', 'index'),
         ),
+        '^/profile/edit?$' => array(
+            'template' => 'profile_edit',
+            'controller' => array('Controller\Profile', 'edit'),
+        ),
+        '^/profile/signupcodes?$' => array(
+            'template' => 'signup_codes',
+            'controller' => array('Controller\Profile', 'signupcodes'),
+        ),           
         '^/logout/?$' => array(
             'template' => 'logout',
             'controller' => array('Controller\Profile', 'logout'),

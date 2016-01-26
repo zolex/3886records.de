@@ -2,11 +2,35 @@
 
 namespace Controller;
 
-use Request;
-
 class Profile extends ControllerAction
 {
 	public function index($request) {
+
+		$this->requireLogin();
+		$user = \Registry::get('user');
+		$dbh =  \Registry::get('dbh');
+
+		$stmt = $dbh->prepare('SELECT * FROM artists WHERE id = :artist_id');
+		$stmt->bindValue('artist_id', $user->artist_id);
+		$stmt->execute();
+		$artist = $stmt->fetchObject();
+
+		return array(
+			'artist' => $artist,
+			'breadcrumb' => array(
+				(object)array(
+					'url' => '/',
+					'title' => 'Home',
+				),
+				(object)array(
+					'active' => true,
+					'title' => 'Profile',
+				),
+			),
+		);
+	}
+
+	public function signupcodes($request) {
 
 		$this->requireLogin();
 		$user = \Registry::get('user');
@@ -27,11 +51,13 @@ class Profile extends ControllerAction
 				if ($code = $stmt2->fetchObject()) {
 
 					$artist->code = $code->code;
+					$artist->codeUsed = (boolean)$code->used_by_id;
 
 				} else {
 
 					$code = substr(md5(uniqid(rand())), 0, 8);
 					$artist->code = $code;
+					$artist->codeUsed = false;
 
 					$stmt3 = $dbh->prepare('INSERT INTO signup_codes (artist_id, code) VALUES(:artist_id, :code)');
 					$stmt3->bindValue('artist_id', $artist->id);
@@ -43,13 +69,7 @@ class Profile extends ControllerAction
 			}
 		}
 
-		$stmt = $dbh->prepare('SELECT * FROM artists WHERE id = :artist_id');
-		$stmt->bindValue('artist_id', $user->artist_id);
-		$stmt->execute();
-		$artist = $stmt->fetchObject();
-
 		return array(
-			'artist' => $artist,
 			'artists' => $artists,
 			'breadcrumb' => array(
 				(object)array(
@@ -57,8 +77,12 @@ class Profile extends ControllerAction
 					'title' => 'Home',
 				),
 				(object)array(
-					'active' => true,
+					'active' => '/profile',
 					'title' => 'Profile',
+				),
+				(object)array(
+					'active' => true,
+					'title' => 'Signup Codes',
 				),
 			),
 		);
@@ -140,7 +164,7 @@ class Profile extends ControllerAction
 		);
 	}
 
-	public function signup($request) {
+public function signup($request) {
 	
 		if (null !== \Registry::get('user')) {
 
@@ -252,5 +276,101 @@ class Profile extends ControllerAction
 				),
 			),
 		);
+	}
+	
+	public function edit($request) {
+	
+	    $this->requireLogin();
+	    $dbh = \Registry::get('dbh');
+	    $user = \Registry::get('user');
+	    
+	    $stmt = $dbh->prepare('SELECT * FROM artists WHERE id = :id LIMIT 1');
+	    $stmt->bindValue('id', $user->artist_id);
+	    $stmt->execute();
+	    $artist = $stmt->fetchObject();
+	
+	    $errors = array();
+	    $formData = (array)$artist;
+	    	
+	    if ($request->isPost()) {
+	
+	        $formData = $request->getPost();
+	        
+	        if (!empty($formData['email']) && !preg_match('/^[^@]+@[^@]+\.[^@]{2,5}$/', $formData['email'])) {
+	            
+	            $errors['email'] = 'Please enter a valid e-mail address.';
+	        }
+	        
+	        if (!empty($formData['password'])) {
+	            
+                $pass = new \Password($formData['password_current'], $user->salt);
+                $stmt = $dbh->prepare('SELECT id FROM users WHERE id = :id AND password = :pass LIMIT 1');
+                $stmt->bindValue('id', $user->id);
+                $stmt->bindValue('pass', (string)$pass);
+                $stmt->execute();
+                if (!$stmt->fetchObject()) {
+                    
+                    $errors['password_current'] = 'Invalid password.';
+                } 
+    	        
+    	        if (empty($formData['password'])) {
+    	
+    	            $errors['password'] = 'Please enter a password';
+    	        }
+    	
+    	        if ($formData['password'] !== $formData['password_conf']) {
+    	
+    	            $errors['password_conf'] = 'Password confirmation does not match.';
+    	        }
+	        }
+	
+	        if (0 === count($errors)) {
+	
+	            if (!empty($formData['password'])) {
+	            
+	                $pass = new \Password($formData['password']);
+    	            $stmt = $dbh->prepare('UPDATE users SET password = :password, salt = :salt WHERE id = :id LIMIT 1');
+    	            $stmt->bindValue('password', (string)$pass);
+    	            $stmt->bindValue('salt', $pass->getSalt());
+    	            $stmt->bindValue('id', $user->id);
+    	            $stmt->execute();
+	            }
+	            
+	            $stmt = $dbh->prepare('UPDATE artists SET firstname = :firstname, lastname = :lastname, email = :email, location = :location WHERE id = :id LIMIT 1');
+	            $stmt->bindValue('firstname', $formData['firstname']);
+                $stmt->bindValue('lastname', $formData['lastname']);
+				$stmt->bindValue('email', $formData['email']);
+				$stmt->bindValue('location', $formData['location']);
+                $stmt->bindValue('id', $user->artist_id);
+	            $stmt->execute();
+	
+	            header('Location: /profile/edit?upd=1');
+	            exit;
+	        }
+	    }
+	
+		unset($formData['password']);
+	    unset($formData['password']);
+	    unset($formData['password_conf']);
+	
+	    return array(
+	        'updated' => (boolean)$request->get('upd'),
+            'errors' => $errors,
+            'values' => $formData,
+            'breadcrumb' => array(
+                (object)array(
+                    'url' => '/',
+                    'title' => 'Home',
+                ),
+                (object)array(
+                    'url' => '/profile',
+                    'title' => 'Profile',
+                ),
+                (object)array(
+                    'active' => true,
+                    'title' => 'Signup',
+                ),
+            ),
+	    );
 	}
 }

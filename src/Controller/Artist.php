@@ -49,6 +49,13 @@ class Artist extends ControllerAction
 			return false;
 		}
 
+		if ($artist->visible == 0) {
+		    
+		    http_response_code(404);
+		    header('Location: /');
+		    exit;
+		}
+		
 		if ($artist->type == 0) {
 
 			$link = '/artists';
