@@ -8,9 +8,12 @@ class Artist extends AbstractModel
 	const TYPE_DJ = 1;
 
 	protected $id;
-	protected $label;
+	protected $key;
+	
+	protected $label; // old ?
+	protected $genre_id; // old?
+
 	protected $label_id;
-	protected $genre_id;
 	protected $crews = array();
 	protected $members = array();
 	protected $links = array();
@@ -18,8 +21,10 @@ class Artist extends AbstractModel
 	protected $events = array();
 	protected $releases = array();
 	protected $genres = array();
-	protected $type;
-	protected $key;
+	
+	protected $type; // old: 0 = artist, 1 = DJ
+	
+	
 	protected $is_dj;
 	protected $is_producer;
 	protected $is_liveact;
@@ -30,10 +35,30 @@ class Artist extends AbstractModel
 	protected $longInfo;
 	protected $soundcloud;
 	protected $mixcloud;
-	protected $firstname;
-	protected $lastname;
 	protected $location;
 	protected $birthday;
-	protected $visible;
+
+	protected $firstname;
+	protected $lastname;
+	protected $street;
+	protected $zip;
+	protected $city;
+	protected $country;
+	
+	protected $payment_type;
+	protected $payment_paypal;
+	protected $payment_name;
+	protected $payment_iban;
+	protected $payment_bic;
+
+	protected $fee_dj_desired;
+	protected $fee_dj_min;
+	protected $fee_live_desired;
+	protected $fee_live_min;
+
 	protected $email;
+	protected $phone;
+	protected $fbprofile;
+
+	protected $visible;
 }

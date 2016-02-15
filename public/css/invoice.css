@@ -7,7 +7,7 @@
 
 .retailerbilling .page {
 	width: 175mm;
-	height: 272mm;
+	#height: 272mm;
 	padding: 0mm 15mm 18mm 15mm !important;
 	border: 1px solid #ccc;
 	margin: auto;

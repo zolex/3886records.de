@@ -17,7 +17,7 @@
 		<br/>
 		<p>
 			<strong>
-				You can <a href="/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/download">download</a> <?= $promotion->release->artist->name ?> - <?= $promotion->release->title ?> now!
+				You can <a href="/promotion/<?= $promotion->key ?>/<?= $subscription->hash ?>/download">download</a> <?= $promotion->title ?> now!
 			</strong><br/>
 			<small>(You have <?= $feedback->availableDownloads() ?> of 3 download<?= $feedback->availableDownloads() == 1 ? '' : 's' ?> left for this promo release)</small>
 		</p>

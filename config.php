@@ -56,6 +56,14 @@ return array(
         '^/events/?$' => array(
             'template' => 'events',
             'controller' => array('Controller\Events', 'overview')
+        ),
+        '^/event/add/?$' => array(
+            'template' => 'event_edit',
+            'controller' => array('Controller\Events', 'edit')
+        ), 
+         '^/event/edit/(?P<id>[^/]+)/?$' => array(
+            'template' => 'event_edit',
+            'controller' => array('Controller\Events', 'edit')
         ), 
          '^/events-new/?$' => array(
             'template' => 'events-new',
@@ -170,6 +178,10 @@ return array(
             'controller' => array('Controller\Profile', 'login'),
         ),
         '^/profile/?$' => array(
+            'template' => 'profile',
+            'controller' => array('Controller\Profile', 'index'),
+        ),
+        '^/profile/(?P<id>\d+)/?$' => array(
             'template' => 'profile',
             'controller' => array('Controller\Profile', 'index'),
         ),

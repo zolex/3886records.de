@@ -63,11 +63,6 @@ class Promotion extends ControllerAction
 	public function view($request) {
 
 		$promoKey = $request->getParam('key');
-		if ($promoKey == 'spekta-lite-prog' || $promoKey == 'spekta-lite-prog-test') {
-
-			$promoKey = 'spekta-liteprog';
-		}
-
 		$promoToken = $request->getParam('token');
 	
 		$dp = \DataProvider::getInstance();
@@ -75,6 +70,7 @@ class Promotion extends ControllerAction
 		$promotion = $dp->getPromotionByKey($promoKey);
 		if (!$promotion) {
 		
+			die("FOO");
 			header('Location: /');
 			exit;
 		}
@@ -94,6 +90,13 @@ class Promotion extends ControllerAction
 			}
 
 			$newSubscriber = true;
+		}
+
+		if (isset($_GET['x'])) {
+
+
+			var_dump($subscription);
+			exit;
 		}
 
 		// find feedback or create new subscription with feedback
@@ -262,7 +265,7 @@ class Promotion extends ControllerAction
 		$feedback->downloads++;
 		$dp->savePromotionFeedback($feedback);		
 
-		header('Content-Type: application/csv');
+		header('Content-Type: application/zip');
 		header('Content-Disposition: attachment; filename='. $promotion->title .'.zip');
 		header("Content-Transfer-Encoding: binary");
 		header('Pragma: no-cache');

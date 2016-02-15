@@ -4,46 +4,21 @@
         <? if ($updated): ?>
         	<p>Your profile has been updated!</p>
         <? endif ?>
-        <form method="post" action="/profile/edit" class="form-horizontal">
+        <form enctype="multipart/form-data" method="post" action="/profile/edit" class="form-horizontal">
+		  <input type="hidden" name="MAX_FILE_SIZE" value="5000000 " />
+
+		  <p><strong>Artist Information</strong></p>
 		  
-		  <div class="control-group form-group<?= isset($errors['firstname']) ? ' has-error' : '' ?>">
-		    <label for="firstname" class="col-sm-2 control-label">Firstname:</label>
+		  <div class="control-group form-group<?= isset($errors['image']) ? ' has-error' : '' ?>">
+		    <label for="image" class="col-sm-2 control-label">Profile image:</label>
 		    <div class="form-control controls col-sm-10">
-		      <input name="firstname" type="text" value="<?= $values['firstname'] ?>" class="form-control" id="firstname" placeholder="Firstname">
-		      <? if (isset($errors['firstname'])): ?>
-		      	<span class="help-block"><?= $errors['firstname'] ?></span>
+		      <img src="/img/artists/<?= $artist->key ?>.jpg" /><br/>
+		      <input name="image" type="file" class="form-control" id="image" />
+		      <? if (isset($errors['image'])): ?>
+		      	<span class="help-block"><?= $errors['image'] ?></span>
 		      <? endif ?>
 		    </div>
 		  </div>
-		  <div class="control-group form-group<?= isset($errors['lastname']) ? ' has-error' : '' ?>">
-		    <label for="lastname" class="col-sm-2 control-label">Lastname:</label>
-		    <div class="form-control controls col-sm-10">
-		      <input name="lastname" type="text" value="<?= $values['lastname'] ?>" class="form-control" id="lastname" placeholder="Lastname">
-		      <? if (isset($errors['lastname'])): ?>
-		      	<span class="help-block"><?= $errors['lastname'] ?></span>
-		      <? endif ?>
-		    </div>
-		  </div>
-		  <div class="control-group form-group<?= isset($errors['email']) ? ' has-error' : '' ?>">
-		    <label for="email" class="col-sm-2 control-label">E-Mail:</label>
-		    <div class="form-control controls col-sm-10">
-		      <input name="email" type="text" value="<?= $values['email'] ?>" class="form-control" id="email" placeholder="E-Mail address">
-		      <? if (isset($errors['email'])): ?>
-		      	<span class="help-block"><?= $errors['email'] ?></span>
-		      <? endif ?>
-		    </div>
-		  </div>
-		  <div class="control-group form-group<?= isset($errors['location']) ? ' has-error' : '' ?>">
-		    <label for="location" class="col-sm-2 control-label">Location:</label>
-		    <div class="form-control controls col-sm-10">
-		      <input name="location" type="text" value="<?= $values['location'] ?>" class="form-control" id="location" placeholder="City, Country">
-		      <? if (isset($errors['location'])): ?>
-		      	<span class="help-block"><?= $errors['location'] ?></span>
-		      <? endif ?>
-		    </div>
-		  </div>
-		  		  
-		  <hr>
 		  
 		  <div class="control-group form-group<?= isset($errors['shortInfo']) ? ' has-error' : '' ?>">
 		    <label for="shortInfo" class="col-sm-2 control-label">Short Info:</label>
@@ -64,7 +39,285 @@
 		    </div>
 		  </div>
 		  
+		  <div class="control-group form-group<?= isset($errors['link_facebook']) ? ' has-error' : '' ?>">
+		    <label for="link_facebook" class="col-sm-2 control-label">Facebook:</label>
+		    <div class="form-control controls col-sm-10">
+		      	<input name="link_facebook" type="text" value="<?= @$values['link_facebook'] ?>" class="form-control" placeholder="Facebook artist page" style="width: 100%">
+		      <? if (isset($errors['link_facebook'])): ?>
+		      	<span class="help-block"><?= $errors['link_facebook'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['link_soundcloud']) ? ' has-error' : '' ?>">
+		    <label for="link_soundcloud" class="col-sm-2 control-label">Soundcloud:</label>
+		    <div class="form-control controls col-sm-10">
+		      	<input name="link_soundcloud" type="text" value="<?= @$values['link_soundcloud'] ?>" class="form-control" placeholder="Soundcloud profile" style="width: 100%">
+		      <? if (isset($errors['link_soundcloud'])): ?>
+		      	<span class="help-block"><?= $errors['link_soundcloud'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['link_mixcloud']) ? ' has-error' : '' ?>">
+		    <label for="link_mixcloud" class="col-sm-2 control-label">Mixcloud:</label>
+		    <div class="form-control controls col-sm-10">
+		      	<input name="link_mixcloud" type="text" value="<?= @$values['link_mixcloud'] ?>" class="form-control" placeholder="Mixcloud profile" style="width: 100%">
+		      <? if (isset($errors['link_mixcloud'])): ?>
+		      	<span class="help-block"><?= $errors['link_mixcloud'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  
+		  <div class="control-group form-group<?= isset($errors['genres']) ? ' has-error' : '' ?>">
+		    <label for="genres" class="col-sm-2 control-label">Genres:</label>
+		    <div class="form-control controls col-sm-10">
+		      <table>
+		      <? foreach ($genres as $index => $genre): ?>
+		      	<? if ($index % 2 == 0): ?><tr><? endif ?>
+		      	<td style="width: 150px;">
+		      	<label class="checkbox" for="genre_<?= $genre->id ?>">
+		      	  <input type="checkbox"  <?= in_array($genre->id, $artist->genres) ? 'checked="checked" ' : '' ?> name="genres[<?= $genre->id ?>]" class="form-control" id="genre_<?= $genre->id ?>">
+		      	  <?= $genre->name ?>
+		      	</label>
+		      	</td>
+		      	<? if ($index % 2 == 1): ?></tr><? endif ?>
+		      <? endforeach ?>
+		      </table>
+		      <? if (isset($errors['genres'])): ?>
+		      	<span class="help-block"><?= $errors['genres'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
 		  <hr>
+
+		  <p><strong>Contact Information</strong> <span style="font-size: 12px;">(internal usage only)</span></p>
+
+		  <div class="control-group form-group<?= isset($errors['email']) ? ' has-error' : '' ?>">
+		    <label for="email" class="col-sm-2 control-label">E-Mail:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="email" type="text" value="<?= $values['email'] ?>" class="form-control" id="email" placeholder="E-Mail address">
+		      <? if (isset($errors['email'])): ?>
+		      	<span class="help-block"><?= $errors['email'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['phone']) ? ' has-error' : '' ?>">
+		    <label for="phone" class="col-sm-2 control-label">Phone:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="phone" type="text" value="<?= $values['phone'] ?>" class="form-control" id="phone" placeholder="Phone Number">
+		      <? if (isset($errors['phone'])): ?>
+		      	<span class="help-block"><?= $errors['phone'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['fbprofile']) ? ' has-error' : '' ?>">
+		    <label for="fbprofile" class="col-sm-2 control-label">Facebook:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="fbprofile" type="text" value="<?= $values['fbprofile'] ?>" class="form-control" id="fbprofile" placeholder="Private facebook profile">
+		      <? if (isset($errors['fbprofile'])): ?>
+		      	<span class="help-block"><?= $errors['fbprofile'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <hr>
+
+		  <p><strong>Peronal Data</strong> <span style="font-size: 12px;">(internal usage only)</span></p>
+
+		  <div class="control-group form-group<?= isset($errors['firstname']) ? ' has-error' : '' ?>">
+		    <label for="firstname" class="col-sm-2 control-label">Firstname:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="firstname" type="text" value="<?= $values['firstname'] ?>" class="form-control" id="firstname" placeholder="Firstname">
+		      <? if (isset($errors['firstname'])): ?>
+		      	<span class="help-block"><?= $errors['firstname'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['lastname']) ? ' has-error' : '' ?>">
+		    <label for="lastname" class="col-sm-2 control-label">Lastname:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="lastname" type="text" value="<?= $values['lastname'] ?>" class="form-control" id="lastname" placeholder="Lastname">
+		      <? if (isset($errors['lastname'])): ?>
+		      	<span class="help-block"><?= $errors['lastname'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['street']) ? ' has-error' : '' ?>">
+		    <label for="street" class="col-sm-2 control-label">Street, No:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="street" type="text" value="<?= $values['street'] ?>" class="form-control" id="street" placeholder="Street and housenumber">
+		      <? if (isset($errors['street'])): ?>
+		      	<span class="help-block"><?= $errors['street'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['zip']) ? ' has-error' : '' ?>">
+		    <label for="zip" class="col-sm-2 control-label">Zipcode:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="zip" type="text" value="<?= $values['zip'] ?>" class="form-control" id="zip" placeholder="Zipcode/Postal code">
+		      <? if (isset($errors['zip'])): ?>
+		      	<span class="help-block"><?= $errors['zip'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['city']) ? ' has-error' : '' ?>">
+		    <label for="city" class="col-sm-2 control-label">City:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="city" type="text" value="<?= $values['city'] ?>" class="form-control" id="city" placeholder="City">
+		      <? if (isset($errors['city'])): ?>
+		      	<span class="help-block"><?= $errors['city'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['country']) ? ' has-error' : '' ?>">
+		    <label for="country" class="col-sm-2 control-label">Country:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="country" type="text" value="<?= $values['country'] ?>" class="form-control" id="country" placeholder="Country">
+		      <? if (isset($errors['country'])): ?>
+		      	<span class="help-block"><?= $errors['country'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  
+		  <hr>
+
+		  <p><strong>Personal Fees</strong> <span style="font-size: 12px;">(desired and minimum fees in €)</span></p>
+
+		  <div class="control-group form-group<?= isset($errors['fee_dj_desired']) ? ' has-error' : '' ?>">
+		    <label for="fee_dj_desired" class="col-sm-2 control-label">DJ Fee desired:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="fee_dj_desired" type="text" value="<?= $values['fee_dj_desired'] ?>" class="form-control" id="fee_dj_desired" placeholder="Desired fee for DJ Set (2h)">
+		      <? if (isset($errors['fee_dj_desired'])): ?>
+		      	<span class="help-block"><?= $errors['fee_dj_desired'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['fee_dj_min']) ? ' has-error' : '' ?>">
+		    <label for="fee_dj_min" class="col-sm-2 control-label">DJ Fee min:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="fee_dj_min" type="text" value="<?= $values['fee_dj_min'] ?>" class="form-control" id="fee_dj_min" placeholder="Minimum fee for DJ Set (2h)">
+		      <? if (isset($errors['fee_dj_min'])): ?>
+		      	<span class="help-block"><?= $errors['fee_dj_min'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['fee_live_desired']) ? ' has-error' : '' ?>">
+		    <label for="fee_live_desired" class="col-sm-2 control-label">LIVE Fee desired:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="fee_live_desired" type="text" value="<?= $values['fee_live_desired'] ?>" class="form-control" id="fee_live_desired" placeholder="Desired fee for Live Set (1h)">
+		      <? if (isset($errors['fee_live_desired'])): ?>
+		      	<span class="help-block"><?= $errors['fee_live_desired'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['fee_live_min']) ? ' has-error' : '' ?>">
+		    <label for="fee_live_min" class="col-sm-2 control-label">LIVE Fee min:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="fee_live_min" type="text" value="<?= $values['fee_live_min'] ?>" class="form-control" id="fee_live_min" placeholder="Minimum fee for Live Set (1h)">
+		      <? if (isset($errors['fee_live_min'])): ?>
+		      	<span class="help-block"><?= $errors['fee_live_min'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <hr>
+
+		  <p><strong>Payment Information</strong> <span style="font-size: 12px;">(for payouts to the artist)</span></p>
+
+		  <div class="control-group form-group">
+			  <div class="form-control controls col-sm-10">
+				  <label class="radio" for="payment_type_paypal">
+				      <input type="radio"  <?= $artist->payment_type == 'paypal' ? 'checked="checked" ' : '' ?> value="paypal" name="payment_type" class="form-control" id="payment_type_paypal">
+				      Paypal Transaction
+		          </label>
+		       </div>
+	      </div>
+
+		  <div class="payment_type_paypal control-group form-group<?= isset($errors['payment_paypal']) ? ' has-error' : '' ?>">
+		    <label for="payment_paypal" class="col-sm-2 control-label">Paypal:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input disabled="disabled" name="payment_paypal" type="text" value="<?= $values['payment_paypal'] ?>" class="form-control" id="payment_paypal" placeholder="Paypal Address">
+		      <? if (isset($errors['payment_paypal'])): ?>
+		      	<span class="help-block"><?= $errors['payment_paypal'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group">
+		  	<div class="form-control controls col-sm-10">
+				<label class="radio" for="payment_type_sepa">
+			    	<input type="radio" <?= $artist->payment_type == 'sepa' ? 'checked="checked" ' : '' ?> value="sepa" name="payment_type" class="form-control" id="payment_type_sepa">
+			      	SEPA Mandate
+	          	</label>
+          	</div>
+          </div>
+
+		  <div class="payment_type_sepa control-group form-group<?= isset($errors['payment_name']) ? ' has-error' : '' ?>">
+		    <label for="payment_name" class="col-sm-2 control-label">Account Holder:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input disabled="disabled" name="payment_name" type="text" value="<?= $values['payment_name'] ?>" class="form-control" id="payment_name" placeholder="Name of account holder">
+		      <? if (isset($errors['payment_name'])): ?>
+		      	<span class="help-block"><?= $errors['payment_name'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="payment_type_sepa control-group form-group<?= isset($errors['payment_iban']) ? ' has-error' : '' ?>">
+		    <label for="payment_iban" class="col-sm-2 control-label">IBAN:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input disabled="disabled" name="payment_iban" type="text" value="<?= $values['payment_iban'] ?>" class="form-control" id="payment_iban" placeholder="IBAN">
+		      <? if (isset($errors['payment_iban'])): ?>
+		      	<span class="help-block"><?= $errors['payment_iban'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="payment_type_sepa control-group form-group<?= isset($errors['payment_bic']) ? ' has-error' : '' ?>">
+		    <label for="payment_bic" class="col-sm-2 control-label">BIC:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input disabled="disabled" name="payment_bic" type="text" value="<?= $values['payment_bic'] ?>" class="form-control" id="payment_bic" placeholder="BIC">
+		      <? if (isset($errors['payment_bic'])): ?>
+		      	<span class="help-block"><?= $errors['payment_bic'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+
+		  <script>
+			  $(document).ready(function() {
+
+			      $('#payment_type_paypal').click(function() {
+
+			      	  $('.payment_type_paypal input').removeAttr('disabled');
+			      	  $('.payment_type_sepa input').attr('disabled', 'disabled').val('');
+			      });
+
+			      $('#payment_type_sepa').click(function() {
+
+			      	  $('.payment_type_paypal input').attr('disabled', 'disabled').val('');
+			      	  $('.payment_type_sepa input').removeAttr('disabled');
+			      });
+
+			      if ($('#payment_type_paypal').is(':checked')) {
+
+			      	  $('.payment_type_paypal input').removeAttr('disabled');
+			      	  $('.payment_type_sepa input').attr('disabled', 'disabled');
+			      }
+
+			      if ($('#payment_type_sepa').is(':checked')) {
+
+			      	  $('.payment_type_paypal input').attr('disabled', 'disabled');
+			      	  $('.payment_type_sepa input').removeAttr('disabled');
+			      }
+			  });
+		  </script>
+		  
+		  <hr>
+
+		  <p><strong>Change Password</strong></p>
 		  
 		  <div class="control-group form-group<?= isset($errors['password']) ? ' has-error' : '' ?>">
 		    <label for="password_current" class="col-sm-2 control-label">Current password:</label>

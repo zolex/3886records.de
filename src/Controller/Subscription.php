@@ -12,6 +12,7 @@ class Subscription extends ControllerAction
 		$message = null;
 		$success = false;
 		$info = null;
+		$error = null;
 		
 		// get-request, email encoded in route
 		if ($email = $request->getParam('email', false)) {
@@ -39,9 +40,10 @@ class Subscription extends ControllerAction
 		
 			$showForm = true;
 			
-		} else if (!$email = $request->getPost('email')) {
+		} else if ((!($email = $request->getPost('email'))) || !preg_match('/^[^@]+@[^@]+\.[^@]{2,5}$/', $email))  {
 		
-			$message = 'No email address provided';
+			$error = 'No or invalid email address provided';
+			$showForm = true;
 		
 		} else {
 		
@@ -71,6 +73,7 @@ class Subscription extends ControllerAction
 			'metaTitle' => 'Subscriptions',
 			'success' => $success,
 			'message' => $message,
+			'error' => $error,
 			'info' => $info,
 			'showForm' => $showForm,
 			'breadcrumb' => array(

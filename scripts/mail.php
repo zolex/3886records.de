@@ -16,9 +16,9 @@ $mailer = Swift_Mailer::newInstance($transport);
 
 //die("DISABLED-CHECK-VALUES-FOR-NEXT-MAILING!");
 
-$promotion = $dp->getPromotionByKey('liquidtrance-intercalaris');
+$promotion = $dp->getPromotionByKey('signa-dimensional-alchemy');
 
-$stmt = $dbh->prepare("SELECT email FROM subscriptions WHERE active = 1 ORDER BY email DESC");
+$stmt = $dbh->prepare("SELECT email FROM subscriptions WHERE active = 1 AND (email = 'juzeffpt@gmail.com' OR email = 'zlx@gmx.de') ORDER BY RAND()");
 if (!$stmt->execute()) {
 
 	die("mysql error"); 

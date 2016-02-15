@@ -7,7 +7,13 @@
 			<? foreach ($events->upcomming as $event): ?>
 				<li class="span4">
 					<div class="thumbnail">
+						<? if ($user): ?>
+							<a data-method="async" title="EDIT EVENT" style="font-size: 12px;" href="/event/edit/<?= $event->id ?>">
+						<? endif ?>
 						<h4><?= $event->name ?></h4>
+						<? if ($user): ?>
+							</a>
+						<? endif ?>	
 						<span class="location"><?= $event->shortInfo ?></span><br/>
 						<span class="date"><?= $event->fromTime ?></span>
 						<? if (isset($event->facebook)): ?>

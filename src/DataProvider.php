@@ -93,7 +93,7 @@ class DataProvider
 	// 0 = all
 	// 1 = upcomming
 	// 2 = past
-	public function getEvents($which = 1, $includeArtists = false) {
+public function getEvents($which = 1, $includeArtists = false) {
 	
 		if ($includeArtists) {
 
@@ -163,6 +163,40 @@ class DataProvider
 		}
 
 		return $events;
+	}
+	
+	public function getEventsByArtist($artistId) {
+	
+	    $query = "SELECT e.*
+	              FROM events e
+	              INNER JOIN event_artists ea ON ea.event_id = e.id
+	              WHERE ea.artist_id = :artist_id
+	              AND e.toTime > NOW()
+	              AND e.visible = 1
+	              ORDER BY e.fromTime DESC";
+	    
+	    $stmt = $this->getDbh()->prepare($query);
+	    $stmt->bindValue('artist_id', $artistId);
+	    if (!$stmt->execute()) {
+	
+	        $errorInfo = $stmt->errorInfo();
+	        throw new \Exception($errorInfo[2], $errorInfo[1]);
+	    }
+	
+	    $lastRow = null;
+	    $events = array();
+	    while ($row = $stmt->fetchObject()) {
+	
+	        if (null === $lastRow || $lastRow->id != $row->id) {
+	
+	            $events[] = (new \Models\Event)->fromObject($row, null, true);
+	            $current = count($events) - 1;
+	        }
+	        
+	        $lastRow = $row;
+	    }
+	
+	    return $events;
 	}
 	
 	public function getLabels() {
@@ -285,6 +319,11 @@ class DataProvider
 	public function getArtists() {
 	
 		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 0 AND visible = 1 ORDER BY name ASC");
+	}
+
+	public function getActs() {
+	
+		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE visible = 1 ORDER BY name ASC");
 	}
 
 	public function getDJs() {
@@ -437,8 +476,8 @@ class DataProvider
 				l.shopName AS link_shopName,
 				l.link AS link_link
 			FROM releases r
-			INNER JOIN artists a ON a.id = r.artist_id
-			INNER JOIN genres g ON g.id = r.genre_id
+			LEFT JOIN artists a ON a.id = r.artist_id
+			LEFT JOIN genres g ON g.id = r.genre_id
 			LEFT JOIN release_links l ON l.release_id = r.id
 			WHERE (r.date > CURRENT_DATE() OR r.date IS NULL)
 			  AND r.visible = 1
@@ -483,6 +522,64 @@ class DataProvider
 		return $releases;
 	}
 	
+	public function getReleasesByArtist($artistId) {
+	
+	        $query = "SELECT r.*,
+				a.id AS artist_id,
+				a.key AS artist_key,
+				a.name AS artist_name,
+				g.id AS genre_id,
+				g.name AS genre_name,
+				l.id AS link_id,
+				l.shopName AS link_shopName,
+				l.link AS link_link
+			FROM releases r
+			INNER JOIN artists a ON a.id = r.artist_id
+			INNER JOIN genres g ON g.id = r.genre_id
+			LEFT JOIN release_links l ON l.release_id = r.id
+			WHERE r.artist_id = :artist_id 
+			ORDER BY IF (r.date IS NULL, 0, 1), r.date DESC";
+
+	
+	    $stmt = $this->getDbh()->prepare($query);
+	    $stmt->bindValue('artist_id', $artistId);
+	    if (!$stmt->execute()) {
+	
+	        $errorInfo = $stmt->errorInfo();
+	        throw new \Exception($errorInfo[2], $errorInfo[1]);
+	    }
+	
+	    $lastRow = null;
+	    $releases = array();
+	    while ($row = $stmt->fetchObject()) {
+	
+	        if (null === $lastRow || $lastRow->id != $row->id) {
+	
+	            $releases[] = (new \Models\Release)->fromObject($row, null, true);
+	            $current = count($releases) - 1;
+	        }
+	
+	        if (null !== $row->artist_id && null === $releases[$current]->artist) {
+	
+	            $releases[$current]->artist = (new \Models\Artist)->fromObject($row, 'artist_');
+	        }
+	
+	        if (null !== $row->genre_id && null === $releases[$current]->genre) {
+	
+	            $releases[$current]->genre = (new \Models\Genre)->fromObject($row, 'genre_');
+	        }
+	
+	        if (null !== $row->link_id && !array_key_exists($row->link_id, $releases[$current]->links)) {
+	
+	            $releases[$current]->links[$row->link_id] = (new \Models\ReleaseLink)->fromObject($row, 'link_');
+	        }
+	
+	        $lastRow = $row;
+	    }
+	
+	    return $releases;
+	}
+	
 	public function getReleaseByCatalog($catalog) {
 	
 		$query = "SELECT * FROM releases WHERE catalog = :catalog";
@@ -501,6 +598,26 @@ class DataProvider
 		}
 
 		return $release;
+	}
+
+	public function getLinksByArtist($artistId) {
+
+		$query = "SELECT * FROM artist_links WHERE artist_id = :artist_id";
+		$stmt = $this->getDbh()->prepare($query);
+		$stmt->bindValue('artist_id', $artistId);
+		if (!$stmt->execute()) {
+		
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+		
+		$links = array();
+		while ($row = $stmt->fetchObject()) {
+
+			$links[] = (new \Models\ArtistLink)->fromObject($row);
+		}
+
+		return $links;
 	}
 	
 	public function getSubscription($value) {
@@ -703,8 +820,8 @@ class DataProvider
 			LEFT JOIN promotion_tracks t ON (t.promotion_id = p.id)
 			INNER JOIN releases r ON r.id = p.release_id
 			LEFT JOIN release_links rl ON rl.release_id = r.id
-			INNER JOIN artists a ON a.id = r.artist_id
-			INNER JOIN genres g ON g.id = r.genre_id
+			LEFT JOIN artists a ON a.id = r.artist_id
+			LEFT JOIN genres g ON g.id = r.genre_id
 			LEFT JOIN event_artists ea ON ea.artist_id = a.id
 			LEFT JOIN events e ON (e.id = ea.event_id AND e.fromTime >= NOW())
 			LEFT JOIN releases rs ON (rs.artist_id = a.id AND rs.id != r.id)
@@ -1079,7 +1196,7 @@ class DataProvider
 				SUM(s.royalty) * r.deal AS value
 			FROM sales s
 			INNER JOIN artists a ON a.id = s.artist_id
-			INNER JOIN releases r ON r.id = s.release_id
+			LEFT JOIN releases r ON r.id = s.release_id
 			WHERE s.invoiced = 0";
 			
 		if (null !== $artistId) {
@@ -1121,6 +1238,8 @@ class DataProvider
 	
 	public function getSweepstake($key) {
 	
+		if ($key == 'labelnight-2016') $key = 'labelnight2016';
+
 		switch ($key) {
 		
 			case 'psy-force':
@@ -1311,6 +1430,21 @@ class DataProvider
 						'Gianluca Keßler',
 						'Hanna Von Hell',
 						'Sandra Landa',
+					),
+				);
+
+			case 'labelnight2016':
+				return (object)array(
+					'party' => 'labelnight2016',
+					'eventName' => 'Labelnight 2016',
+					'headline' => 'Gewinne freien Eintritt!',
+					'info' => '3 Mal freier Eintritt für die 3886records Labelnight am 8.4.2016 zu gewinnen!',
+					'validUntil' => '2016-04-07 12:00:00',
+					'metaTitle' => 'Gewinne freien Eintritt für die 3886records Labelnight 2018',
+					'description' => 'Für den 8.4. gibt es 3 Mal freien Eintritt in der Klangstation zu gewinnen! Erlebe Progressive & Psychedelic Trance aus Bonn!',
+					'image' => 'https://www.3886records.de/img/flyer/labelnight2016.jpg',
+					'facebookLink' => 'https://www.facebook.com/events/807826539345305/?fref=gewinnspiel',
+					'winners' => array(
 					),
 				);
 		}

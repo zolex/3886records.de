@@ -6,13 +6,15 @@
         </div>
         <p><strong><?= $message ?></strong></p>
 		<p><?= $info ?></p>
-		
+
 		<? if ($showForm): ?>
 			<h4>Subscribe to newsletter</h4>
 			<p>
 				<strong>Don't miss any release and get limited promotional offers!</strong>
 				<form method="post" action="/subscriptions">
-					<input name="email" type="email" placeholder="E-Mail Address" /><br/>
+					<input name="email" type="email" placeholder="E-Mail Address" />
+					<span style="color: red"><?= $error ?></span>
+					<br/>
 					<input type="submit" class="btn" value="Subscribe now">
 				</form>
 			</p>

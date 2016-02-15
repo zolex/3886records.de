@@ -12,9 +12,9 @@
 				<div class="thumbnail release-box">
 					<img src="/img/releases/<?= $release->cover ?>" width="200" height="200" alt="<?= $release->artist->name ?> - <?= $release->title ?>" />
 					<div class="desc">
-						<h3><?= $release->artist->name ?> - <?= $release->title ?></h3>
+						<h3><? if ($release->artist): ?><?= $release->artist->name ?> - <? endif ?><?= $release->title ?></h3>
 						<p>
-							<strong>Genre:</strong> <?= $release->genre->name ?><br/>
+							<? if ($release->genre): ?><strong>Genre:</strong><?= $release->genre->name ?><br/><? endif ?>
 							<strong>Date:</strong> <?= $release->date ?><br/>
 							<strong>Type:</strong> <?= $release->type ?><br/>
 							<strong>Format:</strong> <?= $release->format ?><br/>

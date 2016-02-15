@@ -4,6 +4,8 @@ chdir(dirname(dirname(__FILE__)));
 $config = (require 'config.php');
 require 'vendor/autoload.php';
 
+Registry::set('config', $config);
+
 if (true === $config['debug']) {
 
 	ini_set('error_reporting', -1);
@@ -50,6 +52,10 @@ $router = new Router();
 list($template, $params) = $router->route($request);
 if (!is_array($params)) {
 	$params = array();
+}
+if (isset($params['template'])) {
+	$template = $params['template'];
+	unset($params['template']);
 }
 
 try {

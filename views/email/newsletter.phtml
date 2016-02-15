@@ -228,7 +228,7 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                         </tbody></table>
                     </layout>
                                                                    
-					<? if (count($promotion->release->artist->events)): ?>
+					<? if (isset($promotion->release->artist->events) && count($promotion->release->artist->events)): ?>
                     <layout label="Image gallery">
                         <p align="left" class="article-title"><singleline label="Title">Upcomming Events with <?= $promotion->release->artist->name ?></singleline></p>
                         <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">
@@ -282,7 +282,7 @@ body, td { font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; 
                     </layout>
                     <? endif ?>
 
-                    <? if (count($promotion->release->artist->releases)): ?>
+                    <? if (isset($promotion->release->artist->releases) && count($promotion->release->artist->releases)): ?>
                     <layout label="Image gallery">
                         <p align="left" class="article-title"><singleline label="Title">More releases by <?= $promotion->release->artist->name ?></singleline></p>
                         <table class="w580" width="580" cellpadding="0" cellspacing="0" border="0">

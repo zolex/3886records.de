@@ -44,8 +44,8 @@ class Artists extends AbstractDomain {
 					ar.id AS release_id,
 					ar.title AS release_title,
 					ar.cover AS release_cover,
-					ar.beatport AS release_beatport,
-					ar.date AS release_date
+					ar.date AS release_date,
+					ar.beatport AS release_beatport
 			FROM artists a
 			LEFT JOIN artist_crews ac ON ac.artist_id_original = a.id
 			LEFT JOIN releases ar ON (ar.artist_id = a.id AND ar.visible = 1)

@@ -31,30 +31,28 @@
 		<? endif ?>
 		<div class="clear"></div>
 		<? if (count($artist->crews)): ?>
+			<h3>Crews</h3>
 			<div class="container crews-small">
 				<div class="span12">
-					<p>
-						<strong><?= $artist->name ?> is member of the following crews</strong>
-						<ul class="thumbnails">
-							<? foreach ($artist->crews as $crew): ?>
-								<li class="span2">
-									<div class="thumbnail">
-										<a data-method="async" title="<?= $artist->name ?> is a member of <?= $crew->name ?>" href="/artist/<?= $crew->key ?>">
-										<img width="100" src="/img/artists/<?= $crew->key ?>.jpg" border="0" alt="<?= $crew->name ?>"></a>
-										<p><?= $crew->name ?></p>
-									</div>
-								</li>
-							<? endforeach ?>
-						</ul>
-					</p>
+					<ul class="thumbnails">
+						<? foreach ($artist->crews as $crew): ?>
+							<li class="span2">
+								<div class="thumbnail">
+									<a data-method="async" title="<?= $artist->name ?> is a member of <?= $crew->name ?>" href="/artist/<?= $crew->key ?>">
+									<img width="100" src="/img/artists/<?= $crew->key ?>.jpg" border="0" alt="<?= $crew->name ?>"></a>
+									<p><?= $crew->name ?></p>
+								</div>
+							</li>
+						<? endforeach ?>
+					</ul>
 				</div>
 			</div>
 		<? endif ?>
 		<? if (count($artist->members)): ?>
+			<h3>Members</h3>
 			<div class="container members-small">
 				<div class="span12">
 					<p>
-						<strong><?= $artist->name ?>Consists of the following members</strong>
 						<ul class="thumbnails">
 							<? foreach ($artist->members as $member): ?>
 								<li class="span2">
@@ -72,75 +70,81 @@
 				</div>
 			</div>
 		<? endif ?>
+
+		<? if (count($artist->releases)): ?>
+				<h3>Releases</h3>
+				<div class="span12">
+				<ul class="thumbnails">
+					<? foreach ($artist->releases as $release): ?>
+						<li class="span2">
+							<div class="thumbnail">
+								<? if (!empty($release->beatport)): ?>
+									<a target="_blank" title="Download" href="<?= $release->beatport ?>">
+								<? endif ?>
+								<p style="color: #0099FF; font-size: 12px;"><?= $release->title ?></p>
+								<img width="100" src="/img/releases/<?= $release->cover ?>" border="0" alt="<?= $release->title ?>" title="<?= $release->title ?>">
+								<? if (!empty($release->beatport)): ?>
+									</a>
+								<? endif ?>
+							</div>
+						</li>
+					<? endforeach ?>
+
+				</ul>
+				</div>
+		<? endif ?>
+		<? if (count($artist->events)): ?>
+			<div class="events-small">
+				<h3>Upcomming events</h3>
+				<div class="span12">
+				<ul class="thumbnails">
+					<? foreach ($artist->events as $event): ?>
+						<li class="span2">
+							<div class="thumbnail">
+								<? if (!empty($event->facebook)): ?>
+									<a target="_blank" title="Event on Facebook" href="<?= $event->facebook ?>">
+								<? endif ?>
+								<p style="color: #0099FF; font-size: 12px;"><?= $event->name ?></p>
+								<img width="100" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>">
+								<? if (!empty($event->facebook)): ?>
+									</a>
+								<? endif ?>
+							</div>
+						</li>
+					<? endforeach ?>
+				</ul>
+				</div>
+			</div>
+		<? endif ?>
+		<? if (count($artist->videos)): ?>
+			<div class="videos">
+				<h3>Videos</h3>
+				<ul class="thumbnails with-border">
+					<? foreach ($artist->videos as $video): ?>
+						<li class="span6">
+							<div class="thumbnail">
+								<iframe style="margin-left: auto; margin-right: auto;" width="100%" height="360" src="<?= $video->link ?>" frameborder="0" allowfullscreen></iframe>
+							</div>
+						</li>
+					<? endforeach ?>
+				</ul>
+			</div>
+		<? endif ?>
+		<? if (!empty($artist->soundcloud)): ?>
+			<div class="">
+				<? if ($artist->type == \Models\Artist::TYPE_DJ): ?>
+					<h3>DJ-Sets</h3>
+				<? else: ?>
+					<h3>Tracks</h3>
+				<? endif ?>
+				<iframe width="100%" height="450" scrolling="no" frameborder="no" src="<?= $artist->soundcloud ?><?= DataProvider::getInstance()->getSoundcloudParams() ?>"></iframe>
+			</div>
+		<? endif ?>
+		<? if (!empty($artist->mixcloud)): ?>
+			<div class="">
+				<h2>DJ-Sets</h2>
+				<?= $artist->mixcloud ?>
+			</div>
+		<? endif ?>
     </div>
 </div>
-<? if (count($artist->releases)): ?>
-	<div class="container">
-		<h2>Releases</h2>
-		<ul class="thumbnails">
-			<? foreach ($artist->releases as $release): ?>
-				<li class="span2">
-					<div class="thumbnail">
-						<? if (!empty($release->beatport)): ?>
-							<a target="_blank" title="Download Release" href="<?= $release->beatport ?>"><?= $release->title ?>
-						<? endif ?>
-						<img width="100" src="/img/releases/<?= $release->cover ?>" border="0" alt="<?= $release->title ?>" title="<?= $release->title ?>">
-						<? if (!empty($release->beatport)): ?>
-							</a>
-						<? endif ?>
-					</div>
-				</li>
-			<? endforeach ?>
-		</ul>
-	</div>
-<? endif ?>
-<? if (count($artist->events)): ?>
-	<div class="container events-small">
-		<h2>Upcomming events with <?= $artist->name ?></h2>
-		<ul class="thumbnails">
-			<? foreach ($artist->events as $events): ?>
-				<li class="span2">
-					<div class="thumbnail">
-						<? if (!empty($event->facebook)): ?>
-							<br/><a target="_blank" title="Event on Facebook" href="<?= $event->facebook ?>">
-						<? endif ?>
-						<img width="100" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>"
-						<? if (!empty($event->facebook)): ?>
-							</a>
-						<? endif ?>
-					</div>
-				</li>
-			<? endforeach ?>
-		</ul>
-	</div>
-<? endif ?>
-<? if (count($artist->videos)): ?>
-	<div class="container videos">
-		<h2>Videos</h2>
-		<ul class="thumbnails with-border">
-			<? foreach ($artist->videos as $video): ?>
-				<li class="span6">
-					<div class="thumbnail">
-						<iframe style="margin-left: auto; margin-right: auto;" width="100%" height="360" src="<?= $video->link ?>" frameborder="0" allowfullscreen></iframe>
-					</div>
-				</li>
-			<? endforeach ?>
-		</ul>
-	</div>
-<? endif ?>
-<? if (!empty($artist->soundcloud)): ?>
-	<div class="container">
-		<? if ($artist->type == \Models\Artist::TYPE_DJ): ?>
-			<h2>DJ-Sets</h2>
-		<? else: ?>
-			<h2>Tracks</h2>
-		<? endif ?>
-		<iframe width="100%" height="450" scrolling="no" frameborder="no" src="<?= $artist->soundcloud ?><?= DataProvider::getInstance()->getSoundcloudParams() ?>"></iframe>
-	</div>
-<? endif ?>
-<? if (!empty($artist->mixcloud)): ?>
-	<div class="container">
-		<h2>DJ-Sets</h2>
-		<?= $artist->mixcloud ?>
-	</div>
-<? endif ?>

@@ -1,0 +1,118 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+
+<div class="container">
+    <div class="jumbotron hero-unit">
+        <? if (isset($values['id']) && !empty($values['id'])): ?>
+        	<h1>Edit Event</h1>
+    	<? else: ?>
+        	<h1>Add Event</h1>
+    	<? endif ?>
+        <form enctype="multipart/form-data" method="post"  <? (isset($values['id']) && !empty($values['id'])) ? 'action="/event/edit/'. $values['id'] . '"' : 'action="/event/add"' ?> class="form-horizontal">
+		  <input type="hidden" name="MAX_FILE_SIZE" value="1000000 " />
+		  
+		  <div class="control-group form-group<?= isset($errors['image']) ? ' has-error' : '' ?>">
+		    <label for="image" class="col-sm-2 control-label">Event image:</label>
+		    <div class="form-control controls col-sm-10">
+		      <? if (isset($values['id']) && !empty($values['id'])): ?>
+		        <img src="/img/events/<?= $values['id'] ?>.jpg" /><br/>
+		  	  <? endif ?>
+		      <input name="image" type="file" class="form-control" id="image" />
+		      <? if (isset($errors['image'])): ?>
+		      	<span class="help-block"><?= $errors['image'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  
+		  <div class="control-group form-group<?= isset($errors['name']) ? ' has-error' : '' ?>">
+		    <label for="name" class="col-sm-2 control-label">Event Name:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="name" type="text" value="<?= $values['name'] ?>" class="form-control" id="name" placeholder="Name">
+		      <? if (isset($errors['name'])): ?>
+		      	<span class="help-block"><?= $errors['name'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  
+		  <div class="control-group form-group<?= isset($errors['fromTime']) ? ' has-error' : '' ?>">
+		    <label for="fromTime" class="col-sm-2 control-label">Begin:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="fromTime" type="datetime" value="<?= $values['fromTime'] ?>" class="form-control" id="fromTime" placeholder="Begin">
+		      <? if (isset($errors['fromTime'])): ?>
+		      	<span class="help-block"><?= $errors['fromTime'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['toTime']) ? ' has-error' : '' ?>">
+		    <label for="toTime" class="col-sm-2 control-label">End:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="toTime" type="datetime" value="<?= $values['toTime'] ?>" class="form-control" id="toTime" placeholder="End">
+		      <? if (isset($errors['toTime'])): ?>
+		      	<span class="help-block"><?= $errors['toTime'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <script>
+		  $(document).ready(function() {
+
+		  	$('#fromTime, #toTime').datetimepicker({
+				timeFormat: "HH:mm",
+				dateFormat: "dd.mm.yy",
+				hourMax: 3
+			});
+		  });
+		  </script>
+
+		  <div class="control-group form-group<?= isset($errors['shortInfo']) ? ' has-error' : '' ?>">
+		    <label for="shortInfo" class="col-sm-2 control-label">Location:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="shortInfo" type="text" value="<?= $values['shortInfo'] ?>" class="form-control" id="shortInfo" placeholder="Location">
+		      <? if (isset($errors['shortInfo'])): ?>
+		      	<span class="help-block"><?= $errors['shortInfo'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['facebook']) ? ' has-error' : '' ?>">
+		    <label for="facebook" class="col-sm-2 control-label">Facebook Link:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="facebook" type="text" value="<?= $values['facebook'] ?>" class="form-control" id="facebook" placeholder="">
+		      <? if (isset($errors['facebook'])): ?>
+		      	<span class="help-block"><?= $errors['facebook'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  
+ 		  <hr>
+
+	  
+		  <div class="control-group form-group<?= isset($errors['artists']) ? ' has-error' : '' ?>">
+		    <label for="artists" class="col-sm-2 control-label">Artists:</label>
+		    <div class="form-control controls col-sm-10">
+		      <table>
+		      <? foreach ($artists as $index => $artist): ?>
+		      	<? if ($index % 2 == 0): ?><tr><? endif ?>
+		      	<td style="width: 150px;">
+		      	<label class="checkbox" for="artist_<?= $artist->id ?>">
+		      	  <input type="checkbox"  <?= in_array($artist->id, @$values['artists']) ? 'checked="checked" ' : '' ?> name="artists[<?= $artist->id ?>]" class="form-control" id="artist_<?= $artist->id ?>">
+		      	  <?= $artist->name ?>
+		      	</label>
+		      	</td>
+		      	<? if ($index % 2 == 1): ?></tr><? endif ?>
+		      <? endforeach ?>
+		      </table>
+		      <? if (isset($errors['artists'])): ?>
+		      	<span class="help-block"><?= $errors['artists'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group">
+		    <div class="form-control controls col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default">Save Event</button>
+		    </div>
+		  </div>
+
+		</form>
+    </div>
+</div>

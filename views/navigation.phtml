@@ -4,18 +4,17 @@
   <li class="divider-vertical"></li>
   
   <li><a href="/events" data-method="async"><span><i class="icon-calendar"></i></span> Events</a></li>
-  <li class="divider-vertical"></li>
   
-  <?php /*
   <li class="divider-vertical"></li>
+
   <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span class="current"><i class="icon-signal"></i></span> Releases <b class="caret"></b></a>
     <ul class="dropdown-menu">
 		<li><a data-method="async" href="/releases/upcoming">Upcoming Releases</a></li>
 		<li><a data-method="async" href="/releases/latest">Latest Releases</a></li>
     </ul>
   </li>
+
   <li class="divider-vertical"></li>
-  */ ?>
 
   <li class="dropdown"><a href="/artists" class="dropdown-toggle" data-toggle="dropdown"><span><i class="icon-star"></i></span> Artists <b class="caret"></b></a>
     <ul class="dropdown-menu">
@@ -26,6 +25,7 @@
     <? endforeach ?>
     </ul>
   </li>
+
   <li class="divider-vertical"></li>
 
   <li class="dropdown"><a href="/djs" class="dropdown-toggle" data-toggle="dropdown"><span><i class="icon-play-circle"></i></span> DJs <b class="caret"></b></a>
@@ -37,10 +37,9 @@
     <? endforeach ?>
     </ul>
   </li>
-
-
   
   <li class="divider-vertical"></li>
+
   <li class="dropdown"><a data-method="async" href="/genres"><span><i class="icon-music"></i></span> Genres</b></a>
     <!--<ul class="dropdown-menu">
 	  <? foreach ($genres as $genre): ?>
@@ -59,6 +58,7 @@
       <ul class="dropdown-menu">
         <li><a data-method="async" href="/profile">My Profile</a></li>
         <li><a data-method="async" href="/profile/edit">Edit Profile</a></li>
+        <li><a data-method="async" href="/event/add">Add Event</a></li>
         <? if ($user->rights == 1): ?>
           <li><a data-method="async" href="/profile/signupcodes">Signup Codes</a></li>
         <? endif ?>

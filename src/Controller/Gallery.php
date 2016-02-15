@@ -10,7 +10,7 @@ class Gallery extends ControllerAction
 
 		return array(
 			'metaTitle' => 'Picture Gallery',
-			'facebookImage' => 'http://www.3886records.de/img/gallery/n8lounge-entry.jpg',
+			'facebookImage' => 'https://www.3886records.de/img/gallery/n8lounge-entry.jpg',
 			'galleryId' => $request->getParam('gallery'),
 			'breadcrumb' => array(
 				(object)array(

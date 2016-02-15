@@ -14,7 +14,7 @@ class Release extends AbstractModel
 	protected $date;
 	protected $format;
 	protected $type;
-	protected $beatport;
 	protected $deal;
 	protected $visible;
+	protected $beatport;
 }

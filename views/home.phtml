@@ -13,9 +13,19 @@
 <?= ViewLoader::load('breadcrumb', array('items' => array((object)array('active' => true, 'title' => 'Home')))) ?>
 <div class="container" style="height: 330px;">
 	<div class="row">
-		<div class="span9">
+		<div class="hidden-phone span9">
 			<div class="box_skitter box_skitter_large" style="margin-left: 10px;">
 				<ul>
+					<li>
+						<a target="_blank" href="//soundcloud.com/3886records/sets/psypek-republic-ep"><img src="/img/releases/psypek-republic-banner-800x300.jpg"></a>
+						<div class="label_text">
+							<p>Psypek - Republic EP</p>
+							<div>
+								Listen to the promo release for free on <a target="_blank" href="//soundcloud.com/3886records/sets/psypek-republic-ep">SoundCloud</a><br/>
+								<? /* Now available on <a target="_blank" href="//www.beatport.com/release/amrita-ep/1223416">Beatport</a> */?>
+							</div>
+						</div>
+					</li>
 					<li>
 						<a target="_blank" href="//x.mixcloud.com/3886records/psybuddy-amrita-ep/"><img src="/img/releases/psybuddy-amrita-ep-800x300.jpg"></a>
 						<div class="label_text">
@@ -110,16 +120,22 @@
 
 <div class="container home">
 	<div class="span4 first backgrounded">
+		<? if (count($releases)): ?>
 			<h4>Upcoming releases</h4>
 			<div class="thumbnail">
 				<ul class="light">
 					<? foreach ($releases as $release): ?>
-						<li class="icon-signal"><span><?= $release->artist->name ?> - <?= $release->title ?></span> <span class="small">(<?= $release->type ?>, <?= null === $release->date ? 'tba.' : $release->date ?>)</span></li>
+						<li class="icon-signal"><span>
+						<? if ($release->artist): ?>
+								<?= $release->artist->name ?> - 
+						<? endif ?>
+						<?= $release->title ?></span> <span class="small"></span></li>
 					<? endforeach ?>
 				</ul>
 				<a data-method="async" class="bottom" href="/releases/upcoming">more info</a>
 			</div>
-			
+		<? endif ?>
+		<? if (count($events)): ?>
 			<h4>Upcoming Events</h4>
 			<div class="thumbnail">
 				<ul class="light">
@@ -129,34 +145,35 @@
 				</ul>
 				<a data-method="async" class="bottom" href="/events">all events</a>
 			</div>
+		<? endif ?>
 	
-			<h4>Latest releases</h4>
-			<? foreach ($latestReleases as $release): ?>
-				<div class="thumbnail release-box" style="margin-bottom: 5px;">
-					<strong><a href="/artist/<?= $release->artist->key ?>" data-method="async"><?= $release->artist->name ?></a> - <?= $release->title ?></strong>
-					<br/>
-					<img src="/img/releases/<?= $release->cover ?>" width="180" height="180" alt="<?= $release->artist->name ?> - <?= $release->title ?>" />
-					<div class="desc">
-						<p>
-							<strong>Genre:</strong> <?= $release->genre->name ?><br/>
-							<strong>Date:</strong> <?= $release->date ?><br/>
-							<strong>Type:</strong> <?= $release->type ?><br/>
-							<strong>Format:</strong> <?= $release->format ?><br/>
-							<? if (isset($release->tracks)): ?>
-								<strong>Tracks:</strong>
-								<?= implode(', ', $release->tracks) ?>
-							<? endif ?>
-							<? if (count($release->links)): ?>
-								<strong>Buy now:</strong><br/>
-								<? foreach ($release->links as $link): ?>
-									<a target="_blank" href="<?= $link->link ?>"><?= $link->shopName ?></a><br/>
-								<? endforeach ?>
-							<? endif ?>
-						</p>
-					</div>
-					<div class="clear"></div>
+		<h4>Latest releases</h4>
+		<? foreach ($latestReleases as $release): ?>
+			<div class="thumbnail release-box" style="margin-bottom: 5px;">
+				<strong><a href="/artist/<?= $release->artist->key ?>" data-method="async"><?= $release->artist->name ?></a> - <?= $release->title ?></strong>
+				<br/>
+				<img src="/img/releases/<?= $release->cover ?>" width="180" height="180" alt="<?= $release->artist->name ?> - <?= $release->title ?>" />
+				<div class="desc">
+					<p>
+						<strong>Genre:</strong> <?= $release->genre->name ?><br/>
+						<strong>Date:</strong> <?= $release->date ?><br/>
+						<strong>Type:</strong> <?= $release->type ?><br/>
+						<strong>Format:</strong> <?= $release->format ?><br/>
+						<? if (isset($release->tracks)): ?>
+							<strong>Tracks:</strong>
+							<?= implode(', ', $release->tracks) ?>
+						<? endif ?>
+						<? if (count($release->links)): ?>
+							<strong>Buy now:</strong><br/>
+							<? foreach ($release->links as $link): ?>
+								<a target="_blank" href="<?= $link->link ?>"><?= $link->shopName ?></a><br/>
+							<? endforeach ?>
+						<? endif ?>
+					</p>
 				</div>
-			<? endforeach ?>
+				<div class="clear"></div>
+			</div>
+		<? endforeach ?>
 	</div>
 	<div class="span5">
 		<iframe width="100%" height="1000" scrolling="no" frameborder="no" src="//w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F4623566%3Fsecret_token%3Ds-EkFxj&amp;color=007aff&amp;auto_play=true&amp;show_artwork=false"></iframe>

@@ -2,21 +2,21 @@
     <div class="jumbotron hero-unit">
         <h1>SIGNUP</h1>
         <form method="post" action="/signup" class="form-horizontal">
-		  <div class="control-group form-group<?= isset($errors['code']) ? ' has-error' : '' ?>">
-		    <label for="code" class="col-sm-2 control-label">Code:</label>
-		    <div class="controls col-sm-10">
-		      <input name="code" type="text" value="<?= @$values['code'] ?>" class="form-control" id="code" placeholder="Signup code">
-			  <? if (isset($errors['code'])): ?>
-		      	<span class="help-block"><?= $errors['code'] ?></span>
-		      <? endif ?>
-		    </div>
-		  </div>
 		  <div class="control-group form-group<?= isset($errors['user']) ? ' has-error' : '' ?>">
 		    <label for="user" class="col-sm-2 control-label">Login:</label>
 		    <div class="controls col-sm-10">
 		      <input name="user" type="text" value="<?= @$values['user'] ?>" class="form-control" id="user" placeholder="Username">
 			  <? if (isset($errors['user'])): ?>
 		      	<span class="help-block"><?= $errors['user'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  <div class="control-group form-group<?= isset($errors['code']) ? ' has-error' : '' ?>">
+		    <label for="code" class="col-sm-2 control-label">Code:</label>
+		    <div class="controls col-sm-10">
+		      <input name="code" type="text" value="<?= @$values['code'] ?>" class="form-control" id="code" placeholder="Signup code">
+			  <? if (isset($errors['code'])): ?>
+		      	<span class="help-block"><?= $errors['code'] ?></span>
 		      <? endif ?>
 		    </div>
 		  </div>

@@ -1,17 +1,81 @@
 <?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
 <div class="container">
     <div class="jumbotron hero-unit">
-        <div>
+        <div style="margin-bottom: 20px;">
             <h1>3886profile</h1>
-        </div>
-		<p>
-			All information on your 3886records account.
-		</p>
-		<p>
-			<? if (isset($artist)): ?>
-				<strong>Hello <?= $artist->name ?>!</strong>
-			<? endif ?>
-		</p>
-		<p><i>coming sooon...</i></p>
+			<p><strong>Hello <?= $artist->name ?>, </strong> here you can find all information on your 3886records membership.</p>
+		</div>
+		<div style="margin-bottom: 30px;">
+			<table>
+				<tr>
+					<td style="width: 220px; vertical-align: top;">
+						<img src="/img/artists/<?= $artist->key ?>.jpg" />
+						<form style="margin-top: 20px;" method="get" action="/profile/edit">
+            				<input type="submit" class="btn" value="Edit profile">
+            			</form>
+					</td>
+        			<td style="color: black; vertical-align: top;">
+        				<strong><?= $artist->shortInfo ?></strong><br/>
+                        <p>
+            				<strong>Name:</strong> <?= $artist->firstname ?> <?= $artist->lastname ?><br/>
+                    		<strong>Location:</strong> <?= $artist->city ?>, <?= $artist->country ?><br/>
+                    		<strong>E-Mail:</strong> <?= $artist->email ?><br/>
+            				<strong>Genres:</strong>
+            				<? $numGenres = count($artist->genres) ?>
+            				<? foreach ($artist->genres as $index => $genre): ?>
+            					<?= $genre->name ?><?= $numGenres-1 == $index ? '' : ', ' ?>
+            				<? endforeach ?>
+            			</p>
+            			<p><?= $artist->longInfo ?></p>
+            			<p>
+	            			<strong>Weblinks</strong><br>
+							<? foreach ($links as $link): ?>
+								<a href="<?= $link->link ?>" target="_blank"><?= $link->link ?></a><br>
+							<? endforeach ?>
+						</p>
+        			</td>
+				</tr>
+			</table>
+		</div>
+		<hr>
+		<h4>My upcomming events</h4>
+		<? if (isset($events) && count($events)): ?>
+			<table style="color: black; width: 100%; margin-bottom: 10px;">
+			<? foreach ($events as $event): ?>
+				<tr>
+					<td style="width: 140px;"><?= date('d.m.Y', strtotime($event->fromTime)) ?></td>
+					<td style="width: 250px;"><a href="/event/edit/<?= $event->id ?>" title="Edit Event"><?= $event->name ?></a></td>
+					<td style="font-size: 14px">
+						Links: 
+						<a target="_blank" href="<?= $event->facebook ?>">Facebook</a>
+					</td>
+				</tr>
+			<? endforeach ?>
+			</table>
+		<? else: ?>
+			<p>No events found</p>
+		<? endif ?>
+		<form method="get" action="/event/add">
+			<input type="submit" class="btn" value="Add new event">
+		</form>		
+		<hr>
+		<? if (isset($releases) && count($releases)): ?>
+			<h4>My releases</h4>
+			<table style="color: black; width: 100%;">
+			<? foreach ($releases as $release): ?>
+				<tr>
+					<td style="width: 140px;"><?= $release->date ? date('d.m.Y', strtotime($release->date)) : 'upcomming' ?></td>
+					<td style="width: 250px;"><?= $release->title ?> (<?= $release->type ?>)</td>
+					<td style="font-size: 14px">
+						Links:
+						<? $numLinks = count($release->links); $index = 0; ?>
+						<? foreach ($release->links as $link): $index++; ?>
+							<a target="_blank" href="<?= $link->link ?>"><?= $link->shopName ?></a><?= $numLinks == $index ? '' : ', ' ?>
+						<? endforeach ?>
+					</td>
+				</tr>
+			<? endforeach ?>
+			</table>
+		<? endif?>
     </div>
 </div>

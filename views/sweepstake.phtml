@@ -3,7 +3,7 @@
 $(document).ready(function() {
 	
 	$.ajaxSetup({ cache: true });
-	$.getScript('http://connect.facebook.net/de_DE/all.js', function() {
+	$.getScript('https://connect.facebook.net/de_DE/all.js', function() {
 
 	    FB.init({
 			appId      : '583037658388035',
@@ -106,8 +106,8 @@ $(document).ready(function() {
 		        </p>
 		        <p>
 		        	<b>2.</b> Werde Fan unserer Facebook Seite mit einem Klick auf den folgenden Button:<br/>
-		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Du kannst unsere <a target="_blank" href="http://www.facebook.com/3886records">Facebook-Seite</a> auch direkt besuchen und dort auf gefällt mir klicken. Wenn Du bereits Fan bist, kannst Du diesen Schritt überspringen).</div>
-		        	<div class="fb-like-box" data-href="http://www.facebook.com/3886records" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
+		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Du kannst unsere <a target="_blank" href="https://www.facebook.com/3886records">Facebook-Seite</a> auch direkt besuchen und dort auf gefällt mir klicken. Wenn Du bereits Fan bist, kannst Du diesen Schritt überspringen).</div>
+		        	<div class="fb-like-box" data-href="https://www.facebook.com/3886records" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
 		        </p>
 		        <p>
 		        	<b>3.</b> Teile dieses Gewinnspiel bei Facebook öffentlich mit einem Klick auf den folgenden Button:<br/>
@@ -145,7 +145,7 @@ $(document).ready(function() {
 				    method: 'feed',
 				    display: 'popup',
 				    name: '<?= $sweepstake->info ?>',
-				    link: 'http://www.3886records.de/gewinnspiel/<?= $sweepstake->party ?>',
+				    link: 'https://www.3886records.de/gewinnspiel/<?= $sweepstake->party ?>',
 				    picture: '<?= $sweepstake->image ?>',
 				    caption: '3886records Gewinnspiel',
 				    description: '<?= $sweepstake->description ?>',
