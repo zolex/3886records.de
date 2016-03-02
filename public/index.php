@@ -60,6 +60,7 @@ if (isset($params['template'])) {
 
 try {
 
+    ViewLoader::setDir('src/Views');
 	$content = ViewLoader::load($template, $params);
 	
 } catch (\Exception $e) {

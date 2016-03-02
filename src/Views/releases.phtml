@@ -24,7 +24,7 @@
 							<? endif ?>
 							<? $numLinks = count($release->links); $index = 0 ?>
 							<? if (0 < $numLinks): ?>
-								<strong>Buy now:</strong> 
+								<strong>Listen here: </strong> 
 								<? foreach ($release->links as $link): ?>
 									<? $index++ ?>
 									<a target="_blank" href="<?= $link->link ?>"><?= $link->shopName ?></a>

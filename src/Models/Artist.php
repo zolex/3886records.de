@@ -24,7 +24,7 @@ class Artist extends AbstractModel
 	
 	protected $type; // old: 0 = artist, 1 = DJ
 	
-	
+	protected $is_topact;
 	protected $is_dj;
 	protected $is_producer;
 	protected $is_liveact;

@@ -1,0 +1,154 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">	
+	<div class="hero-unit" style="margin-left: -20px;">
+        <h1><?= $artist->name ?></h1>
+        <p style="font-weight: bold; margin-bottom: 20px;"><?= $artist->shortInfo ?></p>
+		<div class="row">
+    		<div class="span3">
+    			<ul class="thumbnails">
+    				<li>
+    					<div class="thumbnail">
+    						<img src="/img/artists/<?= $artist->key ?>.jpg" alt="<?= $artist->name ?>" />
+    					</div>
+    				</li>
+    			</ul>
+    			<? if (count($artist->links)): ?>
+    			<ul class="social">
+    			<? foreach ($artist->links as $link): ?>
+    				<li style="float: left; margin-left: 17px;"><a target="_blank" href="<?= $link->link ?>"><img alt="<?= ucfirst($link->type) ?>" title="<?= ucfirst($link->type) ?>" src="/img/social/<?= $link->type ?>.png" border="0" /></a></li>
+    			<? endforeach ?>
+    			</ul>
+    			<div class="clear" style="height: 15px;"></div>
+    		<? endif ?>
+    		</div>
+    		<div class="span7">	
+    			<p><?= $artist->longInfo ?></p>
+    			<? if (count($artist->genres)): ?>
+    				<p>
+            			<ul class="social">
+                			<? foreach ($artist->genres as $genre): ?>
+                				<li style="float: left; margin-left: 20px;"><a target="_blank" href="/genre/<?= $genre->key ?>"><?= $genre->name ?></a></li>
+                			<? endforeach ?>
+            			</ul>
+        			</p>
+    			</ul>
+    		<? endif ?>
+    		</div>
+    	</div>
+	</div>
+</div>
+<div class="container">	
+	<div class="row hero-like">
+		<? if (count($artist->events)): ?>
+			<div class="span4">
+				<h3>Upcoming Events</h3>
+				<ul class="thumbnails">
+					<? foreach ($artist->events as $event): ?>
+						<li class="span2">
+							<div class="thumbnail">
+								<? if (!empty($event->facebook)): ?>
+									<a target="_blank" title="Event on Facebook" href="<?= $event->facebook ?>">
+								<? endif ?>
+								<p style="color: #0099FF; font-size: 12px;"><?= $event->name ?></p>
+								<img width="100" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>">
+								<? if (!empty($event->facebook)): ?>
+									</a>
+								<? endif ?>
+							</div>
+						</li>
+					<? endforeach ?>
+				</ul>
+			</div>
+		<? endif ?>
+		
+		<? if (count($artist->releases)): ?>
+			<div class="span4">
+				<h3>Releases</h3>
+				<ul class="thumbnails">
+					<? foreach ($artist->releases as $release): ?>
+						<li class="span2">
+							<div class="thumbnail">
+								<? if (!empty($release->beatport)): ?>
+									<a target="_blank" title="Download" href="<?= $release->beatport ?>">
+								<? endif ?>
+								<p style="color: #0099FF; font-size: 12px;"><?= $release->title ?></p>
+								<img width="100" src="/img/releases/<?= $release->cover ?>" border="0" alt="<?= $release->title ?>" title="<?= $release->title ?>">
+								<? if (!empty($release->beatport)): ?>
+									</a>
+								<? endif ?>
+							</div>
+						</li>
+					<? endforeach ?>
+
+				</ul>
+			</div>
+		<? endif ?>
+	
+		<? if (count($artist->crews)): ?>
+			<div class="span4">
+    			<h3>Crews</h3>
+				<ul class="thumbnails">
+					<? foreach ($artist->crews as $crew): ?>
+						<li class="span2">
+							<div class="thumbnail">
+								<a data-method="async" title="<?= $artist->name ?> is a member of <?= $crew->name ?>" href="/artist/<?= $crew->key ?>">
+								<p style="color: #0099FF; font-size: 12px;"><?= $crew->name ?></p>
+								<img width="100" src="/img/artists/<?= $crew->key ?>.jpg" border="0" alt="<?= $crew->name ?>"></a>
+							</div>
+						</li>
+					<? endforeach ?>
+				</ul>
+			</div>
+		<? endif ?>
+		
+		<? if (count($artist->members)): ?>
+			<div class="span4">
+    			<h3>Members</h3>
+				<ul class="thumbnails">
+					<? foreach ($artist->members as $member): ?>
+						<li class="span2">
+							<div class="thumbnail">
+								<a data-method="async" title="<?= $member->name ?> is a member of <?= $artist->name ?>" href="/artist/<?= $member->key ?>">
+									<p style="color: #0099FF; font-size: 12px;"><?= $member->key ?></p>
+									<img width="100" src="/img/artists/<?= $member->key ?>.jpg" border="0" alt="<?= $member->name ?>">
+								</a>
+							</div>
+						</li>
+					<? endforeach ?>
+				</ul>
+			</div>
+		<? endif ?>
+	</div>
+	<div class="hero-unit" style="margin-left: -20px;">
+		<? if (count($artist->videos)): ?>
+			<div class="videos">
+				<h3>Videos</h3>
+				<ul class="thumbnails with-border">
+					<? foreach ($artist->videos as $video): ?>
+						<li class="span6">
+							<div class="thumbnail">
+								<iframe style="margin-left: auto; margin-right: auto;" width="100%" height="360" src="<?= $video->link ?>" frameborder="0" allowfullscreen></iframe>
+							</div>
+						</li>
+					<? endforeach ?>
+				</ul>
+			</div>
+		<? endif ?>
+		<? if (!empty($artist->soundcloud)): ?>
+			<div class="">
+				<? if ($artist->type == \Models\Artist::TYPE_DJ): ?>
+					<h3>DJ-Sets</h3>
+				<? else: ?>
+					<h3>Tracks</h3>
+				<? endif ?>
+				<iframe width="100%" height="450" scrolling="no" frameborder="no" src="<?= $artist->soundcloud ?><?= DataProvider::getInstance()->getSoundcloudParams() ?>"></iframe>
+			</div>
+		<? endif ?>
+		<? if (!empty($artist->mixcloud)): ?>
+			<div class="">
+				<h2>DJ-Sets</h2>
+				<?= $artist->mixcloud ?>
+			</div>
+		<? endif ?>
+	</div>
+</div>

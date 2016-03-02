@@ -227,7 +227,7 @@ a:focus {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 .row {
-  margin-left: -20px;
+	margin-left: -20px;
   *zoom: 1;
 }
 .row:before,

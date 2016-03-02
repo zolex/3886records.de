@@ -61,6 +61,10 @@ return array(
             'template' => 'event_edit',
             'controller' => array('Controller\Events', 'edit')
         ), 
+        '^/event/add2/?$' => array(
+            'template' => 'event_edit2',
+            'controller' => array('Controller\Events', 'edit')
+        ),
          '^/event/edit/(?P<id>[^/]+)/?$' => array(
             'template' => 'event_edit',
             'controller' => array('Controller\Events', 'edit')
@@ -187,6 +191,10 @@ return array(
         ),
         '^/profile/edit?$' => array(
             'template' => 'profile_edit',
+            'controller' => array('Controller\Profile', 'edit'),
+        ),
+        '^/profile/edit2?$' => array(
+            'template' => 'profile_edit2',
             'controller' => array('Controller\Profile', 'edit'),
         ),
         '^/profile/signupcodes?$' => array(

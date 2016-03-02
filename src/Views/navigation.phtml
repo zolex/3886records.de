@@ -21,7 +21,7 @@
       <li><a data-method="async" href="/artists">Artist overview</a></li>
       <li class="divider"></li>
     <? foreach ($artists as $artist): ?>
-    <li><a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a></li>
+    <li><a data-method="async" href="/artist/<?= $artist->key ?>" style="<?= ($artist->is_topact ? 'font-weight: bold;' : '') ?>"><?= $artist->name ?> <? if ($artist->is_topact): ?><i class="icon-star"></i><? endif ?></a></li>
     <? endforeach ?>
     </ul>
   </li>
@@ -33,7 +33,7 @@
       <li><a data-method="async" href="/djs">DJ overview</a></li>
       <li class="divider"></li>
     <? foreach ($djs as $dj): ?>
-    <li><a data-method="async" href="/dj/<?= $dj->key ?>"><?= $dj->name ?></a></li>
+    <li><a data-method="async" href="/dj/<?= $dj->key ?>" style="<?= ($dj->is_topact ? 'font-weight: bold;' : '') ?>"><?= $dj->name ?>  <? if ($dj->is_topact): ?><i class="icon-star"></i><? endif ?></a></li>
     <? endforeach ?>
     </ul>
   </li>

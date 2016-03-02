@@ -141,6 +141,7 @@ class Events extends ControllerAction
         		$errors['facebook'] = 'Please enter a valid facebook link.';
 	        }
 
+	        /*
 	        if (isset($_FILES['image']) && !empty($_FILES['image']['tmp_name'])) {
 	             
 	            if (exif_imagetype($_FILES['image']['tmp_name']) != IMAGETYPE_JPEG || imagecreatefromjpeg($_FILES['image']['tmp_name']) === false) {
@@ -163,8 +164,7 @@ class Events extends ControllerAction
 
 	        	$errors['image'] = 'Please upload an image.';
 	        }
-
-
+	        */
 
 
 	        if (0 === count($errors)) {
@@ -218,7 +218,20 @@ class Events extends ControllerAction
 					}
 				}
 
+				if (isset($formData['croppic_output_url']) && !empty($formData['croppic_output_url'])) {
+				    
+				    $imgFile = str_replace('/img/events/', '', $formData['croppic_output_url']);
+				    $stmt = $dbh->prepare('UPDATE events SET flyer = :flyer WHERE id = :id LIMIT 1');
+	        		$stmt->bindValue('id', $event->id);
+	        		$stmt->bindValue('flyer', $imgFile);
+	        		if (!$stmt->execute()) {
+	        		
+	        		    $errorInfo = $stmt->errorInfo();
+	        		    throw new \Exception($errorInfo[2], $errorInfo[1]);
+	        		}
+				}
 
+	        	/*
 	        	if (isset($_FILES['image']) && !empty($_FILES['image']['tmp_name'])) {
 
 		            $basePath = '/srv/apache2/3886records.de/www/production/shared/public/img/events/';
@@ -241,6 +254,7 @@ class Events extends ControllerAction
 						throw new \Exception($errorInfo[2], $errorInfo[1]);
 					}
 		        }
+		        */
 
 		        header('Location: /event/edit/'. $event->id);
 		        exit;
