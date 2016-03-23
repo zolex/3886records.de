@@ -1,7 +1,7 @@
 <?php
 
 
-die('DISABLED-CHECK-VALUES-FOR-NEXT-MAILING');
+#die('DISABLED-CHECK-VALUES-FOR-NEXT-MAILING');
 
 chdir(dirname(dirname(__FILE__)));
 $config = (require 'config.php');
@@ -16,7 +16,7 @@ $transport = Swift_SmtpTransport::newInstance($config['smtp']['host'], $config['
 
 $mailer = Swift_Mailer::newInstance($transport);
 
-$promotion = $dp->getPromotionByKey('spekta-liteprog');
+$promotion = $dp->getPromotionByKey('psypek-republic-ep');
 
 $stmt = $dbh->prepare("SELECT s.email FROM subscriptions s LEFT JOIN promotion_feedback pf ON (pf.subscription_id = s.id AND pf.promotion_id = ". $promotion->id .") WHERE pf.updated_at IS NULL AND s.active = 1 ORDER BY s.email DESC");
 if (!$stmt->execute()) {
@@ -29,6 +29,7 @@ while ($row = $stmt->fetchObject()) {
 	$subscription = $dp->getSubscription($row->email);
 
 	$message = Swift_Message::newInstance();
+	ViewLoader::setDir('src/Views');
 	$body = ViewLoader::load('email/newsletter', array(
 		'promotion' => $promotion,
 		'subscription' => $subscription,

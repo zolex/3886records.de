@@ -20,13 +20,17 @@ class Sales extends ControllerAction
 
 			$artistId = 5;
 
-		} else if (@$_GET['pass'] !== 'ac39b4ptc0954') die();
+		} else if (@$_GET['pass'] === 'ac39b4ptc0954') {
+			 
+			 $artistId = (integer)$_GET['artist'];
 
-		else $artistId = (integer)$_GET['artist'];
+		} else die();
+
+		
 		
 		$db = DataProvider::getInstance();
 
-		$report = $db->getSalesReportByArtist(1, $artistId);
+		$report = $db->getSalesReportByArtist($artistId);
 		$details = $db->getNewSalesByArtist($artistId);
 
 		return array(

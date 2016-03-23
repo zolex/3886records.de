@@ -1,0 +1,139 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+
+<div class="container">
+    <div class="jumbotron hero-unit">
+        <? if (isset($values['id']) && !empty($values['id'])): ?>
+        	<h1>Edit Contact</h1>
+    	<? else: ?>
+        	<h1>Add Contact</h1>
+    	<? endif ?>
+        <form method="post"  <? (isset($values['id']) && !empty($values['id'])) ? 'action="/contact/edit/'. $values['id'] . '"' : 'action="/contact/add"' ?> class="form-horizontal">
+		  
+		  <div class="control-group form-group<?= isset($errors['orgaName']) ? ' has-error' : '' ?>">
+		    <label for="orgaName" class="col-sm-2 control-label">Orga name:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="orgaName" type="text" value="<?= @$values['orgaName'] ?>" class="form-control" id="orgaName" placeholder="Orga name">
+		      <? if (isset($errors['orgaName'])): ?>
+		      	<span class="help-block"><?= $errors['orgaName'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['orgaFacebook']) ? ' has-error' : '' ?>">
+		    <label for="orgaFacebook" class="col-sm-2 control-label">Orga facebook:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="orgaFacebook" type="text" value="<?= @$values['orgaFacebook'] ?>" class="form-control" id="orgaFacebook" placeholder="Orga facebook link">
+		      <? if (isset($errors['orgaFacebook'])): ?>
+		      	<span class="help-block"><?= $errors['orgaFacebook'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['personName']) ? ' has-error' : '' ?>">
+		    <label for="personName" class="col-sm-2 control-label">Person name:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="personName" type="text" value="<?= @$values['personName'] ?>" class="form-control" id="personName" placeholder="Person name">
+		      <? if (isset($errors['personName'])): ?>
+		      	<span class="help-block"><?= $errors['personName'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['personFacebook']) ? ' has-error' : '' ?>">
+		    <label for="personFacebook" class="col-sm-2 control-label">Person facebook:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="personFacebook" type="text" value="<?= @$values['personFacebook'] ?>" class="form-control" id="personFacebook" placeholder="Person facebook link">
+		      <? if (isset($errors['personFacebook'])): ?>
+		      	<span class="help-block"><?= $errors['personFacebook'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['email']) ? ' has-error' : '' ?>">
+		    <label for="email" class="col-sm-2 control-label">E-Mail:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="email" type="text" value="<?= @$values['email'] ?>" class="form-control" id="email" placeholder="E-mail address">
+		      <? if (isset($errors['email'])): ?>
+		      	<span class="help-block"><?= $errors['email'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['phone']) ? ' has-error' : '' ?>">
+		    <label for="phone" class="col-sm-2 control-label">Phone:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="phone" type="text" value="<?= @$values['phone'] ?>" class="form-control" id="phone" placeholder="Phone">
+		      <? if (isset($errors['phone'])): ?>
+		      	<span class="help-block"><?= $errors['phone'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['zipcode']) ? ' has-error' : '' ?>">
+		    <label for="zipcode" class="col-sm-2 control-label">Zipcode/City:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="zipcode" type="text" value="<?= @$values['zipcode'] ?>" class="form-control" id="zipcode" placeholder="Zipcode and/or City">
+		      <? if (isset($errors['zipcode'])): ?>
+		      	<span class="help-block"><?= $errors['zipcode'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['country']) ? ' has-error' : '' ?>">
+		    <label for="country" class="col-sm-2 control-label">Country:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="country" type="text" value="<?= @$values['country'] ?>" class="form-control" id="country" placeholder="Zipcode">
+		      <? if (isset($errors['country'])): ?>
+		      	<span class="help-block"><?= $errors['country'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['lastContactTime']) ? ' has-error' : '' ?>">
+		    <label for="lastContactTime" class="col-sm-2 control-label">Last contact:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="lastContactTime" type="text" value="<?= @$values['lastContactTime'] ? @date('d.m.Y', strtotime($values['lastContactTime'])) : '' ?>" class="form-control" id="lastContactTime" placeholder="Date of last contact">
+		      <? if (isset($errors['lastContactTime'])): ?>
+		      	<span class="help-block"><?= $errors['lastContactTime'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <script>
+		  $(document).ready(function() {
+
+		  	$('#lastContactTime').datepicker({
+				dateFormat: "dd.mm.yy"
+			});
+		  });
+		  </script>
+
+		  <div class="control-group form-group<?= isset($errors['lastContactInfo']) ? ' has-error' : '' ?>">
+		    <label for="lastContactInfo" class="col-sm-2 control-label">Contact result:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="lastContactInfo" type="text" value="<?= @$values['lastContactInfo'] ?>" class="form-control" id="lastContactInfo" placeholder="Info about last contact">
+		      <? if (isset($errors['lastContactInfo'])): ?>
+		      	<span class="help-block"><?= $errors['lastContactInfo'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+
+		  <div class="control-group form-group<?= isset($errors['goabase']) ? ' has-error' : '' ?>">
+		    <label for="goabase" class="col-sm-2 control-label">Goabase:</label>
+		    <div class="form-control controls col-sm-10">
+		      <input name="goabase" type="text" value="<?= @$values['goabase'] ?>" class="form-control" id="goabase" placeholder="Goabase link">
+		      <? if (isset($errors['goabase'])): ?>
+		      	<span class="help-block"><?= $errors['goabase'] ?></span>
+		      <? endif ?>
+		    </div>
+		  </div>
+		  
+		  <div class="control-group form-group">
+		    <div class="form-control controls col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-default">Save Contact</button>
+		    </div>
+		  </div>
+
+		</form>
+    </div>
+</div>

@@ -2,24 +2,32 @@
 
 <? if (isset($events->upcomming) && is_array($events->upcomming)): ?>
 	<div class="container events eventsfull">
-		<h2>Upcomming Events</h2>
+		<h2>Upcoming Events</h2>
 		<ul class="thumbnails">
 			<? foreach ($events->upcomming as $event): ?>
 				<li class="span4">
-					<div class="thumbnail">
+					<div class="thumbnail" style="position: relative;">
+						<? if ($user): ?>
+							<a data-method="async" style="display: block; position: absolute; top: 0; left: 5px; font-size: 13px;" href="/event/edit/<?= $event->id ?>">edit event</span><br/></a>
+						<? endif ?>	
 						<? if ($user): ?>
 							<a data-method="async" title="EDIT EVENT" style="font-size: 12px;" href="/event/edit/<?= $event->id ?>">
 						<? endif ?>
 						<h4><?= $event->name ?></h4>
-						<? if ($user): ?>
-							</a>
-						<? endif ?>	
 						<span class="location"><?= $event->shortInfo ?></span><br/>
 						<span class="date"><?= $event->fromTime ?></span>
 						<? if (isset($event->facebook)): ?>
 							<br/><a title="Event on Facebook" href="<?= $event->facebook ?>" target="_blank">
 						<? endif ?>
-						<img border="0" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
+						<?php
+							 $flyerUrl = '/img/events/'. $event->flyer;
+							 $flyerPath = '/srv/apache2/3886records.de/www/production/current/public' . $flyerUrl;
+							 if (!is_readable($flyerPath) || !is_file($flyerPath)) {
+
+							 	$flyerUrl = '/img/events/default.jpg';
+							 }
+						?>
+						<img border="0" src="<?= $flyerUrl ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
 						<? if (isset($event->facebook)): ?>
 							</a>
 						<? endif ?>
@@ -48,19 +56,34 @@
 		<ul class="thumbnails">
 			<? foreach ($events->past as $event): ?>
 				<li class="span4">
-					<div class="thumbnail">
+					<div class="thumbnail" style="position: relative;">
+						<? if ($user): ?>
+							<a data-method="async" style="display: block; position: absolute; top: 0; left: 5px; font-size: 13px;" href="/event/edit/<?= $event->id ?>">edit event</span><br/></a>
+						<? endif ?>	
+						<? if ($user): ?>
+							<a data-method="async" title="EDIT EVENT" style="font-size: 12px;" href="/event/edit/<?= $event->id ?>">
+						<? endif ?>
 						<h4><?= $event->name ?></h4>
 						<span class="location"><?= $event->shortInfo ?></span><br/>
 						<span class="date"><?= $event->fromTime ?></span>
 						<? if (isset($event->facebook)): ?>
 							<br/><a title="Event on Facebook" href="<?= $event->facebook ?>" target="_blank">
 						<? endif ?>
-						<img border="0" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
+						<?php
+							 $flyerUrl = '/img/events/'. $event->flyer;
+							 $flyerPath = '/srv/apache2/3886records.de/www/production/current/public' . $flyerUrl;
+							 if (!is_readable($flyerPath) || !is_file($flyerPath)) {
+
+							 	$flyerUrl = '/img/events/default.jpg';
+							 }
+						?>
+						<img border="0" src="<?= $flyerUrl ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>" />
 						<? if (isset($event->facebook)): ?>
 							</a>
 						<? endif ?>
 						<? if (isset($event->artists) && is_array($event->artists)): ?>
 							<div class="acts">
+							<? $numArtists = count($event->artists) ?>
 							<? foreach ($event->artists as $artist): ?>
 								<? if (!empty($artist->key)): ?>
 									<a data-method="async" href="/artist/<?= $artist->key ?>"><?= $artist->name ?></a>, 

@@ -5,9 +5,21 @@
         <script src="/js/croppic.min.js"></script>
     </head>
     <body>
+
+        <?php 
+             $imageDir = '/srv/apache2/3886records.de/www/production/current/public';
+             $imageUrl = '/img/artists/'. $_GET['key'] .'.jpg';
+             $imagePath = $imageDir . $imageUrl;
+             if (!is_readable($imagePath) || !is_file($imagePath)) {
+
+                $imageUrl = '/img/artists/default.jpg';
+                $imagePath = $imageDir . $imageUrl;
+             }
+        ?>
+
     	<input type="hidden" name="croppic_output_url" id="croppic_output_url">
     	<div id="croppicwrapper" style="width: 200px; height: 200px; position: relative;">
-    		<img id="currentImg" src="/img/artists/<?= $_GET['key'] ?>.jpg">
+    		<img id="currentImg" src="<?= $imageUrl ?>?t=<?= filemtime($imagePath) ?>">
     	</div>
     	
     	

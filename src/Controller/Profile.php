@@ -14,6 +14,8 @@ class Profile extends ControllerAction
 		$stmt->bindValue('artist_id', $user->artist_id);
 		$stmt->execute();
 		
+		$dataProvider = $this->getDataProvider();
+		
 		if ($artist = $stmt->fetchObject()) {
 		
 		
@@ -25,8 +27,6 @@ class Profile extends ControllerAction
 			    
 			    $artist->genres[] = $genre;
 			}
-
-			$dataProvider = $this->getDataProvider();
 			
 			return array(
 				'artist' => $artist,
@@ -49,6 +49,7 @@ class Profile extends ControllerAction
 
 			return array(
 				'template' => 'profile_user',
+			    'events' => $dataProvider->getEvents(\Models\Event::UPCOMMING),
 				'user' => $user,
 				'breadcrumb' => array(
 					(object)array(
@@ -71,7 +72,7 @@ class Profile extends ControllerAction
 		$dbh =  \Registry::get('dbh');
 
 		$artists = array();
-		if ($user->rights == 1) {
+		if ($user->rights & \Models\User::RIGHT_SIGNUPCODES) {
 
 			srand();
 			$stmt = $dbh->prepare('SELECT * FROM artists WHERE visible = 1 ORDER BY name');
@@ -170,7 +171,7 @@ class Profile extends ControllerAction
 
 					$_SESSION['csid'] = $csid;
 
-					$location = '/';
+					$location = '/profile';
 					if (isset($_SESSION['post_login_redirect']) && !empty($_SESSION['post_login_redirect'])) {
 
 						$location = $_SESSION['post_login_redirect'];

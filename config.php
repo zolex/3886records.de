@@ -205,5 +205,21 @@ return array(
             'template' => 'logout',
             'controller' => array('Controller\Profile', 'logout'),
         ),
+        '^/bookingmanager/?$' => array(
+            'template' => 'bookingmanager',
+            'controller' => array('Controller\Bookingmanager', 'index'),
+        ),
+        '^/bookingmanager/location/?$' => array(
+            'template' => 'bookingmanager_location',
+            'controller' => array('Controller\Bookingmanager', 'artists'),
+        ),
+        '^/contact/add?$' => array(
+            'template' => 'contact',
+            'controller' => array('Controller\Bookingmanager', 'edit'),
+        ),
+        '^/contact/edit/(?P<id>\d+)/?$' => array(
+            'template' => 'contact',
+            'controller' => array('Controller\Bookingmanager', 'edit'),
+        ),
     ),
 );

@@ -210,6 +210,7 @@ class Promotion extends ControllerAction
 			exit;
 		}
 	
+		\ViewLoader::setDir('src/Views');
 		$body = \ViewLoader::load('email/newsletter', array(
 			'promotion' => $promotion,
 			'subscription' => $subscription,

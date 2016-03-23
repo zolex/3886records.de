@@ -99,7 +99,7 @@ $dataProvider = DataProvider::getInstance();
 
 $navigation = ViewLoader::load('navigation', array(
     'request' => $request,
-	'artists' => $dataProvider->getArtists(),
+	'artists' => $dataProvider->getArtists(true),
 	'djs' => $dataProvider->getDJs(),
 	'genres' => $dataProvider->getGenres(),
 	'labels' => $dataProvider->getLabels(),

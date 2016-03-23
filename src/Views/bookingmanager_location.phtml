@@ -1,0 +1,41 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+    <div class="hero-unit">
+		<h1>Location</h1>
+
+		<p>Artists by distance to <strong><?= $_GET['origin'] ?></strong></p>	
+    </div>
+</div>
+<div class="container">	
+    <div class="row">
+		<div class="span12">
+			<? if (count($artists)): ?>
+				<table class="rowcolor" width="100%">
+					<tr style="font-weight: bold; background: #333;">
+						<td>Artist</td>
+						<td>Location</td>
+						<td>Distance</td>
+						<td>Travel Time</td>
+					</tr>
+					<? foreach ($artists as $artist): ?>
+						<? if (@$artist->distance->text): ?>
+							<tr>
+								<td>
+									<?
+									    if ($artist->has_contract) echo '<span style="font-weight: bold; color: #00FF00;">';
+										else if ($artist->is_topact) echo '<span style="font-weight: bold; color: #00CCFF;">';
+										echo $artist->name
+									?>
+									<?= $artist->is_topact || $artist->has_contract ? '</span>' : '' ?>
+								</td>
+								<td><?= $artist->location ?></td>
+								<td><?= $artist->distance->text ?></td>
+								<td><?= $artist->duration->text ?></td>
+							</tr>
+						<? endif ?>
+					<? endforeach ?>
+				</table>
+			<? endif ?>
+		</div>
+	</div>
+</div>

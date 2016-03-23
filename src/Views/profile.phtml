@@ -7,9 +7,19 @@
 		</div>
 		<div style="margin-bottom: 30px;">
 			<table>
+				<?php 
+		             $imageDir = '/srv/apache2/3886records.de/www/production/current/public';
+		             $imageUrl = '/img/artists/'. $artist->key .'.jpg';
+		             $imagePath = $imageDir . $imageUrl;
+		             if (!is_readable($imagePath) || !is_file($imagePath)) {
+
+		                $imageUrl = '/img/artists/default.jpg';
+		                $imagePath = $imageDir . $imageUrl;
+		             }
+		        ?>
 				<tr>
 					<td style="width: 220px; vertical-align: top;">
-						<img src="/img/artists/<?= $artist->key ?>.jpg" />
+						<img src="<?= $imageUrl ?>?t=<?= filemtime($imagePath) ?>" />
 						<form style="margin-top: 20px;" method="get" action="/profile/edit">
             				<input type="submit" class="btn" value="Edit profile">
             			</form>

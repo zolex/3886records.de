@@ -119,6 +119,10 @@ class Events extends ControllerAction
 	        if (empty($formData['name'])) {
 
         		$errors['name'] = 'Please enter an event name.';
+
+	        } else if (strlen($formData['name']) > 27) {
+
+        		$errors['name'] = 'Too long. Max. 27 characters.';
 	        }
 
 	        if (empty($formData['shortInfo'])) {
@@ -139,7 +143,29 @@ class Events extends ControllerAction
 	        if (empty($formData['facebook']) || !preg_match('#^https?://(www\.)?facebook\.[\w]{2,4}/events/\d+#', $formData['facebook'])) {
 
         		$errors['facebook'] = 'Please enter a valid facebook link.';
+	        
+	        } else {
+
+	        	$formData['facebook'] = preg_replace('/\?.+$/', '', $formData['facebook']);
+
+	        	if (isset($eventId) && !empty($eventId)) {
+	        	
+	        		$stmt = $dbh->prepare("SELECT id FROM events WHERE facebook = :facebook AND id != :id");
+					$stmt->bindValue('id', $eventId);
+	        	
+	        	} else {
+
+	        		$stmt = $dbh->prepare("SELECT id FROM events WHERE facebook = :facebook");
+	        	}
+
+	        	$stmt->bindValue('facebook', $formData['facebook']);
+				$stmt->execute();
+				if ($existingEvent = $stmt->fetchObject()) {
+
+					$errors['facebook'] = 'An event with this facebook links already exists! <a href="/event/edit/'. $existingEvent->id .'">Edit it instead.</a>';
+				}
 	        }
+
 
 	        /*
 	        if (isset($_FILES['image']) && !empty($_FILES['image']['tmp_name'])) {
@@ -255,6 +281,27 @@ class Events extends ControllerAction
 					}
 		        }
 		        */
+
+		        $mailData = $formData;
+		        unset($mailData['MAX_FILE_SIZE']);
+		        unset($mailData['croppic_output_url']);
+				ob_start();
+				print_r($mailData);
+				$body = ob_get_clean();
+
+				$config = \Registry::get('config');
+				$transport = \Swift_SmtpTransport::newInstance($config['smtp']['host'], $config['smtp']['port'])
+					->setUsername($config['smtp']['user'])
+					->setPassword($config['smtp']['password']);
+
+				$mailer = \Swift_Mailer::newInstance($transport);
+	            $message = \Swift_Message::newInstance();
+				$message->setSubject($user->name . " added/updated an event")
+					->setFrom(array('noreply@3886records.de' => '3886records'))
+					->setTo(array("spekta@3886records.de"))
+					->setBody($body, 'text/plain');
+
+				$mailer->send($message);
 
 		        header('Location: /event/edit/'. $event->id);
 		        exit;

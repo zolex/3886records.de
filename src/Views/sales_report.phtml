@@ -1,13 +1,20 @@
-<div class="retailerbilling">
-    <div class="page">
+<? $page = 0 ?>
+<? ob_start() ?>
+<div class="header">
+            <img src="/img/logo-oneliner-black-small.png"><br>
+            <div class="sender">
+                Andreas Linden&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Agnesstr. 3A&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;53225 Bonn&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;Deutschland<br>
+                Tel. +49-(0)178/7108481&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;E-Mail: info@3886records.de
+            </div>
+        </div>
+        
         <div class="addresses">
-            <div class="sender">3886records - Andreas Linden - Agnesstr. 3a - 53225 Bonn</div>
             <div class="recepient">
-                <strong>Begünstiger</strong><br/>
-                Max Mustermann<br/>
-                Musterstraße 42<br/>
-                55555 Musterhausen<br/>
-                Musterland
+                <strong><?= $report->artist->name ?></strong><br>
+                <?= $report->artist->firstname ?> <?= $report->artist->lastname ?><br>
+                <?= $report->artist->street ?><br>
+                <?= $report->artist->zip ?> <?= $report->artist->city ?><br>
+                <?= $report->artist->country ?>
             </div>
         </div>
         
@@ -15,33 +22,38 @@
             <table border="0">
                 <tr>
                     <td class="datalabel">Datum:</td>
-                    <td><?= date('d.m.Y') ?></td>
+                    <td><?= $report->date ?></td>
                 </tr>
-                <!--tr>
-                    <td class="datalabel">Unsere Ust-ID:</td>
-                    <td>DE xxxxxxxx</td>
-                </tr-->
+                <tr>
+                    <td class="datalabel">Kundennummer:</td>
+                    <td><?= $report->customerNumber ?></td>
+                </tr>
                 <tr>
                     <td class="datalabel">Rechnungsnr.:</td>
-                    <td>2014-04-1003</td>
+                    <td><?= $report->invoiceNumber ?></td>
                 </tr>
              </table>
         </div>
+<? $pageHeader = ob_get_clean(); ?>
+
+<div class="invoice">
+    <page size="A4" class="page">
+        <?= $pageHeader ?>
         <div class="clear"></div>
         <div class="references">&nbsp;</div>
         <div class="clear"></div>
         <div class="content">
-            <p><strong>ABRECHNUNG</strong>
+            <h2>ABRECHNUNG</h2>
             <p>
-                <strong>Rechnungsquartale: <?= $report->date ?></strong><br/>
-                Eine detailierte Auflistung aller Umsätze finden Sie in der Abrechnung ab Seite 2
+                Für den Abrechnungszeitraum von <?= $report->quarterFrom ?> bis <?= $report->quarterTo ?></strong><br/>
+                Eine detailierte Auflistung aller Umsätze finden Sie ab Seite 2.
             </p>
             
             <table>
                 <tr>
-                    <th style="width: 133mm" colspan="2" class="taleft"><strong>Title</strong></th>
-                    <th style="width: 21mm" class="taright">Menge</th>
-                    <th style="width: 21mm" class="taright">Gesamt</th>
+                    <th colspan="2" class="taleft"><strong>Title</strong></th>
+                    <th style="width: 25mm" class="taright">Menge</th>
+                    <th style="width: 25mm" class="taright">Gesamt</th>
                 </tr>
                 <? $numItems = count($report->items) ?>
                 <? $sum = 0 ?>
@@ -64,13 +76,13 @@
                 </tr>
                 <tr>
                     <td colspan="3" class="taright noborder double">
-                        Summe:
+                        <strong>Summe:</strong>
                         <!--Summe brutto:<br />
                         Ust. 19%: <br />
                         Rechnungsbetrag netto: -->
                     </td>
                     <td class="taright double" style="border-bottom: 1px solid #000;">
-                        <?= sprintf("%.2f", round($sum, 2)) ?> GBP
+                        <strong><?= sprintf("%.2f", round($sum, 2)) ?> GBP</strong>
                         <!--0 GBP<br />
                         0 GBP<br />
                         0 GBP-->
@@ -81,70 +93,110 @@
                 </tr>
                 <tr class="last">
                     <td colspan="3" style="text-align: right"><strong>Auszahlungsbetrag:</strong></td>
-                    <td style="text-align: right;"><strong>0 GBP</strong></td>
+                    <td style="text-align: right;"><strong>0.00 GBP</strong></td>
                 </tr>
                 <tr class="last">
                     <td colspan="4" class="tacenter">
-                        Es wird gemäß §19 Abs. 1 Umsatzsteuergesetz keine Umsatzsteuer ausgeschrieben. Eine Auszahlung der Umsätze ist ab dem vertraglich festgelegten Betrag möglich. Wurde keine Auszahlungsgrenze definiert, liegt diese bei 50,00 GPB. Die nicht zahlbaren Umsätze werden Ihrem Guthabenkonto für die nächste Abrechnung gutgeschrieben.
+                        Es wird gemäß §19 Abs. 1 Umsatzsteuergesetz keine Umsatzsteuer ausgeschrieben. Eine Auszahlung ist ab dem vertraglich festgelegten Betrag möglich. Wurde keine Auszahlungsgrenze definiert, liegt diese bei 50.00 GPB.
                     </td>
                 </tr>
             </table>
         </div>
-    </div>
-    <br/>
-    <div class="page">
-        <div class="addresses">
-            <div class="sender">3886records - Andreas Linden - Agnesstr. 3a - 53225 Bonn</div>
-            <div class="recepient">
-                <strong>Begünstiger</strong><br/>
-                Max Mustermann<br/>
-                Musterstraße 42<br/>
-                55555 Musterhausen<br/>
-                Musterland
-            </div>
-        </div>
-        
-        <div class="data">
-            <table border="0">
-                <tr>
-                    <td class="datalabel">Datum:</td>
-                    <td><?= date('d.m.Y') ?></td>
-                </tr>
-                <!--tr>
-                    <td class="datalabel">Unsere Ust-ID:</td>
-                    <td>DE xxxxxxxx</td>
-                </tr-->
-                <tr>
-                    <td class="datalabel">Rechnungsnr.:</td>
-                    <td>2014-01-1003</td>
-                </tr>
-             </table>
-        </div>
-        <div class="clear"></div>
-        <div class="references">&nbsp;</div>
-        <div class="clear"></div>
-        <div class="content">
-            <p><strong>UMSATZAUFLISTUNG</strong>
-            <p>
-                <strong>Zeitraum: <?= $report->date ?></strong><br/>
-            </p>
-            
+        <div class="footer">
             <table>
                 <tr>
-                    <th class="taleft"><strong>Artist</strong></th>
-                    <th class="taleft"><strong>Track/Release</strong></th>
-                    <th class="taleft"><strong>Format</strong></th>
-                    <th class="taleft"><strong>Store</strong></th>
-                    <th class="taright"><strong>Num</strong></th>
-                    <th class="taright"><strong>Value</strong></th>
+                    <td>
+                        <strong>Anschrift</strong><br>
+                        Fa. Andreas Linden<br>
+                        Agnesstr. 3a<br>
+                        53225 Bonn
+                    </td>
+                    <td>
+                        <strong>Bankverbindung</strong><br>
+                        Andreas Linden<br>
+                        IBAN: DE55 3806 0186 0803 7220 13<br>
+                        BIC: GENODED1BRS
+                    </td>
+                    <td>
+                        <strong>Geschäftsführung</strong><br>
+                        Andreas Linden<br>
+                        Steuernummer 1234567890<br>
+                        Finanzamt Bonn-Außenstadt
+                    </td>
+                    <td class="vabottom">Seite <?= ++$page ?></td>
                 </tr>
+            </table>
+        </div>
+    </page>
+    <? if (count($details)): ?>
 
 				<? $sumDetail = 0 ?>
                 <? $numItems = count($details) ?>
                 <? for ($n = 0; $n < $numItems; $n++): ?>
+                    <? if ($n % 35 === 0): ?>
+                        <? if ($n !== 0): ?>
+                                        <tr>
+                                            <td colspan="5" class="taright noborder double">
+                                                <strong>Zwischensumme:</strong>
+                                            </td>
+                                            <td class="taright double" style="border-bottom: 1px solid #000;">
+                                                <strong><?= $sumDetail ?> GBP</strong>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="footer">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <strong>Anschrift</strong><br>
+                                                Fa. Andreas Linden<br>
+                                                Agnesstr. 3a<br>
+                                                53225 Bonn
+                                            </td>
+                                            <td>
+                                                <strong>Bankverbindung</strong><br>
+                                                Andreas Linden<br>
+                                                IBAN: DE55 3806 0186 0803 7220 13<br>
+                                                BIC: GENODED1BRS
+                                            </td>
+                                            <td>
+                                                <strong>Geschäftsführung</strong><br>
+                                                Andreas Linden<br>
+                                                Steuernummer 1234567890<br>
+                                                Finanzamt Bonn-Außenstadt
+                                            </td>
+                                            <td class="vabottom">Seite <?= ++$page ?></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </page>
+                        <? endif ?>
+                             <page size="A4" class="page details">
+                                <?= $pageHeader ?>
+                                <div class="clear"></div>
+                                <div class="content">
+                                    <? if ($n === 0): ?>
+                                        <h2>DETAILLIERTE UMSATZAUFLISTUNG</h2>
+                                    <? else: ?>
+                                        <h2>FORTSETZUNG DER UMSATZAUFLISTUNG</h2>
+                                    <? endif ?>
+                                    <table>
+                                        <tr>
+                                            <th style="width: 32mm;" class="taleft"><strong>Artist</strong></th>
+                                            <th class="taleft"><strong>Track/Release</strong></th>
+                                            <th style="width: 27mm;" class="taleft"><strong>Format</strong></th>
+                                            <th style="width: 20mm;"class="taleft"><strong>Store</strong></th>
+                                            <th style="width: 10mm;" class="taright"><strong>Num</strong></th>
+                                            <th style="width: 32mm;"class="taright"><strong>Value</strong></th>
+                                        </tr>
+                    <? elseif ($n % 10 === 0): ?>
+                        </table>
+                        <table>
+                    <? endif ?>
                     <? $sumDetail += $details[$n]->avail ?>
 					<tr class="<?= $n == $numItems - 1 ? 'last' : '' ?>">
-                        <td class="nobottom">
+                        <td style="width: 32mm;" class="nobottom">
                             <?= $details[$n]->release_artist ?>
                         </td>
                         <td class="nobottom">
@@ -155,29 +207,29 @@
                             <? endif ?>
                             
                         </td>
-                        <td class="nobottom">
+                        <td style="width: 27mm;" class="nobottom">
                             <?= $details[$n]->format ?>
                         </td>
-                        <td class="nobottom">
+                        <td style="width: 20mm;" width="" class="nobottom">
                             <?= $details[$n]->store ?>
                         </td>
-                        <td class="nobottom taright">
+                        <td  style="width: 10mm;" class="nobottom taright">
                             <?= $details[$n]->quantity ?>
                         </td>
-                        <td class="nobottom taright">
+                        <td style="width: 32mm;" class="nobottom taright">
                             <nobr><?= $details[$n]->avail ?> GBP</nobr>
                         </td>
                     </tr>
                 <? endfor ?>
                 <tr>
                     <td colspan="5" class="taright noborder double">
-                        Summe:
+                        <strong>Summe:</strong>
                         <!--Summe brutto:<br />
                         Ust. 19%: <br />
                         Rechnungsbetrag netto: -->
                     </td>
                     <td class="taright double" style="border-bottom: 1px solid #000;">
-                        <?= $sumDetail ?> GBP
+                        <strong><?= $sumDetail ?> GBP</strong>
                         <!--0 GBP<br />
                         0 GBP<br />
                         0 GBP-->
@@ -193,7 +245,31 @@
                 </tr>
             </table>
         </div>
-    </div>
+        <div class="footer">
+            <table>
+                <tr>
+                    <td>
+                        <strong>Anschrift</strong><br>
+                        Fa. Andreas Linden<br>
+                        Agnesstr. 3a<br>
+                        53225 Bonn
+                    </td>
+                    <td>
+                        <strong>Bankverbindung</strong><br>
+                        Andreas Linden<br>
+                        IBAN: DE55 3806 0186 0803 7220 13<br>
+                        BIC: GENODED1BRS
+                    </td>
+                    <td>
+                        <strong>Geschäftsführung</strong><br>
+                        Andreas Linden<br>
+                        Steuernummer 1234567890<br>
+                        Finanzamt Bonn-Außenstadt
+                    </td>
+                    <td class="vabottom">Seite <?= ++$page ?></td>
+                </tr>
+            </table>
+        </div>
+</page>
+<? endif ?>
 
-    <br/>
-</div>

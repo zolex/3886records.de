@@ -1,14 +1,28 @@
 <?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
 <div class="container">	
 	<div class="hero-unit" style="margin-left: -20px;">
-        <h1><?= $artist->name ?></h1>
+        <h1><?= $artist->name ?>
+        	<? if ($artist->is_topact): ?>
+    							<i style="font-size: 24px; position: relative; top: -50px; left: -25px; cursor: help;" class="icon-star" title="Top Act"> </i>
+							<? endif ?>
+        </h1>
         <p style="font-weight: bold; margin-bottom: 20px;"><?= $artist->shortInfo ?></p>
 		<div class="row">
     		<div class="span3">
     			<ul class="thumbnails">
     				<li>
     					<div class="thumbnail">
-    						<img src="/img/artists/<?= $artist->key ?>.jpg" alt="<?= $artist->name ?>" />
+    						<?php
+    							 $imageDir = '/srv/apache2/3886records.de/www/production/current/public';
+								 $imageUrl = '/img/artists/'. $artist->key .'.jpg';
+								 $imagePath = $imageDir . $imageUrl;
+								 if (!is_readable($imagePath) || !is_file($imagePath)) {
+
+								 	$imageUrl = '/img/artists/default.jpg';
+								 	$imagePath = $imageDir . $imageUrl;
+								 }
+							?>
+    						<img src="<?= $imageUrl ?>?t=<?= filemtime($imagePath) ?>" alt="<?= $artist->name ?>" />
     					</div>
     				</li>
     			</ul>
@@ -50,7 +64,15 @@
 									<a target="_blank" title="Event on Facebook" href="<?= $event->facebook ?>">
 								<? endif ?>
 								<p style="color: #0099FF; font-size: 12px;"><?= $event->name ?></p>
-								<img width="100" src="/img/events/<?= $event->flyer ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>">
+								<?php
+									 $flyerUrl = '/img/events/'. $event->flyer;
+									 $flyerPath = '/srv/apache2/3886records.de/www/production/current/public' . $flyerUrl;
+									 if (!is_readable($flyerPath) || !is_file($flyerPath)) {
+
+									 	$flyerUrl = '/img/events/default.jpg';
+									 }
+								?>
+								<img width="100" src="<?= $flyerUrl ?>" border="0" alt="<?= $event->name ?>" title="<?= $event->name ?>">
 								<? if (!empty($event->facebook)): ?>
 									</a>
 								<? endif ?>

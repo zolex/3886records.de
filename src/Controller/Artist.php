@@ -8,9 +8,11 @@ class Artist extends ControllerAction
 {
 	public function overview($request) {
 	
+		$active = !(boolean)$request->get('former');
+
 		return array(
-			'artists' => $this->getDataProvider()->getArtists(),
-			'headline' => 'Artists Overview',
+			'artists' => $this->getDataProvider()->getArtists($active),
+			'headline' => $active ? 'Artists Overview' : 'Former & Inactive Artists',
 			'breadcrumb' => array(
 				(object)array(
 					'url' => '/',

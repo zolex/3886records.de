@@ -2184,3 +2184,33 @@ input.span2, textarea.span2, .uneditable-input.span2 {
     word-spacing : normal;
     z-index : auto;
 }
+
+table.rowcolor {
+
+	font-size: 13px;
+}
+
+table.rowcolor tr td:nth-child(1) {
+
+	padding-left: 7px;
+}
+
+table.rowcolor tr:nth-child(even) {
+	background: #888;
+}
+
+table.rowcolor tr:nth-child(odd) {
+	background: #666;
+}
+
+table.rowcolor tr:hover {
+	background: #8BA9B3;
+}
+
+table.rowcolor a {
+	color: #FFF;
+}
+
+table.rowcolor a:hover {
+	color: #0099FF;
+}

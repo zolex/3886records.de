@@ -64,7 +64,7 @@ $(document).ready(function() {
         <h1><?= $sweepstake->headline ?></h1>
         <br/>
         <div class="row">
-	        <div class="span7">
+	        <div class="span8">
 				
 				<? if (time() > strtotime($sweepstake->validUntil)): ?>
 				 <p id="info">
@@ -91,26 +91,28 @@ $(document).ready(function() {
 				<? else: ?>
 
 		        <p id="info">
-		        	<strong><a title="zum Event bei Facebook" target="_blank" href="<?= $sweepstake->facebookLink ?>"><?= $sweepstake->eventName ?></a></strong><br/>
+		        	<strong><?= $sweepstake->info ?></strong>
 		        	<br/>
-		        	<strong><?= $sweepstake->info ?></strong><br/>
-		        	<strong>Um an dem Gewinnspiel Teilzunehmen führe folgende Schritte aus:</strong><br/>
-					<span style="line-height: 19px; font-size: 12px; color: #000;">(Teilnahmeschluss: <?= date('d.m.Y, H:i', strtotime($sweepstake->validUntil)) ?>)</span>
+		        	<br/>
+		        	<a title="zum Event bei Facebook" target="_blank" href="<?= $sweepstake->facebookLink ?>"><img src="<?= $sweepstake->image ?>" alt="<?= $sweepstake->eventName ?>" border="0"></a>
+		        	<br/><br/>
+		        	<strong>Um an dem Gewinnspiel Teilzunehmen führe folgende Schritte aus:</strong>
+		        	<br/>
+					<span style="font-size: 12px; color: #000;">(Teilnahmeschluss: <?= date('d.m.Y, H:i', strtotime($sweepstake->validUntil)) ?>)</span>
 		        </p>
 				<br/>
 		        <div id="rules">
 		        <p>
 		        	<b>1.</b> Melde dich mit Facebook an falls Du dies noch nicht getan hast.<br/>
-		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Wenn Du schon verbunden bist öffnet sich ein Fester, geht aber sofort wieder zu, alles ist in Ordnung)</div>
+		        	<div style="margin-left: 15px; margin-bottom: 5px; font-size: 12px; color: #000;">(Wenn Du schon verbunden bist öffnet sich ein Fester, geht aber sofort wieder zu, alles ist in Ordnung)</div>
 		        	<div style="margin-left: 15px;"><fb:login-button max_rows="1" size="medium" show_faces="false" auto_logout_link="false"></fb:login-button></div>
 		        </p>
 		        <p>
 		        	<b>2.</b> Werde Fan unserer Facebook Seite mit einem Klick auf den folgenden Button:<br/>
-		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Du kannst unsere <a target="_blank" href="https://www.facebook.com/3886records">Facebook-Seite</a> auch direkt besuchen und dort auf gefällt mir klicken. Wenn Du bereits Fan bist, kannst Du diesen Schritt überspringen).</div>
 		        	<div class="fb-like-box" data-href="https://www.facebook.com/3886records" data-colorscheme="light" data-show-faces="false" data-header="false" data-stream="false" data-show-border="false"></div>
 		        </p>
 		        <p>
-		        	<b>3.</b> Teile dieses Gewinnspiel bei Facebook öffentlich mit einem Klick auf den folgenden Button:<br/>
+		        	<b>3.</b> Teile dieses Gewinnspiel bei Facebook <strong>öffentlich</strong> in deinem Profil:<br/>
 		        	<div style="margin-left: 15px; line-height: 19px; font-size: 12px; color: #000;">(Wähle im sich öffnenden Fester unten öffentlich bzw. public aus, damit wir auch nachvollziehen können dass Du das Gewinnspiel geteilt hast. Du kannst beliebig oft teilnehmen, Deine Chancen erhöhen sich durch öfteres Teilen!)</div>
 		        	<div style="margin-left: 15px;"><img id="sharebutton" alt="Teilen" titel="Auf Facebook teilen" src="/img/facebook-teilen.png" border="0" style="cursor: pointer; margin-top: 10px;" /></div>
 		        </p>
@@ -119,9 +121,6 @@ $(document).ready(function() {
 				</div>
 				
 				<? endif ?>
-		    </div>
-		    <div class="span4">
-				<a title="zum Event bei Facebook" target="_blank" href="<?= $sweepstake->facebookLink ?>"><img src="<?= $sweepstake->image ?>" alt="<?= $sweepstake->eventName ?>" border="0"></a>
 		    </div>
 		</div>
 
@@ -184,7 +183,7 @@ $(document).ready(function() {
 				    	});
 				    } else {
 
-				    	alert("Doch keine Lust? :P");
+				    	alert("Doch keine Lust freien Eintritt zu gewinnen?");
 				    }
 				  }
 				);

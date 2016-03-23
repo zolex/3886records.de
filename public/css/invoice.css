@@ -1,50 +1,89 @@
+@page {
+  size: A4;
+}
 
-.retailerbilling * {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 9pt !important;
+html, body {
+    width: 210mm;
+    height: 297mm;
+    font-size: 9pt;
+    line-height: 1.4em;
+ }
+
+table, figure {
+  page-break-inside: avoid;
+}
+
+page[size="A4"] {
+  background: #fcfcfc;
+  width: 21cm;
+  height: 29.7cm;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.5cm;
+  padding: 70pt 60pt 70pt 60pt;
+  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+}
+
+.header {
+	border-bottom 1px solid #000;	
+	font-size: 9pt;
+	text-align: center;
+	margin-bottom: 10mm;
+}
+
+.header .sender {
+	margin-top: 3mm;
+}
+
+.invoice * {
+    font-family: "Verdana", sans-serif;
     padding-left: 0;
 }
 
-.retailerbilling .page {
-	width: 175mm;
-	#height: 272mm;
-	padding: 0mm 15mm 18mm 15mm !important;
-	border: 1px solid #ccc;
-	margin: auto;
-	overflow: hidden;
-	clear: both;
-	line-height: 1.2em !important;
+.invoice .page {
+	position: relative;
+	width: 100%;
 }
 
-.retailerbilling .page.details {
-	height: auto;
-	width: 190mm;
-	min-height: 277mm;
-	padding: 10mm !important;
-	page-break-before: always;
+.invoice .page .footer {
+
+	color: #333 !important;
+	font-size: 8pt !important;
+	line-height: 1.3em;
+	width: 210mm;
+	position: absolute;
+	bottom: 0px;
+	height: 23mm;
+	border-top: 1px solid #ababab;
 }
 
-.retailerbilling .page.details.billingparts {
-	page-break-before:auto !important;
-	min-height: 0mm;
+.invoice .page .footer table {
+	margin-top: 5px;
+	width: 100%;
 }
 
-.retailerbilling .page.details table {
-	page-break-before: auto;
+.invoice .page .footer table td {
+	vertical-align: top;
 }
 
-.retailerbilling .page .page-header {
-	margin: 0 0 0 -6mm;
-	line-height: 27mm !important;
-	height: 27mm !important;
+.invoice .page .footer table td.vabottom {
+	vertical-align: bottom;
+	text-align: right;
 }
 
-.retailerbilling .page .page-header img {
-	display: block;
-	margin: 10mm auto -6mm auto;
+.invoice .page.details table {
+	font-size: 8pt;
 }
 
-.retailerbilling .addresses {
+.invoice .page table th {
+	background-color: #dedede;
+}
+
+.invoice .page h2 {
+	font-size: 12pt !important;
+}
+
+.invoice .addresses {
 	margin-top: 8mm;
 	margin-left: -5mm;
     height: 37mm;
@@ -53,9 +92,12 @@
     float: left;
 }
 
-.retailerbilling .addresses .sender {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 7pt !important;
+.invoice .addresses {
+    font-size: 10pt !important;
+    line-height: 1.3em !important;
+}
+
+.invoice .addresses .sender {
     line-height: 5mm;
     height: 5mm;
     overflow: hidden;
@@ -63,16 +105,14 @@
 	padding-left: 5mm;
 }
 
-.retailerbilling .addresses .recepient {
-    font-size: 12pt !important;
-    line-height: 1.3em !important;
+.invoice .addresses .recepient {
     height: 34mm;
     overflow: hidden;
     width: 77mm !important;
 	padding: 3mm 3mm 3mm 5mm;
 }
 
-.retailerbilling .data {
+.invoice .data {
 	padding-top: 7mm;
     height: 37mm;
     overflow: hidden
@@ -81,136 +121,57 @@
     margin-top: 5mm;
 }
 
-.retailerbilling .data td.datalabel {
+.invoice .data td.datalabel {
 	padding-right: 5mm;
 }
 
-.retailerbilling .references {
+.invoice .references {
 	margin-top: 8.46mm;
 	
 }
 
-.retailerbilling .content {
+.invoice .content {
 	padding: 3mm 0;
 }
 
-.retailerbilling .content table {
+.invoice .content table {
 	border-collapse: collapse;
-	width: 174mm;
+	width: 100%;
 }
 
-.retailerbilling .content table th {
+.invoice .content table th {
 	border: 1px solid #000;
 	padding: 0 1mm !important;
 }
 
-.retailerbilling .content table td {
+.invoice .content table td {
 	border: 1px solid #000;
 	border-width: 0 1px;
 	padding: 0 1mm !important;
 }
 
-.retailerbilling .content table tr.last td {
+.invoice .content table tr.last td {
 	border-bottom: 1px solid #000;
 }
 
-.retailerbilling .content table td.editable {
+.invoice .content table td.editable {
     background-color: #ff9;
 }
 
-.retailerbilling .content table td.editable input {
+.invoice .content table td.editable input {
     width: 100%;
 }
 
-.retailerbilling .content table tr.noborder th, 
-.retailerbilling .content table tr.noborder td,
-.retailerbilling .content table td.noborder {
+.invoice .content table tr.noborder th, 
+.invoice .content table tr.noborder td,
+.invoice .content table td.noborder {
 	border: 0;
 }
 
-.retailerbilling .content table tr.sum td {
+.invoice .content table tr.sum td {
 	border-width: 0;
 	border-top: 1px solid #000;
 	border-bottom: 3px double #000;
-}
-
-.retailerbilling .page.details table {
-	margin-top: -1px;
-	width: 190mm !important;
-}
-
-.retailerbilling .page.details table table {
-	width: auto !important;
-}
-
-.retailerbilling .page.details th {
-	font-weight: normal;
-}
-
-.retailerbilling .page.details td, .retailerbilling .page.details th {
-	padding: 0 1mm !important;
-}
-
-.retailerbilling .page.details table.retailer-transaction .head {
-	width: 70mm !important;
-	margin: 10mm 0 5mm -5px;
-}
-
-.retailerbilling .page.details table.retailer-transaction .head td.desc {
-	width: 15mm !important;
-}
-
-.retailerbilling .page.details table.retailer-transaction .head td.value {
-	width: 55mm !important;
-}
-
-.retailerbilling form input {
-    margin:0 !important;
-	padding: 0 !important;    
-}
-
-.retailerbilling form input.small {
-    width: 15mm;
-    padding: 0mm !important;
-    text-align: right;
-    border: 0 !important;
-    background-color: transparent !important;
-}
-
-.retailerbilling form input.add-custom-row, .retailerbilling form input.del-custom-row {
-    padding: 0 !important;
-    margin: 0 0 1px 0 !important;
-    border: 0 !important;
-    background-image: url("../images/plus.png");
-    background-repeat: no-repeat;
-	width: 16px;
-	height: 16px;
-}
-
-.retailerbilling form input.del-custom-row {
-    background-image: url("../images/minus.png");
-    background-repeat: no-repeat;
-}
-
-.retailerbilling form input.wide {
-    width: 100%;
-    border: 0 !important;
-    background-color: transparent !important;
-}
-
-.retailer-footnotes {
-    font-style: italic;
-    font-size: 10pt;
-    color: #999999;
-}
-
-.container-fluid table.sonata-ba-list tr.invoiced td,
-.container-fluid table.sonata-ba-list tr.pre-billed td {
-    background-color: #cfc;
-}
-
-.container-fluid table.sonata-ba-list tr.pre-invoiced td {
-    background-color: yellow;
 }
 
 .taright {

@@ -1,0 +1,75 @@
+<?= ViewLoader::load('breadcrumb', array('items' => $breadcrumb)) ?>
+<div class="container">
+    <div class="hero-unit">
+		<h1>Contacts</h1>
+
+		<form style="margin-top: 20px;" method="get" action="/contact/add">
+			<input type="submit" class="btn" value="Add contact">
+		</form>
+    </div>
+</div>
+<div class="container">	
+    <div class="row">
+		<div class="span12">
+			<? if (count($contacts)): ?>
+				<table class="rowcolor" width="100%">
+					<tr style="font-weight: bold; background: #333;">
+						<td><a href="?order=orgaName">Organization</a></td>
+						<td><a href="?order=personName">Contact Person</a></td>
+						<td>E-Mail</td>
+						<td>Phone</td>
+						<td colspan="2" ><a href="?order=lastContactTime">Last Contact</a></td>
+						<td><a href="?order=zipcode">Location</a></td>
+						<td>Goabase</td>
+						<td>&nbsp;</td>
+					</tr>
+					<? foreach ($contacts as $contact): ?>
+					<tr>
+						<td>
+							<?if (!empty($contact->orgaFacebook)): ?>
+								<a target="_blank" href="<?= $contact->orgaFacebook ?>"><?= $contact->orgaName ?></a>
+							<? else: ?>
+								<?= $contact->orgaName ?>
+							<? endif ?>
+						</td>
+						<td>
+							<?if (!empty($contact->personFacebook)): ?>
+								<a target="_blank" href="<?= $contact->personFacebook ?>"><?= $contact->personName ?></a>
+							<? else: ?>
+								<?= $contact->personName ?>
+							<? endif ?>
+						</td>
+						<td>
+							<?if (!empty($contact->email)): ?>
+								<a href="mailto:<?= $contact->email ?>"><?= $contact->email ?></a>
+							<? else: ?>
+								&nbsp;
+							<? endif ?>
+						</td>
+						<td>
+							<?= $contact->phone ?>
+						</td>
+						<td>
+							<?= $contact->lastContactTime ?>
+						</td>
+						<td>
+							<?= $contact->lastContactInfo ?>
+						</td>
+						<td>
+							<a data-method="async" href="/bookingmanager/location?origin=<?= $contact->zipcode ?>,<?= $contact->country ?>">
+								<?= $contact->zipcode ?>, <?= $contact->country ?>
+							</a>
+						</td>
+						<td><?if (!empty($contact->goabase)): ?><a target="_blank" href="<?= $contact->goabase ?>">goabase</a><? endif ?>&nbsp;</td>
+						<td style="width: 100px;">
+							<a style="font-size: 12px; color: #dedede;" href="/contact/edit/<?= $contact->id ?>">edit</a>
+							|
+							<a onclick="return confirm('Do you really want to delete <?= $contact->orgaName ?>?');" style="font-size: 12px; color: #ff9999;" href="/contact/delete/<?= $contact->id ?>">delete</a>
+						</td>
+					</tr>
+					<? endforeach ?>
+				</table>
+			<? endif ?>
+		</div>
+	</div>
+</div>

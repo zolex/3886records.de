@@ -3,8 +3,43 @@
     <div class="jumbotron hero-unit">
         <div style="margin-bottom: 20px;">
             <h1>3886profile</h1>
-			<p><strong>Hello <?= ucfirst($user->name) ?>, </strong> here you can find all information on your 3886records membership.</p>
+			<p><strong>Hello <?= ucfirst($user->name) ?> </strong></p>
 		</div>
+
+		<? if ($user->rights & \Models\User::RIGHT_SIGNUPCODES): ?>
+            <form method="get" action="/profile/signupcodes">
+			    <input type="submit" class="btn" value="Signup Codes">
+		    </form>		
+		    <hr>
+        <? endif ?>
+        
+        
+        <? if ($user->rights & \Models\User::RIGHT_BOOKINGMANAGER): ?>
+            <form method="get" action="/bookingmanager">
+			    <input type="submit" class="btn" value="Booking Management">
+		    </form>
+		    <hr>
+        <? endif ?>
 		
+		<h4>Upcomming events</h4>
+		<? if (isset($events) && count($events)): ?>
+			<table style="color: black; width: 100%; margin-bottom: 10px;">
+			<? foreach ($events as $event): ?>
+				<tr>
+					<td style="width: 140px;"><?= date('d.m.Y', strtotime($event->fromTime)) ?></td>
+					<td style="width: 250px;"><a href="/event/edit/<?= $event->id ?>" title="Edit Event"><?= $event->name ?></a></td>
+					<td style="font-size: 14px">
+						Links: 
+						<a target="_blank" href="<?= $event->facebook ?>">Facebook</a>
+					</td>
+				</tr>
+			<? endforeach ?>
+			</table>
+		<? else: ?>
+			<p>No events found</p>
+		<? endif ?>
+	    <form method="get" action="/event/add">
+		    <input type="submit" class="btn" value="Add a new event">
+		</form>		
     </div>
 </div>

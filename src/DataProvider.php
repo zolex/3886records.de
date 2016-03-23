@@ -173,7 +173,7 @@ public function getEvents($which = 1, $includeArtists = false) {
 	              WHERE ea.artist_id = :artist_id
 	              AND e.toTime > NOW()
 	              AND e.visible = 1
-	              ORDER BY e.fromTime DESC";
+	              ORDER BY e.fromTime ASC";
 	    
 	    $stmt = $this->getDbh()->prepare($query);
 	    $stmt->bindValue('artist_id', $artistId);
@@ -316,9 +316,16 @@ public function getEvents($which = 1, $includeArtists = false) {
 		return $artist;
 	}
 	
-	public function getArtists() {
+	public function getArtists($active = false) {
 	
-		return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 0 AND visible = 1 ORDER BY name ASC");
+		if ($active == true) {
+
+			return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 0 AND visible = 1 AND is_active = 1 ORDER BY name ASC");
+
+		} else {
+
+			return $this->fetchAll('\Models\Artist', "SELECT * FROM artists WHERE type = 0 AND visible = 1 AND is_active = 0 ORDER BY name ASC");
+		}
 	}
 
 	public function getActs() {
@@ -1075,12 +1082,12 @@ public function getEvents($which = 1, $includeArtists = false) {
 	
 	public function getNewSalesByArtist($artistId) {
 
-		$sql = "SELECT s.*, s.royalty * r.deal AS avail
+		$sql = "SELECT s.*, s.royalty * r.deal AS avail, IF (s.sale_type = 'Track', s.track_title, s.release_name) AS sorter
 			FROM sales s
 			INNER JOIN releases r ON r.id = s.release_id
 			WHERE s.invoiced = 0
 			AND s.artist_id = :artist
-			ORDER BY s.release_artist, s.release_name, s.format, s.sale_type";
+			ORDER BY sorter, s.store, s.format";
 			
 		$stmt = $this->dbh->prepare($sql);
 		$stmt->bindValue('artist', $artistId);
@@ -1152,26 +1159,25 @@ public function getEvents($which = 1, $includeArtists = false) {
 	
 		// determine date for report
 		$sql = "SELECT r.* FROM sales s INNER JOIN sales_reports r WHERE s.invoiced = 0";
-		if ($report->labelId !== null) {
+		if (isset($report->labelId) && $report->labelId !== null) {
 
 			$sql .= " AND s.label_id = :label";
 		}
 		
-		if ($report->artistId !== null) {
+		if (isset($report->artistId) && $report->artistId !== null) {
 
 			$sql .= " AND s.artist_id = :artist";
 		}
 
 		$sql .= " GROUP BY r.id ORDER BY r.quarter ASC";
 		$stmt = $this->dbh->prepare($sql);
-		if ($report->labelId != null) {
+		if (isset($report->labelId) && $report->labelId != null) {
 
 			$stmt->bindValue('label', $report->labelId);
-		}
-		
-		if ($report->artistId != null) {
 
-			$stmt->bindValue('artist', $report->labelId);
+		} else if (isset($report->artistId) && $report->artistId != null) {
+
+			$stmt->bindValue('artist', $report->artistId);
 		}
 
 		if (!$stmt->execute()) {
@@ -1189,28 +1195,31 @@ public function getEvents($which = 1, $includeArtists = false) {
 		return $dates;
 	}
 
-	public function getSalesReportByArtist($labelId = null, $artistId = null) {
+	public function getSalesReportByArtist($artistId) {
 
-		$sql = "SELECT CONCAT(a.name, ' ', s.format) AS position,
+		$sql = "SELECT * FROM artists WHERE id = :artistId";
+		$stmt = $this->dbh->prepare($sql);
+		$stmt->bindValue('artistId', $artistId);
+		if (!$stmt->execute()) {
+	
+			$errorInfo = $stmt->errorInfo();
+			throw new \Exception($errorInfo[2], $errorInfo[1]);
+		}
+
+		$artist = $stmt->fetchObject();
+
+		$sql = "SELECT s.format AS position,
 				SUM(s.quantity) AS num,
 				SUM(s.royalty) * r.deal AS value
 			FROM sales s
 			INNER JOIN artists a ON a.id = s.artist_id
 			LEFT JOIN releases r ON r.id = s.release_id
-			WHERE s.invoiced = 0";
-			
-		if (null !== $artistId) {
-		
-			$sql .= " AND a.id = :artistId";
-		}
-			
-		$sql .= " GROUP BY s.artist_id, s.format";
+			WHERE s.invoiced = 0
+			AND a.id = :artistId
+			GROUP BY s.format
+			ORDER BY s.format";
 		$stmt = $this->dbh->prepare($sql);
-		if (null !== $artistId) {
-		
-			$stmt->bindValue('artistId', $artistId);
-		}
-		
+		$stmt->bindValue('artistId', $artistId);		
 		if (!$stmt->execute()) {
 	
 			$errorInfo = $stmt->errorInfo();
@@ -1218,15 +1227,17 @@ public function getEvents($which = 1, $includeArtists = false) {
 		}
 		
 		$report = (object)array(
-		
-			'date' => null,
+			'artist' => $artist,
+			'date' => date('d.m.Y'),
+			'customerNumber' => '1042',
+			'invoiceNumber' => '3886-1603-1337',
 			'items' => array(),
-			'labelId' => $labelId,
 			'artistId' => $artistId,
 		);
 		
 		$dates = $this->getDatesForReport($report);
-		$report->date = implode(', ', $dates);
+		$report->quarterFrom = array_shift($dates);
+		$report->quarterTo = array_pop($dates);
 		
 		while ($row = $stmt->fetchObject()) {
 
@@ -1438,10 +1449,10 @@ public function getEvents($which = 1, $includeArtists = false) {
 					'party' => 'labelnight2016',
 					'eventName' => 'Labelnight 2016',
 					'headline' => 'Gewinne freien Eintritt!',
-					'info' => '3 Mal freier Eintritt für die 3886records Labelnight am 8.4.2016 zu gewinnen!',
+					'info' => 'Drei Mal freier Eintritt für die Labelnight und für 6 weitere Clubs in Bonn<br/><a target=_blank" href="https://www.facebook.com/events/939245202817959">Club Hopping Bonn - 7 Clubs 7 Genres 1 Preis</a>',
 					'validUntil' => '2016-04-07 12:00:00',
 					'metaTitle' => 'Gewinne freien Eintritt für die 3886records Labelnight 2018',
-					'description' => 'Für den 8.4. gibt es 3 Mal freien Eintritt in der Klangstation zu gewinnen! Erlebe Progressive & Psychedelic Trance aus Bonn!',
+					'description' => 'Bis zum 8.4. gibt es drei Mal freien Eintritt für die Klangstation zu gewinnen! Psypek Release-Party mit Audiomajix, Korrax und vielen weiteren Acts.',
 					'image' => 'https://www.3886records.de/img/flyer/labelnight2016.jpg',
 					'facebookLink' => 'https://www.facebook.com/events/807826539345305/?fref=gewinnspiel',
 					'winners' => array(
